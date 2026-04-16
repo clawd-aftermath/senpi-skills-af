@@ -1514,18 +1514,145 @@ When building skills against Aftermath native perps endpoints, use the correct n
 - `2 = PostOnly`.
 - If you send `1` thinking it is PostOnly, you are sending FOK and can trigger `MoveAbort 3005` in PostOnly-style flows.
 
+### Programmable Transaction Blocks (PTBs)
+
+PTBs are a core Sui feature that allow multiple operations to compose into a **single atomic transaction**. This is critical for trading skills because:
+
+- **Cancel old orders and place new orders in one tx** — no gap where you have no orders on the book
+- **Update quotes across multiple price levels atomically** — your entire grid refreshes at once
+- **Pay gas only once** for what would be 10+ transactions on other chains
+- **All-or-nothing execution** — no partial state if something fails mid-tx
+
+Aftermath's native endpoints (`/api/perpetuals/account/transactions/*`) return a `TxKindResponse` containing a base64-encoded `TransactionKind`. You decode it, wrap it in a full `Transaction`, sign, and submit. The API handles oracle freshness internally — don't add your own stork/oracle updates.
+
+| Operation                     | Other Chains             | Aftermath (via PTB)      |
+| ----------------------------- | ------------------------ | ------------------------ |
+| Cancel 5 orders + place 5 new | 10 transactions, 10× gas | 1 transaction, 1× gas    |
+| Time exposed with no quotes   | Seconds to minutes       | Zero (atomic swap)       |
+| Failure mode                  | Partial execution risk   | All-or-nothing           |
+
+### Storage Rebates
+
+Sui's storage rebate model means **cancelling an order returns a portion of the gas paid when placing it**. For skills that continuously refresh quotes, this rebate significantly reduces the effective cost of quoting. Gas is the only cost incurred when placing, cancelling, or refreshing orders that do not fill.
+
+### Adverse Selection Protection (RGP)
+
+Reference Gas Price (RGP) protects makers from toxic flow. Taker transactions that aggressively overpay for gas are flagged, pay higher execution fees, and those fees are **redistributed as rebates to market makers**. No cancel prioritization needed — works within Sui's existing execution model.
+
+### Fee Structure (Growth Mode)
+
+**Growth Mode is live** — all maker fees are **-0.5 bps (-0.005%)** across every tier. You get paid when your resting orders are filled.
+
+| Cost Component  | When Charged       | Typical Cost                              |
+| --------------- | ------------------ | ----------------------------------------- |
+| Gas (place)     | Every transaction  | ~0.002 SUI (~$0.002)                      |
+| Gas (cancel)    | Every transaction  | ~0.001 SUI (~$0.001), offset by rebate    |
+| Maker fee       | On fill only       | -0.005% (Growth Mode — all tiers)         |
+| Maker rebate    | Biweekly payout    | Up to 0.008% back (by market share)       |
+| RGP rebate      | On toxic flow      | Variable, redistributed from toxic takers  |
+
+See [docs/aftermath/market-maker-economics.md](docs/aftermath/market-maker-economics.md) for full fee tiers and rebate tables.
+
 ### Gas-Aware Pattern: Cancel-And-Place
 
 For order refresh workflows, prefer atomic cancel+replace:
 
 - Endpoint: `POST /api/perpetuals/account/transactions/cancel-and-place-orders`
 - Returns: `TxKindResponse` (`txKind` base64), **not** `TransactionBuildResponse`
-- Typical benefit: materially lower gas vs separate cancel tx + place tx (often around 50%)
+- **~7x gas savings** vs separate cancel + place transactions when batching 5+ orders
 
 Payload specifics:
 
 - Side encoding is numeric (`0` = bid/long, `1` = ask/short)
 - Prices/sizes use BigInt-string format with trailing `n` (example: `"95000000000n"`)
+- `orderType: 2` (PostOnly) for maker quotes
+- `sponsor` field (optional) for gas pool sponsorship
+
+**Gas comparison:**
+
+```
+Inefficient: separate transactions
+  TX 1: cancel_orders              → ~0.0016 SUI
+  TX 2: place_limit_order (×1)     → ~0.0023 SUI
+  Total: ~0.004 SUI for 1 order update
+
+Efficient: atomic cancel-and-place with batching
+  TX 1: cancel + place (×5)        → ~0.002 SUI total
+  Gas per order: ~0.0004 SUI
+```
+
+### Gasless Trading (GasPool)
+
+Skills and bots can run without holding SUI in the agent wallet by using a **GasPool**:
+
+1. Primary wallet creates a GasPool: `POST /api/gas-pool/transactions/create`
+2. Deposit SUI or **USDC** into the pool: `POST /api/gas-pool/transactions/deposit` (USDC auto-swaps to SUI via Aftermath router)
+3. Grant agent wallet access: `POST /api/gas-pool/transactions/grant`
+4. Include `sponsor` field in trading requests — API returns `txKind` + `sponsorSignature`
+
+The agent wallet signs and submits with both signatures. It never touches SUI.
+
+**USDC deposit example:**
+
+```json
+POST /api/gas-pool/transactions/deposit
+{
+  "walletAddress": "0x<primary>",
+  "coinType": "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC",
+  "amount": 5000000,
+  "slippage": 0.01
+}
+```
+
+See [docs/aftermath/gasless-trading.md](docs/aftermath/gasless-trading.md) for full setup guide.
+
+### Agent Wallets
+
+Always use an **Agent Wallet** for bot execution — it can trade but cannot withdraw collateral. If the bot key is compromised, funds are safe.
+
+- Grant: `POST /api/perpetuals/account/transactions/grant-agent-wallet`
+- Revoke: `POST /api/perpetuals/account/transactions/revoke-agent-wallet`
+
+See [docs/aftermath/agent-wallets.md](docs/aftermath/agent-wallets.md).
+
+### Sub-Accounts
+
+Run multiple strategies across sub-accounts while sharing a single fee tier:
+
+- Each sub-account has its own collateral and margin (risk isolation)
+- Volume rolls up to the master account for fee tier calculation
+- Transfer collateral between accounts without withdrawing: `POST /api/perpetuals/account/transactions/transfer-collateral`
+
+See [docs/aftermath/sub-accounts.md](docs/aftermath/sub-accounts.md).
+
+### Gas Optimization Checklist
+
+1. **Always use cancel-and-place** — never separate cancel + place transactions
+2. **Batch 5+ orders per transaction** — more orders per tx = lower gas per order
+3. **Use Post-Only (`orderType: 2`)** — guarantees maker rebate, avoids taker fees
+4. **Use agent wallets** — grant an agent wallet so your main key stays cold
+5. **Use gas pool sponsorship** — pre-fund a gas pool so agent wallets never need SUI
+6. **Fund gas pool with USDC** — deposit USDC, auto-swaps to SUI via Aftermath router
+7. **Skip redundant oracle updates** — the API handles oracle freshness internally
+8. **Quote both sides in one tx** — place bids AND asks in the same `ordersToPlace` array
+9. **Leverage storage rebates** — cancelling orders returns a portion of placement gas
+10. **Serialize coin/gas-sensitive operations** — concurrent signed txs race on shared Sui objects
+
+### Aftermath Perpetuals Skill
+
+A comprehensive integration skill is included at [`aftermath-perpetuals/`](aftermath-perpetuals/SKILL.md). It covers:
+
+| File | Content |
+|------|---------|
+| `native.md` | Full native endpoint reference (`/api/perpetuals/*`) |
+| `ccxt.md` | CCXT-compatible endpoints |
+| `sdk-reference.md` | TypeScript SDK reference |
+| `market-making.md` | MM optimization guide (cancel-and-place, gas efficiency) |
+| `error-handling.md` | Retry patterns, error shapes, stream recovery |
+| `safety-and-risk.md` | Circuit breakers, kill switch, pre-launch checklist |
+| `gotchas.md` | 13 edge-case pitfalls |
+| `monitoring-patterns.md` | Market scanners, position health, streams |
+| `auxiliary-endpoints.md` | Gas pool, builder codes, referrals, rewards |
 
 ### Scale Orders for Ladder/Grid Entries
 

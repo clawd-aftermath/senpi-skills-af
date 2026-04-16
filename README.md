@@ -123,7 +123,8 @@ These are plugins used by all skills automatically. Users don't need to install 
 | Plugin | Purpose |
 |---|---|
 | [DSL Dynamic Stop Loss](./dsl-dynamic-stop-loss) | Trailing stop engine. Supports fixed ROE tiers and [High Water Mode](./dsl-dynamic-stop-loss/dsl-high-water-spec%201.0.md) (percentage-of-peak locks). |
-| [Fee Optimizer](./fee-optimizer) | When to use ALO vs MARKET, standard order params, fee computations (FDR, maker %). |
+| [Fee Optimizer](./fee-optimizer) | When to use ALO vs MARKET, standard order params, gas-aware fee computations (FDR, maker %). Updated with PTB gas savings and gas pool support. |
+| [Aftermath Perpetuals](./aftermath-perpetuals) | Full integration skill — native endpoints, CCXT, SDK, error handling, safety/risk, gas optimization, gotchas, monitoring. |
 | [Senpi Onboard](./senpi-onboard) | Agent onboarding and account setup. |
 | [Getting Started Guide](./senpi-getting-started-guide) | Interactive first-trade tutorial. |
 | [Emerging Movers](./emerging-movers) | Leaderboard scanner shared by FOX, WOLF, and VIXEN. |
@@ -167,6 +168,20 @@ Plugins ──→ Skills ──→ Trading Strategies
 - [Senpi](https://senpi.ai) MCP access token
 - Sui strategy wallet funded with USDC collateral
 - Python 3.8+ (no external dependencies — all skills use stdlib only)
+
+**Optional (recommended for bots):**
+- [Agent Wallet](docs/aftermath/agent-wallets.md) — delegate trading without exposing your admin key
+- [GasPool](docs/aftermath/gasless-trading.md) — agent wallet never needs SUI; fund with USDC, auto-swaps to SUI
+
+## Aftermath Integration Docs
+
+| Document | Description |
+|----------|-------------|
+| [Gasless Trading](docs/aftermath/gasless-trading.md) | GasPool setup, USDC-as-gas, sponsored transactions |
+| [Market Maker Economics](docs/aftermath/market-maker-economics.md) | Fee tiers, gas costs, PTBs, RGP protection |
+| [Market Makers Guide](docs/aftermath/market-makers.md) | Integration guide, gas optimization tips |
+| [Agent Wallets](docs/aftermath/agent-wallets.md) | Delegate trading without transferring ownership |
+| [Sub-Accounts](docs/aftermath/sub-accounts.md) | Strategy isolation with shared fee tiers |
 
 ## Contributing
 

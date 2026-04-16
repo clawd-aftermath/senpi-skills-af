@@ -55,7 +55,10 @@ Implications:
 - Batch related actions when possible.
 - For refresh workflows, prefer native atomic cancel+replace:
   - `POST /api/perpetuals/account/transactions/cancel-and-place-orders`
-  - Usually saves around 50% gas vs separate cancel then place transactions.
+  - **~7x gas savings** when batching 5+ orders vs separate cancel + place transactions
+  - Single order: ~0.002 SUI for cancel + 5 orders vs ~0.004 SUI for cancel + 1 order separately
+- **Gas pool sponsorship**: pre-fund a GasPool, include `sponsor` field in requests. Agent wallet never needs SUI.
+- **USDC as gas**: deposit USDC into GasPool — auto-swaps to SUI via Aftermath router.
 
 ## Fee Breakeven Calculator
 

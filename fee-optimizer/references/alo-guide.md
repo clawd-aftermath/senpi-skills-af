@@ -101,16 +101,56 @@ Mitigations:
 
 ## 7) Gas-Saving Execution Patterns
 
-For refresh/update flows, use atomic cancel+replace when possible:
+### Programmable Transaction Blocks (PTBs)
+
+Sui's PTBs let you compose multiple operations into a **single atomic transaction**. This is the foundation of gas efficiency on Aftermath:
+
+- **Cancel old orders and place new orders in one tx** — no gap where you have no orders on the book
+- **Update quotes across multiple price levels atomically** — your entire grid refreshes at once
+- **Pay gas only once** for what would be 10+ transactions on other chains
+- **All-or-nothing execution** — no partial state if something fails
+
+### Atomic Cancel-and-Place
+
+For refresh/update flows, use atomic cancel+replace:
 
 - Endpoint: `POST /api/perpetuals/account/transactions/cancel-and-place-orders`
-- Benefit: often ~50% gas savings vs separate cancel tx + place tx.
-- Return type: `TxKindResponse` (`txKind` base64), not `TransactionBuildResponse`.
+- **~7x gas savings** when batching 5+ orders vs separate cancel + place transactions
+- Return type: `TxKindResponse` (`txKind` base64), not `TransactionBuildResponse`
+
+```
+Inefficient (separate):
+  cancel_orders       → ~0.0016 SUI
+  place_limit_order   → ~0.0023 SUI
+  Total: ~0.004 SUI for 1 order update
+
+Efficient (atomic + batched):
+  cancel + place ×5   → ~0.002 SUI total
+  Gas per order: ~0.0004 SUI
+```
 
 Native payload details:
 
 - Side encoding is numeric (`0` bid/long, `1` ask/short).
 - Prices/sizes use BigInt strings with trailing `n` (example: `"95000000000n"`).
+- `sponsor` field (optional) for gas pool sponsorship.
+
+### Gas Pool Sponsorship
+
+Pre-fund a GasPool so agent wallets never need SUI:
+
+- Create: `POST /api/gas-pool/transactions/create`
+- Deposit (SUI or USDC): `POST /api/gas-pool/transactions/deposit` — USDC auto-swaps to SUI via Aftermath router
+- Grant agent: `POST /api/gas-pool/transactions/grant`
+- Trade with `sponsor.walletAddress` in requests — API returns `txKind` + `sponsorSignature`
+
+See [docs/aftermath/gasless-trading.md](../../docs/aftermath/gasless-trading.md) for full setup.
+
+### Sui Storage Rebates
+
+Cancelling orders returns a portion of the gas paid when placing them. For skills that continuously refresh quotes, this rebate significantly reduces the effective cost of quoting.
+
+### Scale Orders for Ladder/Grid Entries
 
 For ladders/grids:
 
