@@ -12,6 +12,8 @@ Backward-compatible with v3/v2 state files (all new fields have defaults).
 import json, sys, subprocess, os, time
 from datetime import datetime, timezone
 
+from aftermath_price import extract_human_mid_price, resolve_market_id
+
 STATE_FILE = os.environ.get("DSL_STATE_FILE", "/data/workspace/trailing-stop-state.json")
 
 with open(STATE_FILE) as f:
@@ -45,29 +47,7 @@ try:
     )
     markets_raw = json.loads(markets_result.stdout)
     asset = state["asset"]
-    lookup_symbol = asset.split(":", 1)[-1]
-    market_id = None
-    market_rows = markets_raw.get("marketDatas")
-    if not isinstance(market_rows, list):
-        market_rows = [
-            {"market": market, "metadata": {}}
-            for market in markets_raw.get("markets", [])
-            if isinstance(market, dict)
-        ]
-    for row in market_rows:
-        market = row.get("market", {})
-        metadata = row.get("metadata", {})
-        symbols = {
-            str(metadata.get("symbol", "")).upper(),
-            str(market.get("marketParams", {}).get("baseAssetSymbol", "")).upper(),
-        }
-        if lookup_symbol.upper() in symbols or (
-            f"{lookup_symbol.upper()}USD" in symbols
-        ):
-            market_id = market.get("objectId") or market.get("marketId")
-            break
-    if not market_id:
-        raise ValueError(f"market id missing for asset {asset}")
+    market_id = resolve_market_id(markets_raw, asset)
 
     prices_result = subprocess.run(
         ["curl", "-s", f"{base_url}/api/perpetuals/markets/prices",
@@ -76,13 +56,7 @@ try:
         capture_output=True, text=True, timeout=15
     )
     prices_raw = json.loads(prices_result.stdout)
-    price = None
-    for row in prices_raw.get("marketsPrices", []):
-        if row.get("marketId") == market_id and row.get("midPrice") is not None:
-            price = float(row["midPrice"])
-            break
-    if price is None:
-        raise ValueError(f"mid price missing for asset {asset}")
+    price = extract_human_mid_price(prices_raw, market_id)
     state["consecutiveFetchFailures"] = 0
 except Exception as e:
     fails = state.get("consecutiveFetchFailures", 0) + 1
