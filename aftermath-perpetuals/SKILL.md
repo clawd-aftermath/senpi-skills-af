@@ -1,7 +1,7 @@
 ---
 name: aftermath-perpetuals
 description: Practical skill for integrating Aftermath Perpetuals with native endpoints as the default (full feature set), plus CCXT-compatible endpoints and the TypeScript SDK.
-version: 2.5.0
+version: 3.0.0-rc.1
 capabilities:
   - api-integration
   - sdk-integration
@@ -14,8 +14,10 @@ capabilities:
 
 # Aftermath Perpetuals Skill
 
-Verified against OpenAPI: `https://aftermath.finance/api/openapi/spec.json`
-Canonical docs UI: `https://aftermath.finance/docs`
+Verified against post-relaunch OpenAPI: `https://v2-preview.aftermath.finance/api/openapi/spec.json`
+Last validated: `2026-07-28`
+Canonical docs UI: `https://v2-preview.aftermath.finance/docs`
+API base: `https://v2-preview.aftermath.finance/api`
 
 ## Fast Routing
 
@@ -52,6 +54,13 @@ Preferred by default: Native perpetuals (`/api/perpetuals/*`) for complete API c
 
 ## Recent API Updates
 
+- Candle history uses `resolution` (`1m`, `15m`, `1h`, etc.) with
+  `fromTimestamp` / `toTimestamp`; the legacy millisecond interval field is gone.
+- Native and CCXT order builders support client-managed order IDs.
+- SL/TP inputs use `stopLossPrice`, `takeProfitPrice`, and `triggerPriceType`.
+- Native account and vault APIs expose TWAP create/edit/cancel/data routes.
+- Builder codes now use numeric integrator IDs and registration routes; the old
+  integrator-vault read/create/claim routes are not part of the relaunch spec.
 - Native account/vault routes include `place-scale-order`, `cancel-and-place-orders`, and account `share` transaction support.
 - Account history now includes both `orders` (order history) and detailed `trades` / CSV export routes.
 - Margin history requests use `timeframe` (`1D | 1W | 1M | ALL`) with `accountId`.
@@ -74,3 +83,30 @@ Preferred by default: Native perpetuals (`/api/perpetuals/*`) for complete API c
 | `safety-and-risk.md` | You are shipping a bot or live strategy safeguards |
 | `gotchas.md` | You need a pre-launch pitfalls checklist |
 | `market-making.md` | You are building an MM bot or optimizing gas for quoting |
+
+## Source of Truth
+
+- Site: `https://v2-preview.aftermath.finance`
+- Swagger: `https://v2-preview.aftermath.finance/docs`
+- OpenAPI: `https://v2-preview.aftermath.finance/api/openapi/spec.json`
+- Maintained skills: `https://github.com/AftermathFinance/skills`
+
+The current OpenAPI document still advertises production/testnet servers. For
+post-relaunch integration work, use the explicit v2-preview base above until the
+relaunch host becomes the public production host. This skill is versioned as a
+release candidate while that preview host is canonical.
+
+Run the contract check after changing API examples or scripts:
+
+```bash
+python3 aftermath-perpetuals/scripts/check_api_contract.py
+```
+
+The default check intentionally fetches the live preview spec and reports its
+canonical JSON SHA-256, so it detects API drift. For a reproducible check
+against a reviewed snapshot, download the spec outside the repository and pass
+it explicitly:
+
+```bash
+python3 aftermath-perpetuals/scripts/check_api_contract.py --spec /path/to/spec.json
+```

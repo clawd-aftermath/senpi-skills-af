@@ -9,7 +9,7 @@
 Use native bulk endpoints to reduce request fanout:
 
 ```typescript
-const BASE_URL = "https://aftermath.finance";
+const BASE_URL = "https://v2-preview.aftermath.finance";
 
 async function scanMarkets() {
   const markets = await fetch(`${BASE_URL}/api/perpetuals/all-markets`, {
@@ -23,7 +23,9 @@ async function scanMarkets() {
   const prices = await fetch(`${BASE_URL}/api/perpetuals/markets/prices`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ marketIds: markets.markets.map((m: any) => m.marketId) }),
+    body: JSON.stringify({
+      marketIds: markets.markets.map((m: any) => m.objectId),
+    }),
   }).then(r => r.json());
 
   return { markets, prices };
@@ -47,7 +49,7 @@ es.onmessage = (event) => {
 ### Native WebSocket proxy
 
 ```typescript
-const ws = new WebSocket("wss://aftermath.finance/api/perpetuals/ws/updates");
+const ws = new WebSocket("wss://v2-preview.aftermath.finance/api/perpetuals/ws/updates");
 ws.onmessage = (event) => {
   const update = JSON.parse(event.data);
   // handle multi-type perpetuals updates

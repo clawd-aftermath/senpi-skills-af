@@ -53,7 +53,9 @@ MIN_CONSENSUS = 3  # minimum traders agreeing on direction
 TOP_N_TRADERS = 10  # scan top N from leaderboard
 BANNED_PREFIXES = ["xyz:"]  # no equities/commodities
 MIN_ACCOUNT_VALUE = 100  # don't trade below this
-AF_BASE_URL = "https://aftermath.finance"
+AF_BASE_URL = os.environ.get(
+    "AFTERMATH_API_BASE_URL", "https://v2-preview.aftermath.finance"
+).rstrip("/")
 
 # Try loading from strategy registry if env vars not set
 if not STRATEGY_ID or not STRATEGY_WALLET:
@@ -419,9 +421,9 @@ def check_candle_confirmation(coin, direction):
         # Get last 5 15-min candles
         candles_raw = af_api("/api/perpetuals/market/candle-history", {
             "marketId": market_id,
-            "interval": "15m",
-            "startTime": now - (5 * 15 * 60 * 1000),
-            "endTime": now,
+            "resolution": "15m",
+            "fromTimestamp": now - (5 * 15 * 60 * 1000),
+            "toTimestamp": now,
         })
         if isinstance(candles_raw, dict):
             candles = (

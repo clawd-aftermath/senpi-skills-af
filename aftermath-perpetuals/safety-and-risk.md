@@ -58,7 +58,8 @@ Aftermath has **no built-in dead man's switch**. Bots must implement their own h
 
 Before deploying any bot to mainnet:
 
-- [ ] Tested all logic on testnet (`https://testnet.aftermath.finance`)
+- [ ] Tested all logic against the post-relaunch preview API
+  (`https://v2-preview.aftermath.finance`) with non-production funds
 - [ ] Circuit breakers implemented and tested (both soft and hard limits)
 - [ ] Kill switch implemented with heartbeat timeout
 - [ ] Position sizing enforced (never exceeds risk limits)

@@ -6,7 +6,12 @@ This guide explains when to use Aftermath maker-style execution vs taker-style e
 
 - Aftermath fees are **market-dependent** (not one flat schedule across all instruments).
 - Maker and taker tiers can differ by market and account tier.
-- `gasPriceTakerFee` in market params is relevant for gas-price style taker flows.
+- `priorityTakerFee` in market params is the optional relaunch field for
+  priority-gas taker flows. `null` means priority-gas transactions are rejected
+  on-chain; a numeric value is the surcharge. If the response omits the field,
+  do not assume priority-gas execution is enabled. These semantics are stated
+  in the relaunch OpenAPI field description:
+  `https://v2-preview.aftermath.finance/api/openapi/spec.json`.
 - Senpi/platform fees may still apply on top of venue fees.
 
 Always calculate using live fee inputs for the exact market.

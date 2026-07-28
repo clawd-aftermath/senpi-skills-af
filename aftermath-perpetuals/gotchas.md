@@ -1,6 +1,7 @@
 # Gotchas & Edge Cases
 
-> Common pitfalls when integrating with the public API at `https://aftermath.finance/docs`.
+> Common pitfalls when integrating with the post-relaunch API at
+> `https://v2-preview.aftermath.finance/docs`.
 
 ---
 
@@ -20,7 +21,9 @@ Sign the `signingDigest`, not `transactionBytes`.
 
 ## 3) CCXT `OrderRequest` Is Minimal
 
-Current schema supports: `type`, `side`, optional `amount`, `price`, `reduceOnly`, `expirationTimestampMs`. Do not assume `clientOrderId`, `timeInForce`, or `postOnly` are accepted.
+Current schema supports: `type`, `side`, optional `amount`, `price`,
+`reduceOnly`, `expirationTimestampMs`, and `clientOrderId`. Do not assume
+`timeInForce` or `postOnly` are accepted.
 
 ## 4) Native History Endpoints Are Cursor-Based
 

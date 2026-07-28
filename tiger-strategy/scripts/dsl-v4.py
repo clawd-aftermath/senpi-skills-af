@@ -49,39 +49,53 @@ min_hold_minutes = state.get("minHoldMinutes", 0)
 
 # ─── Fetch price ───
 try:
-    r = subprocess.run(
-        ["curl", "-s", "https://aftermath.finance/api/perpetuals/markets/prices",
+    base_url = os.environ.get(
+        "AFTERMATH_API_BASE_URL", "https://v2-preview.aftermath.finance"
+    ).rstrip("/")
+    markets_result = subprocess.run(
+        ["curl", "-s", f"{base_url}/api/perpetuals/markets",
          "-H", "Content-Type: application/json",
          "-d", '{}'],
         capture_output=True, text=True, timeout=15
     )
-    prices_raw = json.loads(r.stdout)
+    markets_raw = json.loads(markets_result.stdout)
     asset = state["asset"]
+    lookup_symbol = asset.split(":", 1)[-1]
+    market_id = None
+    market_rows = markets_raw.get("marketDatas")
+    if not isinstance(market_rows, list):
+        market_rows = [
+            {"market": market, "metadata": {}}
+            for market in markets_raw.get("markets", [])
+            if isinstance(market, dict)
+        ]
+    for row in market_rows:
+        market = row.get("market", {})
+        metadata = row.get("metadata", {})
+        symbols = {
+            str(metadata.get("symbol", "")).upper(),
+            str(market.get("marketParams", {}).get("baseAssetSymbol", "")).upper(),
+        }
+        if lookup_symbol.upper() in symbols or (
+            f"{lookup_symbol.upper()}USD" in symbols
+        ):
+            market_id = market.get("objectId") or market.get("marketId")
+            break
+    if not market_id:
+        raise ValueError(f"market id missing for asset {asset}")
+
+    prices_result = subprocess.run(
+        ["curl", "-s", f"{base_url}/api/perpetuals/markets/prices",
+         "-H", "Content-Type: application/json",
+         "-d", json.dumps({"marketIds": [market_id]})],
+        capture_output=True, text=True, timeout=15
+    )
+    prices_raw = json.loads(prices_result.stdout)
     price = None
-    if isinstance(prices_raw, dict):
-        container = (
-            prices_raw.get("prices")
-            or prices_raw.get("marketPrices")
-            or (prices_raw.get("data", {}) if isinstance(prices_raw.get("data"), dict) else {}).get("prices")
-            or prices_raw
-        )
-        if isinstance(container, dict):
-            v = container.get(asset)
-            if isinstance(v, dict):
-                v = v.get("midPrice", v.get("mid", v.get("price")))
-            if v is not None:
-                price = float(v)
-        elif isinstance(container, list):
-            for row in container:
-                if not isinstance(row, dict):
-                    continue
-                key = row.get("asset") or row.get("coin") or row.get("symbol") or row.get("marketId")
-                if key != asset:
-                    continue
-                v = row.get("midPrice", row.get("mid", row.get("price")))
-                if v is not None:
-                    price = float(v)
-                    break
+    for row in prices_raw.get("marketsPrices", []):
+        if row.get("marketId") == market_id and row.get("midPrice") is not None:
+            price = float(row["midPrice"])
+            break
     if price is None:
         raise ValueError(f"mid price missing for asset {asset}")
     state["consecutiveFetchFailures"] = 0

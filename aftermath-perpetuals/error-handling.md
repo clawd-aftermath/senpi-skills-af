@@ -24,7 +24,9 @@ Some preview routes can return HTTP `200` with an error payload:
 type PerpetualsErrorResponse = { error: string };
 ```
 
-When this happens, `data.error` is the primary signal.
+When this happens, `data.error` is the primary signal. The
+`X-Error-Message: true` response header is useful when present, but do not
+depend on it as the only detector.
 
 ---
 

@@ -224,7 +224,7 @@ All external data must go through Senpi MCP via `mcporter`. Never `curl` third-p
 
 ```python
 # BAD — direct API call
-r = subprocess.run(["curl", "-s", "-X", "POST", "https://aftermath.finance/api/perpetuals",
+r = subprocess.run(["curl", "-s", "-X", "POST", "https://v2-preview.aftermath.finance/api/perpetuals",
     "-d", json.dumps({"type": "allMids"})], capture_output=True, text=True)
 
 # GOOD — MCP call via centralized helper (see Section 3.2)
@@ -244,7 +244,7 @@ prices = data.get("prices", {})
 
 For real-time orderbook, trades, and position updates:
 
-WebSocket: `wss://aftermath.finance/api/perpetuals/ws/updates`
+WebSocket: `wss://v2-preview.aftermath.finance/api/perpetuals/ws/updates`
 
 Subscribe:
 
@@ -1641,6 +1641,13 @@ See [docs/aftermath/sub-accounts.md](docs/aftermath/sub-accounts.md).
 ### Aftermath Perpetuals Skill
 
 A comprehensive integration skill is included at [`aftermath-perpetuals/`](aftermath-perpetuals/SKILL.md). It covers:
+
+Post-relaunch sources:
+
+- Site: `https://v2-preview.aftermath.finance`
+- Swagger: `https://v2-preview.aftermath.finance/docs`
+- OpenAPI: `https://v2-preview.aftermath.finance/api/openapi/spec.json`
+- Maintained skills: `https://github.com/AftermathFinance/skills`
 
 | File | Content |
 |------|---------|

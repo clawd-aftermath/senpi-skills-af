@@ -375,7 +375,9 @@ Leverage is computed dynamically per position from `tradingRisk` + asset `maxLev
 Use Aftermath native preview + inline SL/TP for entries so the first protective stop is not delayed:
 
 1. Preview the intended order (`/api/perpetuals/account/previews/place-limit-order` or market preview) to validate margin and expected slippage.
-2. Submit the real entry with inline `slTp` in the same transaction, setting `stopLossIndexPrice` to the Phase 1 floor.
+2. Submit the real entry with inline `slTp` in the same transaction, setting
+   `stopLossPrice` to the Phase 1 floor and `triggerPriceType: 0` for
+   index-price triggering.
 3. Let `dsl-v5.py` handle trailing updates after entry using stop-order edit flow.
 
 This avoids the gap between fill and first DSL sync and is especially important in fast markets.

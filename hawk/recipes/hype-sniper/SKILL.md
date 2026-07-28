@@ -1,3 +1,22 @@
+---
+name: hype-momentum-sniper
+description: >-
+  HYPE momentum sniper recipe for Aftermath Perpetuals. Combines multi-timeframe
+  trend and volume confirmation, DSL trailing protection, fee-aware execution,
+  hedge monitoring, and account-level risk guards. Use when deploying or
+  operating the HYPE-specific Hawk recipe.
+license: MIT
+compatibility: >-
+  Requires Python 3, Senpi MCP via mcporter, OpenClaw cron, and an Aftermath
+  Perpetuals strategy account.
+metadata:
+  author: clawd-aftermath
+  version: "2.0"
+  platform: senpi
+  exchange: aftermath
+  base_skill: hawk
+---
+
 # HYPE Momentum Sniper v2
 
 10x leveraged HYPE trading on Aftermath Finance via Senpi. Smart entries with multi-timeframe confirmation, DSL v5.2 trailing stops with time decay, and ALO fee optimization.

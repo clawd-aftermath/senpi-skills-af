@@ -118,4 +118,4 @@ Sign `txKind`, then submit via standard Sui transaction execution.
 6. (Optional) Fund gas pool with USDC via `POST /api/gas-pool/transactions/deposit` with `coinType` set to USDC
 7. Start quoting with `POST /api/perpetuals/account/transactions/cancel-and-place-orders`
 
-Full API docs: https://aftermath.finance/docs
+Full API docs: https://v2-preview.aftermath.finance/docs

@@ -4,6 +4,21 @@
 
 Senpi Skills is the open source repository for autonomous trading strategies on [Aftermath Finance](https://aftermath.finance) via [Senpi](https://senpi.ai). Each skill is a self-contained trading agent that scans markets 24/7, enters and exits positions, manages trailing stops, and protects capital — autonomously.
 
+## Aftermath Perpetuals V2 Integration
+
+This fork preserves the original Aftermath strategy behavior while tracking the
+post-relaunch Perpetuals API surface.
+
+- Preview site: https://v2-preview.aftermath.finance
+- Swagger: https://v2-preview.aftermath.finance/docs
+- OpenAPI: https://v2-preview.aftermath.finance/api/openapi/spec.json
+- Maintained Aftermath skills: https://github.com/AftermathFinance/skills
+
+The modern upstream Senpi repository now uses a different
+runtime-supervised package architecture. This fork intentionally retains its
+Aftermath-specific skill and cron topology instead of silently replacing live
+strategy behavior with that incompatible runtime.
+
 **Live tracker:** [strategies.senpi.ai](https://strategies.senpi.ai) — every skill running with real money, full transparency.
 
 ## Skills (22 unique trading agents)

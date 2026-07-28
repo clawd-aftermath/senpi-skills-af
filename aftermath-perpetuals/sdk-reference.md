@@ -78,4 +78,5 @@ await account.getTransferCollateralTx({ transferAmount: 10n * 1_000_000n, toAcco
 
 ## Fee Structure
 
-See the official docs for current fee tiers: `https://aftermath.finance/docs`
+See the post-relaunch API docs for current fee tiers and schemas:
+`https://v2-preview.aftermath.finance/docs`

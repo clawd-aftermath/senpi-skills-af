@@ -4,7 +4,8 @@
 
 Use CCXT when you need exchange-style request/response compatibility. For full Aftermath feature coverage, prefer native perpetuals endpoints in `native.md`.
 
-Verified against OpenAPI: `https://aftermath.finance/api/openapi/spec.json`
+Verified against OpenAPI: `https://v2-preview.aftermath.finance/api/openapi/spec.json`
+Last validated: `2026-07-28`
 
 ---
 
@@ -76,6 +77,7 @@ interface OrderRequest {
   price?: number;
   reduceOnly?: boolean;
   expirationTimestampMs?: number;
+  clientOrderId?: string;
 }
 
 interface TransactionMetadata {
@@ -102,10 +104,13 @@ Notes:
 - `signatures` can contain multiple signatures (for example sender + separate gas owner/sponsor signer).
 - `TransactionMetadata.sponsor` accepts a wallet address for gas pool sponsorship.
 - `TransactionMetadata.gasCoins` allows specifying explicit gas coin objects.
+- `OrderRequest.clientOrderId` is optional and can be used to tag an order.
+- `build/cancelOrders` accepts optional `clientOrderIds` and
+  `shouldAbortOnMissingId` in addition to on-chain `orderIds`.
 
 ---
 
 ## Source of Truth
 
-- Swagger UI: `https://aftermath.finance/docs`
-- OpenAPI JSON: `https://aftermath.finance/api/openapi/spec.json`
+- Swagger UI: `https://v2-preview.aftermath.finance/docs`
+- OpenAPI JSON: `https://v2-preview.aftermath.finance/api/openapi/spec.json`

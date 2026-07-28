@@ -142,7 +142,10 @@ Full command reference and configuration merge rules: [references/cli-usage.md](
 
 ## Aftermath-Native SL/TP Patterns
 
-- **Entry-time SL:** When creating a position on Aftermath, include the `slTp` field on `place-limit-order` / `place-market-order` and set `stopLossIndexPrice` to the Phase 1 absolute floor. This removes the gap between entry fill and first SL protection.
+- **Entry-time SL:** When creating a position on Aftermath, include the `slTp`
+  field on `place-limit-order` / `place-market-order`, set `stopLossPrice` to
+  the Phase 1 absolute floor, and set `triggerPriceType: 0` for index-price
+  triggering. This removes the gap between entry fill and first SL protection.
 - **Trailing SL updates:** DSL cron (`dsl-v5.py`) handles trailing updates only; it should move the stop as the floor ratchets by calling Aftermath stop-edit flow (`edit-stop-orders`, via MCP `edit_position` integration).
 - **SL order type mapping:**
   - Phase 1 (capital protection): use order type `1` (`FOK`) for immediate execution when breached.

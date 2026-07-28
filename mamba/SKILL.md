@@ -1,3 +1,19 @@
+---
+name: mamba-strategy
+description: >-
+  MAMBA v2.0 — range-bound High Water strategy with BTC regime protection,
+  four-hour per-asset cooldowns, and a hard 10x leverage cap. Extends VIPER's
+  range scanner while blocking repeated entries into broken setups. Use when
+  deploying or operating the MAMBA Aftermath Perpetuals strategy.
+license: MIT
+metadata:
+  author: jason-goldberg
+  version: "2.0"
+  platform: senpi
+  exchange: aftermath
+  base_skill: viper-strategy
+---
+
 # 🐍 MAMBA v2.0 — Range-Bound High Water + Regime Protection
 
 A trading strategy (config override) based on the VIPER skill. Same scanner, same range detection, same support/resistance entries. Three new protective gates from v1.0 live data (37 trades, -31.4% ROI, $136 in fees).

@@ -64,12 +64,15 @@ POST /api/perpetuals/account/transactions/share
 
 ```text
 POST /api/perpetuals/builder-codes/integrator-config
-POST /api/perpetuals/builder-codes/integrator-vaults
+POST /api/perpetuals/builder-codes/integrator-registration
 POST /api/perpetuals/builder-codes/transactions/create-integrator-config
 POST /api/perpetuals/builder-codes/transactions/remove-integrator-config
-POST /api/perpetuals/builder-codes/transactions/create-integrator-vault
-POST /api/perpetuals/builder-codes/transactions/claim-integrator-vault-fees
+POST /api/perpetuals/builder-codes/transactions/create-integrator-registration
 ```
+
+Relaunch builder-code requests use a numeric `integratorId` and
+`integratorFee` / `maxIntegratorFee`. The legacy address-based integrator-vault
+read/create/claim routes are not in the relaunch OpenAPI.
 
 ---
 
@@ -90,6 +93,7 @@ POST /api/referrals/ref-code
 
 ```text
 POST /api/rewards/claimable
+POST /api/rewards/expectedRewards
 POST /api/rewards/history
 POST /api/rewards/points
 POST /api/rewards/transactions/claim
@@ -99,5 +103,5 @@ POST /api/rewards/transactions/claim
 
 ## Source of Truth
 
-- Swagger UI: `https://aftermath.finance/docs`
-- OpenAPI JSON: `https://aftermath.finance/api/openapi/spec.json`
+- Swagger UI: `https://v2-preview.aftermath.finance/docs`
+- OpenAPI JSON: `https://v2-preview.aftermath.finance/api/openapi/spec.json`
