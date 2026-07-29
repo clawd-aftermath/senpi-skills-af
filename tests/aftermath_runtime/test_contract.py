@@ -51,6 +51,8 @@ class ContractTests(unittest.TestCase):
         config = json.loads(
             (
                 ROOT
+                / "aftermath-overlay"
+                / "shadow"
                 / "strategies"
                 / "rooster"
                 / "main"

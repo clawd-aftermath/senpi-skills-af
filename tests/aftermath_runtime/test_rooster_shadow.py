@@ -13,7 +13,15 @@ from aftermath_runtime import AftermathVenue, FixtureTransport
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).parent / "fixtures"
-SCANNERS = ROOT / "strategies" / "rooster" / "main" / "scanners"
+SCANNERS = (
+    ROOT
+    / "aftermath-overlay"
+    / "shadow"
+    / "strategies"
+    / "rooster"
+    / "main"
+    / "scanners"
+)
 
 
 def fixture(name: str):

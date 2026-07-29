@@ -17,6 +17,10 @@ the open-source strategy corpus includes Senpi's proprietary runtime, and no
 strategy is enabled until the Aftermath field, market, sizing, and execution
 contracts pass.
 
+An isolated Rooster shadow canary exercises the read-only venue adapter against
+offline fixtures. It is not deployable and does not change the zero-enabled
+catalog.
+
 See [`aftermath-overlay/README.md`](aftermath-overlay/README.md), the generated
 [`coverage summary`](aftermath-overlay/catalog/SUMMARY.md), and the generated
 [`field matrices`](aftermath-overlay/catalog/FIELD_COVERAGE.md).

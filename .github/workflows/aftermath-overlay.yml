@@ -22,9 +22,18 @@ jobs:
           python-version: "3.12"
       - name: Standard-library tests
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Read-only runtime and shadow tests
+        run: >-
+          python3 -m unittest discover
+          -s tests/aftermath_runtime
+          -p 'test_*.py'
       - name: Generated catalogs are current
         run: python3 tools/generate_coverage.py --check
       - name: Upstream pin and source tree are exact
         run: python3 tools/sync_upstream.py --check
       - name: Attribution, offline, and runnable-package policy
         run: python3 tools/lint_overlay.py
+      - name: Upstream Rooster tests
+        run: python3 strategies/rooster/tests/test_engine.py
+      - name: Upstream Rooster strategy validation
+        run: python3 senpi-strategy-author/scripts/validate_strategy.py strategies/rooster

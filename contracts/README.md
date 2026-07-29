@@ -9,8 +9,12 @@ python3 tools/generate_openapi_contract.py \
   contracts/selected-openapi-contract.json
 ```
 
-CI/local validation uses the same command with `--check`; it exits nonzero if
-the pin, selected paths, referenced schemas, or generated file drift.
+Local regeneration validation uses the same command with `--check` and a
+separately supplied canonical source document; it exits nonzero if the pin,
+selected paths, referenced schemas, or generated file drift. CI does not fetch
+or vendor the full OpenAPI document. It validates the committed selected
+contract, source digest, required paths, and known blocking drift through the
+offline contract tests.
 
 The generator hashes canonical JSON, so whitespace and object-key order do not
 change the pin. The pinned canonical SHA-256 is

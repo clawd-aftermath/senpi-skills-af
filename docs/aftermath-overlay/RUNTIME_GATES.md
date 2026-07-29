@@ -2,6 +2,12 @@
 
 Current status: **read-only shadow pilot**.
 
+Catalog status: **0 enabled strategies**. The Rooster shadow canary is an
+offline fixture-backed test harness, not a deployable package. Its source lives
+outside the pinned upstream strategy tree, and upstream Rooster remains
+`needs-field-mapping` until wallet-to-account resolution and the supervisor
+contract are complete.
+
 Implemented:
 
 - Typed reads for markets, prices, candles, funding, account capabilities,
@@ -11,6 +17,8 @@ Implemented:
 - Allowlisted transport injection and no-network fixtures.
 - Snapshot-before-delta stream reconciliation state.
 - Rooster scanner data mapping and shadow signal emission.
+- Exact preservation of the pinned upstream strategy tree; downstream canary
+  code is isolated under `aftermath-overlay/shadow/`.
 
 Price/size denominations are pinned per endpoint field in
 `aftermath_runtime.models.FIELD_DENOMINATIONS`; value magnitude is never used to

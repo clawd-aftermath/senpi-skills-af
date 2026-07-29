@@ -2,10 +2,12 @@
 
 This downstream starts fail-closed. A source package is runnable only when its
 generated classification is `supported`. The current coverage generator enables
-none: the Aftermath reader/execution runtime is deliberately outside this
-coverage-only change.
+none: the fixture-backed reader and shadow scanner do not supply a durable
+supervisor, account resolver, or execution runtime.
 
-The generated `catalog/blocked.json` is authoritative for current reasons:
+The generated `catalog/blocked.json` is authoritative for current reasons.
+The Rooster shadow canary does not override these classifications; it proves
+only fixture-backed read normalization and signal parity:
 
 - `needs-field-mapping`: the scanner thesis may be portable, but its consumed
   account/market fields still require an explicit Aftermath adapter.

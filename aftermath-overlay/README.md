@@ -4,6 +4,11 @@ This directory turns the upstream Senpi strategy corpus into a deterministic
 coverage inventory for an Aftermath-native runtime. It does not impersonate the
 proprietary Senpi runtime and it does not make any strategy runnable yet.
 
+The read-only venue boundary and Rooster canary under `shadow/` are test
+harnesses, not catalog promotion. Rooster remains `needs-field-mapping`, with
+zero enabled strategies, until durable account resolution and every execution
+gate are implemented and independently validated.
+
 Canonical relaunch references:
 
 - Site: <https://v2-preview.aftermath.finance>
