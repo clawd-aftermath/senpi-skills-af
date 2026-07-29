@@ -1,0 +1,210 @@
+{
+  "contractVersion": "aftermath-skills-v3.0.0-overlay-v1",
+  "expectations": {
+    "builderCode": {
+      "allowedFields": [
+        "integratorId",
+        "integratorFee"
+      ],
+      "removedFields": [
+        "integratorAddress",
+        "takerFee",
+        "maxTakerFee"
+      ]
+    },
+    "candles": {
+      "historyField": "resolution",
+      "removedHistoryField": "intervalMs",
+      "removedStreamPathTemplate": "/api/perpetuals/ws/market-candles/{market_id}/{interval_ms}",
+      "resolutions": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "4h",
+        "12h",
+        "1d",
+        "3d",
+        "1w",
+        "1mo"
+      ],
+      "streamPath": "/api/perpetuals/ws/updates",
+      "subscriptionType": "marketCandles"
+    },
+    "canonicalSurfacePrefix": "/api/perpetuals/",
+    "ccxtPendingOrders": {
+      "accountField": "accountNumber",
+      "marketField": "chId",
+      "path": "/api/ccxt/myPendingOrders",
+      "writeAccountField": "accountId",
+      "writeAccountMeaning": "capability_object_id",
+      "writePolicy": "deny"
+    },
+    "identifiers": {
+      "ccxtWriteAccountId": "capability_object_id",
+      "nativeAccountId": "numeric_bigint",
+      "nativeBigIntWirePattern": "^[0-9]+n$"
+    },
+    "implementationStatus": {
+      "builderCode": "not_implemented_blocked",
+      "candles.history": "implemented_read_only",
+      "candles.streamSubscription": "implemented_shape_only_no_network_client",
+      "ccxt.pendingOrders": "implemented_read_only",
+      "identifiers": "implemented_read_only",
+      "isolatedMarginAllocation": "not_implemented_blocked",
+      "preview": "parser_only_write_endpoints_blocked",
+      "runtimeSafety.deadManAndSerialization": "not_implemented_blocked",
+      "signingAndSubmit": "not_implemented_blocked",
+      "slTp": "not_implemented_blocked"
+    },
+    "isolatedMargin": {
+      "allocationRequired": true,
+      "unallocatedCollateralProtectsPositions": false
+    },
+    "preview": {
+      "http200MayContainError": true,
+      "mustParseSuccessErrorUnion": true
+    },
+    "removedIntegratorRoutes": [
+      "/api/perpetuals/integrator-vaults",
+      "/api/perpetuals/transactions/create-integrator-vault",
+      "/api/perpetuals/transactions/claim-integrator-vault-fees"
+    ],
+    "runtimeSafety": {
+      "builtInDeadManSwitch": false,
+      "heartbeatCancellationRequiredBeforeLive": true,
+      "serializeCoinAndGasObjectOperations": true,
+      "websocketReconnectSequence": [
+        "reconnect",
+        "refetch_snapshot",
+        "atomic_replace",
+        "resume_deltas"
+      ]
+    },
+    "signing": {
+      "ambiguousSubmitAction": "reconcile_before_retry",
+      "neverSign": "transactionBytes",
+      "sign": "signingDigest"
+    },
+    "slTp": {
+      "allowedPriceFields": [
+        "stopLossPrice",
+        "takeProfitPrice"
+      ],
+      "removedPriceFields": [
+        "stopLossIndexPrice",
+        "takeProfitIndexPrice"
+      ],
+      "triggerPriceType": {
+        "0": "index",
+        "1": "book_mid",
+        "2": "mark"
+      }
+    },
+    "writePolicy": "deny"
+  },
+  "source": {
+    "branch": "feat/v2-skills",
+    "commit": "5b614db62dcd2e58f442e93661f608fe7b073c32",
+    "fileClassifications": {
+      "skills/api/.api-spec-state.json": {
+        "reason": "Production OpenAPI polling state; overlay pins the separate V2-preview OpenAPI snapshot.",
+        "status": "out_of_scope"
+      },
+      "skills/api/SKILL.md": {
+        "reason": "Skill version, canonical routing, breaking changes, and high-risk guardrails.",
+        "status": "applied"
+      },
+      "skills/api/auxiliary-endpoints.md": {
+        "reason": "Builder registration, rewards, gas-pool, and utility families are outside this read-only Perpetuals overlay.",
+        "status": "out_of_scope"
+      },
+      "skills/api/ccxt.md": {
+        "reason": "Controls numeric CCXT accountNumber and chId semantics for the allowlisted myPendingOrders read.",
+        "status": "applied"
+      },
+      "skills/api/dca-and-limit-orders.md": {
+        "reason": "Spot DCA and spot limit-order flows are outside this Perpetuals overlay.",
+        "status": "out_of_scope"
+      },
+      "skills/api/error-handling.md": {
+        "reason": "Controls preview unions, retry classification, ambiguous-submit reconciliation, and stream recovery.",
+        "status": "applied"
+      },
+      "skills/api/gotchas.md": {
+        "reason": "Controls identifier separation, BigInt wire forms, removed V3 shapes, and dead-man limitations.",
+        "status": "applied"
+      },
+      "skills/api/monitoring-patterns.md": {
+        "reason": "Controls read monitoring, marketCandles subscription, and reconnect snapshot replacement.",
+        "status": "applied"
+      },
+      "skills/api/native.md": {
+        "reason": "Controls canonical native Perpetuals reads, schemas, identifiers, BigInts, candles, and WebSocket semantics.",
+        "status": "applied"
+      },
+      "skills/api/pools.md": {
+        "reason": "AMM pool routes are outside this Perpetuals strategy overlay.",
+        "status": "out_of_scope"
+      },
+      "skills/api/prices.md": {
+        "reason": "Coin and LP price utility routes are outside the selected Perpetuals market-price contract.",
+        "status": "out_of_scope"
+      },
+      "skills/api/safety-and-risk.md": {
+        "reason": "Controls isolated collateral, risk gates, serialization, and required heartbeat cancellation.",
+        "status": "applied"
+      },
+      "skills/api/scripts/check_api_changes.py": {
+        "reason": "Production network freshness helper; CI and contract validation are intentionally offline and preview-pinned.",
+        "status": "out_of_scope"
+      },
+      "skills/api/sdk-reference.md": {
+        "reason": "The overlay uses raw HTTP contracts and does not depend on the TypeScript SDK.",
+        "status": "out_of_scope"
+      },
+      "skills/api/staking.md": {
+        "reason": "Staking routes are outside this Perpetuals strategy overlay.",
+        "status": "out_of_scope"
+      }
+    },
+    "files": {
+      "skills/api/.api-spec-state.json": "d59f5bee86ef70d003670a19f9dda88c8d1b8a99e7fd97862baed6f65232bd31",
+      "skills/api/SKILL.md": "f2d0bcb48b53781a1f7204b38aa92c4cfcce071e67d0bccaf8bede7a5b9f3c38",
+      "skills/api/auxiliary-endpoints.md": "6fabb25bc7b0bc7979249015b1d0ea0760261ecc94c92dfde10deacbf61cdbf1",
+      "skills/api/ccxt.md": "e0ef2d50de53ca292a8642b320e2611c85c75c12f37e95dc9e6d553fcbdf3f4a",
+      "skills/api/dca-and-limit-orders.md": "93dcdb8b9069bdc0212c71ff92c2aaff7320adc9423b4c42e904bb212e97467c",
+      "skills/api/error-handling.md": "5cfb48e5aff3d5d2026511413433dd95487ab798876f3e102f350559d93c4e57",
+      "skills/api/gotchas.md": "096e4054919de5b893952f73a6d1f9f7bdb45191400cf93919ecfa235b9e8bc1",
+      "skills/api/monitoring-patterns.md": "7fd2b8779b57c6edea53aeed3e869458c9efb2831c15385b2195748608cf4323",
+      "skills/api/native.md": "732cfecbfbfbb447a5c8c5e8759e0190d7cac5ec258847bbafd68ad9683353ea",
+      "skills/api/pools.md": "82290f4272e1d2985630e02d1123b1e1894f2af9f5d2f5705411a73f5d882245",
+      "skills/api/prices.md": "8750f0aa48af9f44d68a4a52fcae36db8d389a48486b1be65c49fdae48824cfa",
+      "skills/api/safety-and-risk.md": "3b2317266eb84e33f965da09caabdd394b04d3a623ab034bc5f97b5c48759fa5",
+      "skills/api/scripts/check_api_changes.py": "f25684111f8374b1b105180b8f6a873f715abc96980c89c7414d6f0616c538ff",
+      "skills/api/sdk-reference.md": "0b10ff4df1e432d34a6e59bdaacdf48b501d985c1a5f1ed6d606cdc818e81a8b",
+      "skills/api/staking.md": "7ed0d64f310d039b07f92de799e3c898ad3854d49b022fe089516f610f4f67c1"
+    },
+    "fileDigestAlgorithm": "sha256 of raw file bytes stored at the pinned git commit",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/AftermathFinance/skills",
+    "repositoryTopLevelDirectories": [
+      "assets",
+      "skills"
+    ],
+    "skill": "aftermath-perpetuals",
+    "skillDirectories": {
+      "skills/api": {
+        "reason": "Controlling API and Perpetuals integration source; every blob is classified below.",
+        "status": "classified"
+      },
+      "skills/gas": {
+        "reason": "Gas-station operations are outside this read-only Perpetuals overlay.",
+        "status": "out_of_scope"
+      }
+    },
+    "skillVersion": "3.0.0",
+    "verificationScope": "Offline CI verifies pin/manifest/internal contract consistency for every blob under skills/api. Source authenticity is verified separately after the operator fetches origin feat/v2-skills immediately before running against an official checkout; validation itself never fetches or guarantees that a local origin ref is fresh."
+  }
+}

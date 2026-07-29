@@ -1,0 +1,87 @@
+{
+  "strategy": "terrapin",
+  "source_scanners": [
+    "strategies/terrapin/u1/scanners/scan.py",
+    "strategies/terrapin/u2/scanners/scan.py",
+    "strategies/terrapin/u3/scanners/scan.py",
+    "strategies/terrapin/u4/scanners/scan.py"
+  ],
+  "ignored_literals": {
+    "scanner-input": {
+      "keys": [
+        "leverageDefault",
+        "leverageMax",
+        "leverageMin",
+        "marginPctBase",
+        "minScore"
+      ],
+      "reason": "Operator runtime inputs; not venue response fields."
+    },
+    "scoring-output": {
+      "keys": [
+        "atr",
+        "beyond_n",
+        "channel_high",
+        "channel_low",
+        "direction",
+        "macd_hist",
+        "reasons",
+        "rung",
+        "score"
+      ],
+      "reason": "Pure scoring result fields; not read from a venue tool response."
+    }
+  },
+  "fields": [
+    {
+      "consumed": "ctx.wallet",
+      "aftermath": "gap: each unit wallet must resolve to one explicit numeric Aftermath accountId; four wallets may not share hidden cross-margin assumptions",
+      "status": "gap"
+    },
+    {
+      "consumed": "ctx.state.append",
+      "aftermath": "runtime-local durable scanner state; no HTTP route",
+      "status": "runtime-local"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.accountValue",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].totalEquityUsd",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalMarginUsed",
+      "aftermath": "gap: no exact aggregate; positions[].collateralUsd is isolated per-position collateral",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalNtlPos",
+      "aftermath": "gap: an explicit net/absolute aggregation policy is required for positions[].quoteAssetNotionalAmount",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.szi",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].baseAssetAmount",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.coin",
+      "aftermath": "accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.data.candles.<candleInterval>[].{o,h,l,c,v}",
+      "aftermath": "POST /api/perpetuals/market/candle-history -> candles[].{open,high,low,close,volume}; adapter converts to o/h/l/c/v strings using explicit resolution/fromTimestamp/toTimestamp",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.success",
+      "aftermath": "POST /api/perpetuals/market/candle-history HTTP status/error union is converted to a fail-closed adapter result; the V2 response has no success envelope",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "inputs.unitIndex across u1/u2/u3/u4",
+      "aftermath": "runtime-local instance identity; PTB atomic multi-unit lifecycle is a later runtime gate",
+      "status": "runtime-local"
+    }
+  ]
+}

@@ -1,0 +1,1626 @@
+{
+  "contractVersion": "aftermath-read-v1",
+  "paths": {
+    "/api/ccxt/myPendingOrders": {
+      "post": {
+        "operationId": "my_pending_orders",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "accountNumber": {
+                    "$ref": "#/components/schemas/AccountNumber"
+                  },
+                  "chId": {
+                    "$ref": "#/components/schemas/ChId"
+                  }
+                },
+                "required": [
+                  "accountNumber",
+                  "chId"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "CCXT"
+        ]
+      }
+    },
+    "/api/perpetuals/accounts": {
+      "post": {
+        "description": "This endpoint queries the indexer/aggregator for each provided account cap\nand returns a normalized `PerpetualsAccountCap` object per account.",
+        "operationId": "account_objects",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerpetualsAccountObjectBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerpetualsAccountsResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched perpetuals account caps for the given account IDs"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Invalid account id(s)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch perpetuals account metadata for a list of account IDs.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/accounts/owned": {
+      "post": {
+        "operationId": "owned_account_objects",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerpetualsOwnedAccountObjectBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerpetualsOwnedAccountsResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched perpetuals account caps owned by the given wallet"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid wallet address."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch perpetuals account capabilities owned by a given wallet address,\noptionally filtered by collateral coin type.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/accounts/positions": {
+      "post": {
+        "description": "Optionally filter by a set of markets; when no markets are specified, all\nmarkets are included.",
+        "operationId": "positions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerpetualsAccountPositionsBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerpetualsAccountPositionsResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched open positions and account summaries for the requested accounts"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Invalid market id(s) or request parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch open positions and high-level account metrics for one or more accounts.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/market/candle-history": {
+      "post": {
+        "description": "The endpoint queries the indexer/aggregator for orderbook-based candles over\na requested time range and resolution, then normalizes them into a list of data points.",
+        "operationId": "candle_history",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricalMarketDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerpetualsMarketCandleHistoryResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched historical candle data for the requested market and interval"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid market id or request parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch historical OHLCV candle data for a given perpetuals market.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/market/funding-history": {
+      "post": {
+        "operationId": "funding_history",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiPerpetualsMarketFundingHistoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPerpetualsMarketFundingHistoryResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched historical funding data for the requested market and time range"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid market id or request parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch historical funding rate data for a given perpetuals market over a\nrequested time range.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/markets": {
+      "post": {
+        "operationId": "market_objects",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerpetualsMarketsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerpetualsMarketsResponse"
+                }
+              }
+            },
+            "description": "Successfully fetched market metadata for the requested markets"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Invalid market id(s)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch one or more perpetuals markets by ID.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    },
+    "/api/perpetuals/markets/prices": {
+      "post": {
+        "operationId": "prices",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarketsPricesRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketsPricesResponseBody"
+                }
+              }
+            },
+            "description": "Successfully fetched latest prices for the requested markets"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Invalid market id(s)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error. The response body is a plain-text error identifier, e.g. \"Error with ID: #6929e7b8536664f31a7d6112\". Share this ID with the team for debugging."
+          }
+        },
+        "summary": "Fetch the latest base and collateral prices for one or more perpetuals markets.",
+        "tags": [
+          "perpetuals"
+        ]
+      }
+    }
+  },
+  "schemas": {
+    "AccountNumber": {
+      "description": "The numerical account id.\n\nThere can only be one `capability` and one `account` for each account number.\n\nEach account number uniquely identifies a position in a market. Thus, there can\nonly be one position in each market for a given account number.",
+      "format": "int64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "ApiPerpetualsMarketFundingHistoryRequest": {
+      "description": "Request payload for fetching historical funding data for a given perpetuals market.\n\nThe time range is specified with Unix timestamps in **milliseconds**.",
+      "properties": {
+        "fromTimestamp": {
+          "description": "Start of the time range to query, Unix timestamp in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "limit": {
+          "description": "Maximum number of funding points to return.\n\nDefaults to `DEFAULT_PERPETUALS_HISTORY_LIMIT` if omitted.",
+          "format": "int64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "marketId": {
+          "description": "Identifier of the perpetuals market whose funding history you want to fetch.\n\nMust be a valid on-chain market ID; validated by `assert_valid_id`.",
+          "type": "string"
+        },
+        "toTimestamp": {
+          "description": "End of the time range to query, Unix timestamp in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "marketId",
+        "fromTimestamp",
+        "toTimestamp"
+      ],
+      "type": "object"
+    },
+    "ApiPerpetualsMarketFundingHistoryResponse": {
+      "description": "Response payload for historical funding data.",
+      "properties": {
+        "history": {
+          "description": "List of funding history datapoints for the requested market and time range.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsMarketFundingHistoryPoint"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "history"
+      ],
+      "type": "object"
+    },
+    "ChId": {
+      "description": "The object ID of the clearing house on Sui.\n\nThis can be obtained from `Market.id`; see `/ccxt/markets`.",
+      "example": "0x895037c09dd1025a136b5a5789c4ea2481176adf4c3b0c3521d5d2039bdfc3ba",
+      "type": "string"
+    },
+    "DateTime": {
+      "description": "ISO8601 datetime string.",
+      "type": "string"
+    },
+    "Direction": {
+      "enum": [
+        "buy",
+        "sell"
+      ],
+      "type": "string"
+    },
+    "ErrorResponse": {
+      "properties": {
+        "error_code": {
+          "description": "Error code identifying the type of error",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "message": {
+          "description": "Detailed error message",
+          "type": "string"
+        },
+        "short_message": {
+          "description": "Optional short error message for UI display",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "error_code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "Fee": {
+      "properties": {
+        "cost": {
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "currency": {
+          "description": "Usually base currency for buys, quote currency for sells",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rate": {
+          "description": "The fee rate (if available)",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "HistoricalMarketDataRequest": {
+      "description": "Request payload for fetching historical candle (OHLCV) data for a given perpetuals market.\n\nThe time range is specified with Unix timestamps in **milliseconds** and candles are bucketed\nby `intervalMs`.",
+      "properties": {
+        "fromTimestamp": {
+          "description": "Start of the time range to query, Unix timestamp in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "marketId": {
+          "description": "Identifier of the perpetuals market whose candles you want to fetch.\n\nMust be a valid on-chain market ID; validated by `assert_valid_id`.",
+          "type": "string"
+        },
+        "resolution": {
+          "description": "Candle resolution as a CCXT-style timeframe label (e.g. `\"1m\"`, `\"5m\"`, `\"1h\"`, `\"1d\"`).",
+          "example": "1m",
+          "type": "string"
+        },
+        "toTimestamp": {
+          "description": "End of the time range to query, Unix timestamp in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "marketId",
+        "fromTimestamp",
+        "toTimestamp",
+        "resolution"
+      ],
+      "type": "object"
+    },
+    "MarketPriceResponse": {
+      "description": "Latest pricing information for a single market.",
+      "properties": {
+        "basePrice": {
+          "description": "Latest base asset price for this market.\n\nTypically sourced from oracle/indexer data.",
+          "format": "double",
+          "type": "number"
+        },
+        "collateralPrice": {
+          "description": "Latest collateral asset price used in this market.",
+          "format": "double",
+          "type": "number"
+        },
+        "markPrice": {
+          "description": "Mark price used for liquidations and risk calculations.\n\nThis price is designed to reduce manipulation risk and short-term\nvolatility impact. It is computed as the median of:\n- The index TWAP (time-weighted average price),\n- The current book-derived price, and\n- The index price adjusted for funding contributions.\n\nThe mark price is the canonical price used for liquidation checks.",
+          "format": "double",
+          "type": "number"
+        },
+        "marketId": {
+          "description": "Identifier of the market.",
+          "type": "string"
+        },
+        "midPrice": {
+          "description": "Mid price derived from the current order book.\n\nCalculated as the average of the best bid and best ask.\nReturns `None` if either side of the book is empty.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "marketId",
+        "basePrice",
+        "collateralPrice",
+        "markPrice"
+      ],
+      "type": "object"
+    },
+    "MarketsPricesRequestBody": {
+      "description": "Request payload for fetching the latest base and collateral prices for one or more perpetuals markets.",
+      "properties": {
+        "marketIds": {
+          "description": "List of market identifiers to fetch prices for.\n\nEach ID must be a valid on-chain market ID; validated by `assert_valid_id`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "marketIds"
+      ],
+      "type": "object"
+    },
+    "MarketsPricesResponseBody": {
+      "description": "Response payload for fetching market prices.",
+      "properties": {
+        "marketsPrices": {
+          "description": "Latest prices for each requested market.",
+          "items": {
+            "$ref": "#/components/schemas/MarketPriceResponse"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "marketsPrices"
+      ],
+      "type": "object"
+    },
+    "Order": {
+      "description": "CCXT's [Order Structure](https://github.com/ccxt/ccxt/wiki/Manual#order-structure)\n\n- The `status` of an order is usually either `'open'` (not filled or partially filled), `'closed'` (fully filled), or `'canceled'` (unfilled and canceled, or partially filled then canceled).\n- Some exchanges allow the user to specify an expiration timestamp upon placing a new order. If the order is not filled by that time, its `status` becomes `'expired'`.\n- Use the `filled` value to determine if the order is filled, partially filled or fully filled, and by how much.\n- The work on `'fee'` info is still in progress, fee info may be missing partially or entirely, depending on the exchange capabilities.\n- The `fee` currency may be different from both traded currencies (for example, an ETH/BTC order with fees in USD).\n- The `lastTradeTimestamp` timestamp may have no value and may be `undefined/None/null` where not supported by the exchange or in case of an open order (an order that has not been filled nor partially filled yet).\n- The `lastTradeTimestamp`, if any, designates the timestamp of the last trade, in case the order is filled fully or partially, otherwise `lastTradeTimestamp` is `undefined/None/null`.\n- Order `status` prevails or has precedence over the `lastTradeTimestamp`.\n- The `cost` of an order is: `{ filled * price }`\n- The `cost` of an order means the total *quote* volume of the order (whereas the `amount` is the *base* volume). The value of `cost` should be as close to the actual most recent known order cost as possible. The `cost` field itself is there mostly for convenience and can be deduced from other fields.\n- The `clientOrderId` field can be set upon placing orders by the user with [custom order params](#custom-order-params). Using the `clientOrderId` the user can later distinguish between own orders. This is only available for the exchanges that do support `clientOrderId` at this time.\n\n#### timeInForce\n\nThe `timeInForce` field may be `undefined/None/null` if not specified by the exchange. The unification of `timeInForce` is a work in progress.\n\nPossible values for the`timeInForce` field:\n\n- `'GTC'` = _Good Till Cancel(ed)_, the order stays on the orderbook until it is matched or canceled.\n- `'IOC'` = _Immediate Or Cancel_, the order has to be matched immediately and filled either partially or completely, the unfilled remainder is canceled (or the entire order is canceled).\n- `'FOK'` = _Fill Or Kill_, the order has to get fully filled and closed immediately, otherwise the entire order is canceled.\n- `'PO'` = _Post Only_, the order is either placed as a maker order, or it is canceled. This means the order must be placed on orderbook for at at least time in an unfilled state. The unification of `PO` as a `timeInForce` option is a work in progress with unified exchanges having `exchange.has['createPostOnlyOrder'] == True`.",
+      "properties": {
+        "amount": {
+          "description": "ordered amount of base currency",
+          "format": "double",
+          "type": "number"
+        },
+        "average": {
+          "description": "float average filling price",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "clientOrderId": {
+          "description": "a user-defined clientOrderId, if any",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cost": {
+          "description": "'filled' * 'price' (filling price used where available)",
+          "format": "double",
+          "type": "number"
+        },
+        "datetime": {
+          "$ref": "#/components/schemas/DateTime",
+          "description": "ISO8601 datetime of 'timestamp' with milliseconds"
+        },
+        "fee": {
+          "$ref": "#/components/schemas/Fee",
+          "description": "fee info, if available"
+        },
+        "filled": {
+          "description": "filled amount of base currency",
+          "format": "double",
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "lastTradeTimestamp": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/Timestamp",
+              "description": "Unix timestamp of the most recent trade on this order"
+            }
+          ]
+        },
+        "lastUpdateTimestamp": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/Timestamp"
+            }
+          ]
+        },
+        "postOnly": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "price": {
+          "description": "float price in quote currency (may be empty for market orders)",
+          "format": "double",
+          "type": "number"
+        },
+        "reduceOnly": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "remaining": {
+          "description": "remaining amount to fill",
+          "format": "double",
+          "type": "number"
+        },
+        "side": {
+          "$ref": "#/components/schemas/OrderSide",
+          "description": "'buy', 'sell'"
+        },
+        "status": {
+          "$ref": "#/components/schemas/OrderStatus",
+          "description": "'open', 'closed', 'canceled', 'expired', 'rejected'"
+        },
+        "stopLossPrice": {
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "stopPrice": {
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "symbol": {
+          "description": "symbol",
+          "type": "string"
+        },
+        "takeProfitPrice": {
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "timeInForce": {
+          "description": "'GTC', 'IOC', 'FOK', 'PO'",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timestamp": {
+          "$ref": "#/components/schemas/Timestamp",
+          "description": "order placing/opening Unix timestamp in milliseconds"
+        },
+        "trades": {
+          "description": "a list of order trades/executions",
+          "items": {
+            "$ref": "#/components/schemas/Trade"
+          },
+          "type": "array"
+        },
+        "triggerPrice": {
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "type": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/OrderType",
+              "description": "'market', 'limit'"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "datetime",
+        "timestamp",
+        "status",
+        "symbol",
+        "side",
+        "price",
+        "amount",
+        "filled",
+        "remaining",
+        "cost",
+        "trades",
+        "fee"
+      ],
+      "type": "object"
+    },
+    "OrderSide": {
+      "enum": [
+        "buy",
+        "sell"
+      ],
+      "type": "string"
+    },
+    "OrderStatus": {
+      "enum": [
+        "open",
+        "closed",
+        "canceled",
+        "expired",
+        "rejected"
+      ],
+      "type": "string"
+    },
+    "OrderType": {
+      "enum": [
+        "market",
+        "limit"
+      ],
+      "type": "string"
+    },
+    "OrderbookItem": {
+      "description": "Single level in the orderbook consisting of a price and size.",
+      "properties": {
+        "price": {
+          "description": "Price for this level.",
+          "format": "double",
+          "type": "number"
+        },
+        "size": {
+          "description": "Size at this price level in base units.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "size",
+        "price"
+      ],
+      "type": "object"
+    },
+    "OrderbookResponse": {
+      "description": "Combined market orderbook information.",
+      "properties": {
+        "marketId": {
+          "description": "ID of the associated market for the orderbook.",
+          "type": "string"
+        },
+        "orderbook": {
+          "$ref": "#/components/schemas/PerpetualsOrderbook",
+          "description": "State of the perpetuals market's orderbook."
+        }
+      },
+      "required": [
+        "orderbook",
+        "marketId"
+      ],
+      "type": "object"
+    },
+    "PendingOrder": {
+      "description": "Summary of a pending order associated with a position.",
+      "properties": {
+        "clientOrderId": {
+          "description": "Client-managed order id this order was tagged with, if any.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `123_u64` \u2192 `\"123n\"`),\nor `null` when the order carries no client order id.",
+          "format": "int64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "currentSize": {
+          "description": "Current order size remaining in base lots.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `100_u64` \u2192 `\"100n\"`).",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "initialSize": {
+          "description": "Initial order size in base lots.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `100_u64` \u2192 `\"100n\"`).",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "orderId": {
+          "description": "Unique order identifier.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `123_u128` \u2192 `\"123n\"`).",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "side": {
+          "description": "Order side encoded as a numeric enum.\n\n* `0` \u2013 Bid (buy)\n* `1` \u2013 Ask (sell)\n\nNote: this field is *not* serialized with a trailing `\"n\"`.",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "orderId",
+        "side",
+        "currentSize",
+        "initialSize"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountCap": {
+      "description": "Capability object that links a wallet address to a perpetuals trading\naccount, including collateral and underlying Sui object metadata.\n\nThis is typically derived from the on-chain `AccountCap` and related objects.",
+      "properties": {
+        "accountId": {
+          "description": "Numerical account identifier for the perpetuals account.\n\nSerialized as a string with a trailing `\"n\"` to match on-chain / SDK\nconventions (e.g. `1_u64` \u2192 `\"1n\"`).",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "accountObjectId": {
+          "description": "Sui object ID of the underlying perpetuals `Account` object associated\nwith this capability.",
+          "type": "string"
+        },
+        "accountObjectInitialSharedVersion": {
+          "description": "Initial shared version of the underlying perpetuals `Account` object.\n\nRequired when constructing transactions that reference the shared account object.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "collateral": {
+          "description": "Amount of collateral held by this account, in collateral units.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `1000_u64` \u2192 `\"1000n\"`).",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "collateralCoinType": {
+          "description": "Fully-qualified Sui type of the collateral coin for this account.\n\nExample: `\"0x2::sui::SUI\"` or a USDC type string.",
+          "type": "string"
+        },
+        "isAgent": {
+          "description": "True if this account cap was allocated to an agent wallet from the admin account cap owner.",
+          "type": "boolean"
+        },
+        "objectDigest": {
+          "description": "Sui object digest (hash) of the account cap object.",
+          "type": "string"
+        },
+        "objectId": {
+          "description": "Sui object ID of the account cap object.",
+          "type": "string"
+        },
+        "objectVersion": {
+          "description": "Version of the underlying Sui object that represents the account cap.\n\nThis is the Sui object version at the time of retrieval.",
+          "format": "double",
+          "type": "number"
+        },
+        "walletAddress": {
+          "description": "Sui wallet address that owns this account capability.",
+          "type": "string"
+        },
+        "whitelistedAgentCapIds": {
+          "description": "Sui object IDs of agent account caps that have been whitelisted to\noperate on behalf of this account.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "walletAddress",
+        "accountId",
+        "collateralCoinType",
+        "collateral",
+        "objectVersion",
+        "objectDigest",
+        "objectId",
+        "accountObjectId",
+        "isAgent",
+        "accountObjectInitialSharedVersion",
+        "whitelistedAgentCapIds"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountObject": {
+      "description": "High-level view of a trader's perpetuals account, including equity,\ncollateral, and open positions.",
+      "properties": {
+        "accountId": {
+          "description": "Numerical account identifier.\n\nSerialized as a string with a trailing `\"n\"` (e.g. `1_u64` \u2192 `\"1n\"`).",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "availableCollateral": {
+          "description": "Available collateral in native collateral units.\n\nThis is the portion of collateral that can still be used to open or\nincrease positions.",
+          "format": "double",
+          "type": "number"
+        },
+        "availableCollateralUsd": {
+          "description": "Available collateral denominated in USD.",
+          "format": "double",
+          "type": "number"
+        },
+        "positions": {
+          "description": "List of open positions for this account across all markets.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsPosition"
+          },
+          "type": "array"
+        },
+        "totalEquityUsd": {
+          "description": "Total account equity denominated in USD.\n\nIncludes collateral, realized PnL, and unrealized PnL/funding.",
+          "format": "double",
+          "type": "number"
+        },
+        "totalUnrealizedFundingsUsd": {
+          "description": "Total unrealized funding (positive or negative) across all open positions,\ndenominated in USD.",
+          "format": "double",
+          "type": "number"
+        },
+        "totalUnrealizedPnlUsd": {
+          "description": "Total unrealized profit and loss (PnL) across all open positions,\ndenominated in USD.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "accountId",
+        "totalEquityUsd",
+        "availableCollateral",
+        "availableCollateralUsd",
+        "totalUnrealizedFundingsUsd",
+        "totalUnrealizedPnlUsd",
+        "positions"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountObjectBody": {
+      "description": "Request payload for fetching perpetuals account caps given a list of account IDs.",
+      "properties": {
+        "accountIds": {
+          "description": "List of numerical account IDs.",
+          "items": {
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "accountIds"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountPositionsBody": {
+      "description": "Request payload for fetching open positions for one or more accounts.",
+      "properties": {
+        "accountIds": {
+          "description": "List of numerical account IDs for which to fetch positions.\n\nDeserialized from an array of strings with trailing `\"n\"` (e.g. `[\"1n\", \"2n\"]`).",
+          "items": {
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "marketIds": {
+          "description": "Optional list of market (clearing house) IDs to filter positions by.\n\nWhen omitted or empty, positions across all markets are returned.",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "accountIds"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountPositionsResponse": {
+      "description": "Response payload for fetching account positions.",
+      "properties": {
+        "accounts": {
+          "description": "Account summaries and their open positions.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsAccountObject"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "accounts"
+      ],
+      "type": "object"
+    },
+    "PerpetualsAccountsResponse": {
+      "description": "Response payload for fetching perpetuals account caps by account IDs.",
+      "properties": {
+        "accountCaps": {
+          "description": "Perpetuals account caps (and associated account metadata) for the requested account IDs.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsAccountCap"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "accountCaps"
+      ],
+      "type": "object"
+    },
+    "PerpetualsMarketCandleDataPoint": {
+      "description": "Single OHLCV datapoint for a perpetuals market at a given time bucket.",
+      "properties": {
+        "close": {
+          "description": "Closing price for this interval.",
+          "format": "double",
+          "type": "number"
+        },
+        "high": {
+          "description": "Highest price during this interval.",
+          "format": "double",
+          "type": "number"
+        },
+        "low": {
+          "description": "Lowest price during this interval.",
+          "format": "double",
+          "type": "number"
+        },
+        "open": {
+          "description": "Opening price for this interval.",
+          "format": "double",
+          "type": "number"
+        },
+        "timestamp": {
+          "description": "Candle timestamp in **milliseconds** since Unix epoch.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "volume": {
+          "description": "Traded volume during this interval, in base asset units.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "timestamp",
+        "open",
+        "close",
+        "high",
+        "low",
+        "volume"
+      ],
+      "type": "object"
+    },
+    "PerpetualsMarketCandleHistoryResponse": {
+      "description": "Response payload for historical candle data.",
+      "properties": {
+        "candles": {
+          "description": "List of candle datapoints (OHLCV) for the requested market and time buckets.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsMarketCandleDataPoint"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "candles"
+      ],
+      "type": "object"
+    },
+    "PerpetualsMarketFundingHistoryPoint": {
+      "description": "Single funding rate datapoint for a perpetuals market at a given timestamp.\n\nFunding rate fields are expressed as fractions: `0.01` = `1%`.",
+      "properties": {
+        "cumulativeLongFundingRate": {
+          "description": "Cumulative funding rate accrued by long positions up to this point,\nas a fraction (e.g. `0.01` = `1%`).",
+          "format": "double",
+          "type": "number"
+        },
+        "cumulativeShortFundingRate": {
+          "description": "Cumulative funding rate accrued by short positions up to this point,\nas a fraction (e.g. `0.01` = `1%`).",
+          "format": "double",
+          "type": "number"
+        },
+        "eventTimestamp": {
+          "description": "On-chain event timestamp, in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "longFundingRate": {
+          "description": "Funding rate applied to long positions for this period, as a fraction\n(e.g. `0.01` = `1%`).",
+          "format": "double",
+          "type": "number"
+        },
+        "marketId": {
+          "description": "Identifier of the perpetuals market.",
+          "type": "string"
+        },
+        "shortFundingRate": {
+          "description": "Funding rate applied to short positions for this period, as a fraction\n(e.g. `0.01` = `1%`).",
+          "format": "double",
+          "type": "number"
+        },
+        "timestamp": {
+          "description": "Timestamp at which this funding point was recorded, in **milliseconds**.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "txDigest": {
+          "description": "Sui transaction digest associated with this funding event.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "marketId",
+        "timestamp",
+        "eventTimestamp",
+        "longFundingRate",
+        "shortFundingRate",
+        "cumulativeLongFundingRate",
+        "cumulativeShortFundingRate",
+        "txDigest"
+      ],
+      "type": "object"
+    },
+    "PerpetualsMarketsRequest": {
+      "description": "Request payload for fetching one or more perpetuals markets.",
+      "properties": {
+        "marketIds": {
+          "description": "Market identifiers to fetch. Omit or leave empty to fetch all markets.\n\nEach provided ID must be a valid on-chain market ID; validated by `assert_valid_id`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PerpetualsMarketsResponse": {
+      "description": "Response payload for fetching markets' orderbooks.",
+      "properties": {
+        "orderbooks": {
+          "description": "List of orderbooks returned for the request.",
+          "items": {
+            "$ref": "#/components/schemas/OrderbookResponse"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "orderbooks"
+      ],
+      "type": "object"
+    },
+    "PerpetualsOrderbook": {
+      "description": "Snapshot of the top-level orderbook for a perpetuals market.",
+      "properties": {
+        "asks": {
+          "description": "List of ask (sell) orders, typically sorted by increasing price.",
+          "items": {
+            "$ref": "#/components/schemas/OrderbookItem"
+          },
+          "type": "array"
+        },
+        "asksTotalSize": {
+          "description": "Total size of all asks, in base units.",
+          "format": "double",
+          "type": "number"
+        },
+        "bestAskPrice": {
+          "description": "Best (lowest) ask price, if available.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bestBidPrice": {
+          "description": "Best (highest) bid price, if available.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bids": {
+          "description": "List of bid (buy) orders, typically sorted by decreasing price.",
+          "items": {
+            "$ref": "#/components/schemas/OrderbookItem"
+          },
+          "type": "array"
+        },
+        "bidsTotalSize": {
+          "description": "Total size of all bids, in base units.",
+          "format": "double",
+          "type": "number"
+        },
+        "midPrice": {
+          "description": "Mid price between best bid and best ask, if both sides are non-empty.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "nonce": {
+          "description": "Monotonically increasing nonce representing this orderbook snapshot\nversion.\n\nSerialized as a string with a trailing `\"n\"`.",
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "asks",
+        "bids",
+        "asksTotalSize",
+        "bidsTotalSize",
+        "nonce"
+      ],
+      "type": "object"
+    },
+    "PerpetualsOwnedAccountObjectBody": {
+      "description": "Request payload for fetching perpetuals account caps owned by a given wallet.",
+      "properties": {
+        "collateralCoinTypes": {
+          "description": "Optional filter of collateral coin types.\n\nWhen provided, only accounts whose collateral coin type is in this list will be returned.",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "walletAddress": {
+          "description": "Wallet address owning the perpetuals account caps.\n\nMust be a valid Sui address; validated by `assert_valid_id`.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "walletAddress"
+      ],
+      "type": "object"
+    },
+    "PerpetualsOwnedAccountsResponse": {
+      "description": "Response payload for fetching perpetuals account caps owned by a wallet.",
+      "properties": {
+        "accountCaps": {
+          "description": "Perpetuals account caps (and associated account metadata) owned by the wallet.",
+          "items": {
+            "$ref": "#/components/schemas/PerpetualsAccountCap"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "accountCaps"
+      ],
+      "type": "object"
+    },
+    "PerpetualsPosition": {
+      "description": "Detailed information about a single open position in a perpetuals market.",
+      "properties": {
+        "asksQuantity": {
+          "description": "Base asset amount resting in ask (sell) orders on the orderbook for this position.",
+          "format": "double",
+          "type": "number"
+        },
+        "baseAssetAmount": {
+          "description": "Perpetual contract size / exposure to the underlying asset.\n\nPositive values represent a long position; negative values represent a short.",
+          "format": "double",
+          "type": "number"
+        },
+        "bidsQuantity": {
+          "description": "Base asset amount resting in bid (buy) orders on the orderbook for this position.",
+          "format": "double",
+          "type": "number"
+        },
+        "collateral": {
+          "description": "Amount of collateral allocated to this position (in collateral units).",
+          "format": "double",
+          "type": "number"
+        },
+        "collateralUsd": {
+          "description": "Collateral allocated to this position denominated in USD.",
+          "format": "double",
+          "type": "number"
+        },
+        "cumFundingRateLong": {
+          "description": "Last long cumulative funding rate applied to this position.\n\nThe difference between the market's current long cumulative funding rate\nand this value determines the funding that must be paid/received.",
+          "format": "double",
+          "type": "number"
+        },
+        "cumFundingRateShort": {
+          "description": "Last short cumulative funding rate applied to this position.",
+          "format": "double",
+          "type": "number"
+        },
+        "entryPrice": {
+          "description": "Average entry price of the position.",
+          "format": "double",
+          "type": "number"
+        },
+        "freeCollateral": {
+          "description": "Portion of account collateral that remains free after accounting for this\nposition, in collateral units.",
+          "format": "double",
+          "type": "number"
+        },
+        "freeMarginUsd": {
+          "description": "Free margin in USD that can still be used to grow the position or open\nnew ones.",
+          "format": "double",
+          "type": "number"
+        },
+        "leverage": {
+          "description": "Effective leverage of the position (position notional / collateral).",
+          "format": "double",
+          "type": "number"
+        },
+        "liquidationPrice": {
+          "description": "Estimated liquidation price for the position.\n\nIf the market price crosses this level, the position may be liquidated.",
+          "format": "double",
+          "type": "number"
+        },
+        "marginRatio": {
+          "description": "Margin ratio for the position (collateral vs. position risk).\n\nUsed to determine liquidation risk relative to initial and maintenance\nmargin requirements.",
+          "format": "double",
+          "type": "number"
+        },
+        "marketId": {
+          "description": "Identifier of the market (e.g., base asset symbol or internal market ID).",
+          "type": "string"
+        },
+        "pendingOrders": {
+          "description": "Pending (resting) orders associated with this position.",
+          "items": {
+            "$ref": "#/components/schemas/PendingOrder"
+          },
+          "type": "array"
+        },
+        "quoteAssetNotionalAmount": {
+          "description": "Notional value of the position (including leverage) in quote units.",
+          "format": "double",
+          "type": "number"
+        },
+        "unrealizedFundingsUsd": {
+          "description": "Unrealized funding on this position, denominated in USD.",
+          "format": "double",
+          "type": "number"
+        },
+        "unrealizedPnlUsd": {
+          "description": "Unrealized profit and loss on this position, denominated in USD.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "collateral",
+        "baseAssetAmount",
+        "quoteAssetNotionalAmount",
+        "cumFundingRateLong",
+        "cumFundingRateShort",
+        "asksQuantity",
+        "bidsQuantity",
+        "marketId",
+        "pendingOrders",
+        "leverage",
+        "collateralUsd",
+        "marginRatio",
+        "freeMarginUsd",
+        "freeCollateral",
+        "unrealizedFundingsUsd",
+        "unrealizedPnlUsd",
+        "entryPrice",
+        "liquidationPrice"
+      ],
+      "type": "object"
+    },
+    "TakerOrMaker": {
+      "enum": [
+        "taker",
+        "maker"
+      ],
+      "type": "string"
+    },
+    "Timestamp": {
+      "description": "Unix timestamp in milliseconds.\n\nNOTE: safe since the UNIX timestamp shouldn't pass u53::MAX in a long time. Therefore\n**serializing** this to JSON/BSON shouldn't be a problem, moreover the client can then expect\nan 'integer'.",
+      "format": "int64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "Trade": {
+      "description": "CCXT's [Public Trades](https://github.com/ccxt/ccxt/wiki/Manual#public-trades).",
+      "properties": {
+        "amount": {
+          "description": "Amount of base currency",
+          "format": "double",
+          "type": "number"
+        },
+        "cost": {
+          "description": "Total cost (including fees), `price * amount`",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "datetime": {
+          "$ref": "#/components/schemas/DateTime",
+          "description": "ISO8601 datetime with milliseconds"
+        },
+        "fee": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/Fee"
+            }
+          ]
+        },
+        "id": {
+          "description": "String trade id",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "order": {
+          "description": "String order id or undefined/None/null",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "price": {
+          "description": "Float price in quote currency",
+          "format": "double",
+          "type": "number"
+        },
+        "side": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/Direction",
+              "description": "Direction of the trade, 'buy' or 'sell'"
+            }
+          ]
+        },
+        "symbol": {
+          "description": "Symbol in CCXT format",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "takerOrMaker": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/TakerOrMaker",
+              "description": "String, 'taker' or 'maker'"
+            }
+          ]
+        },
+        "timestamp": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/components/schemas/Timestamp",
+              "description": "Unix timestamp in milliseconds"
+            }
+          ]
+        },
+        "type": {
+          "description": "Order type, 'market', 'limit', ... or undefined/None/null",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "amount",
+        "price"
+      ],
+      "type": "object"
+    }
+  },
+  "source": {
+    "canonicalSha256": "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2",
+    "info": {
+      "description": "# Overview\n\nAftermath currently maintain two sets of API: Aftermath REST API and Aftermath CCXT API. For more info about our CCXT API, head over to our [docs](https://docs.aftermath.finance/for-developers/api/ccxt). CCXT also maintains documentation for the Aftermath CCXT integration [here](https://docs.ccxt.com/#/exchanges/aftermath).\n",
+      "license": {
+        "name": "MIT"
+      },
+      "title": "Aftermath Finance API",
+      "version": "1.0.0"
+    },
+    "openapi": "3.1.0",
+    "url": "https://v2-preview.aftermath.finance/api/openapi/spec.json"
+  }
+}

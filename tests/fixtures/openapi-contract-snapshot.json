@@ -1,0 +1,27 @@
+{
+  "cancel_and_place": {
+    "overlay_boundary": {
+      "account_identity": "separate typed adapter argument",
+      "forbidden_order_body_fields": [
+        "accountId",
+        "accountCapId"
+      ]
+    },
+    "path": "/api/perpetuals/account/transactions/cancel-and-place-orders",
+    "raw_openapi_observation": {
+      "accountId": "permitted by PerpetualsAccountOrVaultId allOf branch",
+      "accountCapId": "permitted as an optional sibling in the account branch"
+    }
+  },
+  "openapi_sha256": "c5bf0d097dd77e06726acfdc9ae706fccd0b0ce234b97a5db10b5f47c05cd5fd",
+  "verification": "Manual transcription from the observation-dated OpenAPI response; the spec body is not vendored, so this fixture cannot self-detect upstream drift.",
+  "positions": {
+    "path": "/api/perpetuals/accounts/positions",
+    "required_request_fields": [
+      "accountIds"
+    ],
+    "required_response_fields": [
+      "accounts"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "amount": 0.002,
+    "clientOrderId": "client-1",
+    "filled": 0.001,
+    "id": "order-1",
+    "price": 63000,
+    "remaining": 0.001,
+    "side": "buy",
+    "status": "open",
+    "symbol": "BTC/USD:USDC"
+  }
+]

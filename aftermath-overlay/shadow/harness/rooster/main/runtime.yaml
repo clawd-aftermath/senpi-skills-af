@@ -1,0 +1,110 @@
+# Copyright 2026 Senpi (https://senpi.ai) — Apache-2.0
+# Aftermath shadow-port modifications copyright 2026 Aftermath Finance.
+schema_version: aftermath/v1
+name: rooster-main
+group: rooster
+version: 1.0.0-af.1
+description: >
+  Read-only Aftermath port of Rooster. It watches the configured pre-open
+  session, normalizes BTC candles and account state through ctx.venue, and
+  emits shadow signals. It cannot place, cancel, sign, or submit orders.
+
+mode: shadow
+write_policy: deny
+
+account:
+  account_id_env: AFTERMATH_ACCOUNT_ID
+  account_capability_id_env: AFTERMATH_ACCOUNT_CAPABILITY_ID
+  account_capability_id: "${AFTERMATH_ACCOUNT_CAPABILITY_ID}"
+
+market:
+  symbol: BTC
+  required_capabilities: [candles, account, positions]
+
+sizing_semantics:
+  margin_pct_basis: available_collateral_usd_percent
+  collateral_mode: isolated
+  leverage_basis: signal_bounded_by_market
+  native_price_unit: "1e-9"
+  native_size_unit: "1e-9"
+
+scanners:
+  - name: rooster_main_signals
+    type: external_scanner
+    path: ./scanners
+    entrypoint: scan.py
+    interval_seconds: 300
+    timeout_seconds: 120
+    default_signal_validity_seconds: 900
+    state_history_max_count: 120
+    inputs:
+      assets: ["BTC"]
+      sessionOpensUtc: ["13:30", "08:00"]
+      preOpenMinutes: 45
+      minScore: 5
+      marginPctBase: 12
+      maxSlots: 1
+      leverageDefault: 3
+      leverageMin: 2
+      leverageMax: 5
+      windowBars: 3
+      baselineBars: 16
+      priorRangeBars: 24
+      minDriftPct: 0.35
+      strongDriftPct: 0.9
+      minVolumeRatio: 1.15
+      breakoutHighPct: 0.8
+      breakoutLowPct: 0.2
+    signal_data_schema:
+      score: { type: number }
+      leverage: { type: number }
+      direction: { type: string }
+      reasons: { type: array, required: false }
+      driftPct: { type: number, required: false }
+      volRatio: { type: number, required: false }
+      rangePos: { type: number, required: false }
+      trend4h: { type: string, required: false }
+      minutesToOpen: { type: number, required: false }
+      sessionOpenUtc: { type: string, required: false }
+      heldAssets: { type: array, required: false }
+
+signal_output:
+  mode: shadow_only
+  execution_enabled: false
+
+# Design-only exit policy retained from upstream. No Aftermath DSL/execution
+# engine exists yet, so catalog status remains blocked and this block is never
+# armed by the shadow scanner.
+exit:
+  implementation_status: blocked
+  engine: dsl
+  dsl_preset:
+    hard_timeout:
+      enabled: true
+      interval_in_minutes: 480
+    weak_peak_cut:
+      enabled: true
+      interval_in_minutes: 90
+      min_value: 1.5
+    phase1:
+      enabled: true
+      max_loss_pct: 15.0
+      retrace_threshold: 8
+      consecutive_breaches_required: 1
+    phase2:
+      enabled: true
+      tiers:
+        - { trigger_pct: 6, lock_hw_pct: 0 }
+        - { trigger_pct: 12, lock_hw_pct: 30 }
+        - { trigger_pct: 20, lock_hw_pct: 50 }
+        - { trigger_pct: 35, lock_hw_pct: 65 }
+        - { trigger_pct: 55, lock_hw_pct: 78 }
+
+blocked_runtime_gates:
+  - PTB build and semantic inspection
+  - agent/admin and sponsored signing
+  - order submission and reconciliation
+  - explicit isolated-collateral allocation
+  - serialized coin and gas object operations
+  - native SL/TP and DSL state
+  - heartbeat-driven dead-man cancellation

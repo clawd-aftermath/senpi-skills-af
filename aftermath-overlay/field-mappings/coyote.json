@@ -1,0 +1,85 @@
+{
+  "strategy": "coyote",
+  "source_scanners": [
+    "strategies/coyote/main/scanners/scan.py"
+  ],
+  "ignored_literals": {
+    "runtime-state-and-output": {
+      "keys": [
+        "btc7dMovePct",
+        "dispersionPct",
+        "leverage",
+        "marginPct",
+        "realizedVolPct",
+        "signaled"
+      ],
+      "reason": "Local persisted/result/signal fields; not read from a venue tool response."
+    },
+    "scanner-input": {
+      "keys": [
+        "btcAsset",
+        "dispersionLookbackBars",
+        "maxVolForTrendPct",
+        "minVolForCrashPct",
+        "recentSignalTtlSeconds",
+        "trendDownThresholdPct",
+        "trendLookbackBars",
+        "trendUpThresholdPct",
+        "volLookbackBars"
+      ],
+      "reason": "Operator runtime inputs; not venue response fields."
+    }
+  },
+  "fields": [
+    {
+      "consumed": "ctx.wallet",
+      "aftermath": "gap: resolve a Sui wallet to one explicit numeric accountId before scanning",
+      "status": "gap"
+    },
+    {
+      "consumed": "ctx.state.last / ctx.state.append / len(ctx.state)",
+      "aftermath": "runtime-local durable scanner state; no HTTP route",
+      "status": "runtime-local"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.accountValue",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].totalEquityUsd",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalMarginUsed",
+      "aftermath": "gap: no exact aggregate; positions[].collateralUsd is isolated per-position collateral",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalNtlPos",
+      "aftermath": "gap: an explicit net/absolute aggregation policy is required for positions[].quoteAssetNotionalAmount",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.szi",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].baseAssetAmount",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.coin",
+      "aftermath": "accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.data.candles.4h[].c",
+      "aftermath": "POST /api/perpetuals/market/candle-history -> candles[].close using resolution=4h and explicit fromTimestamp/toTimestamp",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.success",
+      "aftermath": "POST /api/perpetuals/market/candle-history HTTP status/error union is converted to a fail-closed adapter result; the V2 response has no success envelope",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "inputs.dispersionUniverse ranked across BTC/ETH/SOL/HYPE",
+      "aftermath": "gap: only BTC was active at the pinned preview snapshot; dispersion must fail closed and may not collapse to one market",
+      "status": "gap"
+    }
+  ]
+}

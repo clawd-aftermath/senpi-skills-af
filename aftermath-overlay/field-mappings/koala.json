@@ -1,0 +1,72 @@
+{
+  "strategy": "koala",
+  "source_scanners": [
+    "strategies/koala/main/scanners/scan.py"
+  ],
+  "ignored_literals": {
+    "runtime-state": {
+      "keys": [
+        "first_entry_at",
+        "koala",
+        "last_exit_at",
+        "signaled",
+        "total_entries"
+      ],
+      "reason": "Local position-lifecycle/dedup state; not read from a venue tool response."
+    },
+    "scanner-input": {
+      "keys": [
+        "dex",
+        "fireOnceMode",
+        "leverage",
+        "marginPct",
+        "maxLeverage",
+        "reEntryCooldownHours",
+        "recentSignalTtlSeconds"
+      ],
+      "reason": "Operator runtime inputs; not venue response fields."
+    }
+  },
+  "fields": [
+    {
+      "consumed": "ctx.wallet",
+      "aftermath": "gap: resolve a Sui wallet to one explicit numeric accountId before scanning",
+      "status": "gap"
+    },
+    {
+      "consumed": "ctx.state.last / ctx.state.append / len(ctx.state)",
+      "aftermath": "runtime-local durable scanner state; no HTTP route",
+      "status": "runtime-local"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.accountValue",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].totalEquityUsd",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalMarginUsed",
+      "aftermath": "gap: no exact aggregate; positions[].collateralUsd is isolated per-position collateral",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalNtlPos",
+      "aftermath": "gap: an explicit net/absolute aggregation policy is required for positions[].quoteAssetNotionalAmount",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.szi",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].baseAssetAmount",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.coin",
+      "aftermath": "accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "inputs.asset",
+      "aftermath": "POST /api/perpetuals/markets -> exact metadata.symbol / marketParams.baseAssetSymbol resolution; ambiguity is an error",
+      "status": "mapped-transform"
+    }
+  ]
+}
