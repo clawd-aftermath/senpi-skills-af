@@ -18,7 +18,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "contracts" / "aftermath-skills-v3-contract.json"
 PROVENANCE_PATH = ROOT / "aftermath-overlay" / "provenance.json"
-PIN_PATH = ROOT / "AFTERMATH_SKILLS_REF"
+SKILLS_REF_DIR = ROOT / "AFTERMATH_SKILLS_REF"
+# The pin used to be a bare file; the skills are now vendored in a
+# directory of the same name, so the SHA lives in COMMIT beside them.
+PIN_PATH = SKILLS_REF_DIR / "COMMIT"
 
 EXPECTED_COMMIT = "5b614db62dcd2e58f442e93661f608fe7b073c32"
 EXPECTED_FILES = {

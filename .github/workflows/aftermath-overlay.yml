@@ -34,6 +34,17 @@ jobs:
           git diff --exit-code "${pin}" -- strategies
       - name: Attribution, offline, and runnable-package policy
         run: python3 tools/lint_overlay.py
+      - name: Aftermath skills contract and vendored bytes
+        run: python3 tools/validate_skills_contract.py
+      - name: Doctor preflight runs offline and reports a missing wallet
+        run: |
+          python3 -m aftermath_runtime coverage
+          if python3 -m aftermath_runtime doctor; then
+            echo "doctor exited 0 with no wallet configured" >&2
+            exit 1
+          fi
+          AF_WALLET_ADDRESS=0x$(printf 'ab%.0s' $(seq 32)) \
+            python3 -m aftermath_runtime doctor
       - name: Upstream Rooster tests
         run: python3 strategies/rooster/tests/test_engine.py
       - name: Upstream Rooster strategy validation

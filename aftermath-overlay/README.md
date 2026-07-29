@@ -19,7 +19,7 @@ Canonical relaunch references:
 
 Integration semantics derive from the preview OpenAPI plus
 `aftermath-perpetuals` skill v3.0.0 at immutable commit
-`5b614db62dcd2e58f442e93661f608fe7b073c32`. `AFTERMATH_SKILLS_REF`,
+`5b614db62dcd2e58f442e93661f608fe7b073c32`. `AFTERMATH_SKILLS_REF/COMMIT`,
 `provenance.json`, and `contracts/aftermath-skills-v3-contract.json` pin the
 commit, branch, version, all 15 blobs under `skills/api`, each blob's digest and
 applied/out-of-scope classification, and the extracted contract. Seven

@@ -8,34 +8,98 @@ This repository is the **open-source layer** of the Senpi Hyperliquid AI Harness
 
 ---
 
-## Aftermath downstream status
+## Aftermath V2 runtime — quickstart
 
-This branch is pinned to upstream commit
-`c3ef08a670581cd20a9d80df17d36f13266605ae` and adds an offline,
-generated coverage layer for an Aftermath-native port. It does not claim that
-the open-source strategy corpus includes Senpi's proprietary runtime, and no
-strategy is enabled until the Aftermath field, market, sizing, and execution
-contracts pass.
+This branch runs the strategy corpus on **Aftermath Perpetuals V2** through one
+adapter, rather than porting 99 packages individually. Hyperliquid is removed
+from the execution path — not proxied underneath it.
 
-The Aftermath integration contract is pinned independently to
+**Nothing is armed.** Every strategy ships disabled, no transaction is signed or
+submitted, and no submit route exists in any transport allowlist.
+
+### Copy-paste
+
+```bash
+git clone <this repo> && cd senpi-skills-af
+
+# 1. One secret: your wallet ADDRESS. Never a key.
+cp .env.example .env
+$EDITOR .env                              # set AF_WALLET_ADDRESS
+
+# 2. Preflight. Prints a pass/fail table, exits non-zero on failure.
+set -a && . ./.env && set +a
+python3 -m aftermath_runtime doctor
+
+# 3. What the adapter can and cannot serve.
+python3 -m aftermath_runtime coverage
+
+# 4. Everything, offline, with the network denied process-wide.
+python3 ci/run_offline_tests.py
+```
+
+`doctor` needs no network. To check the live API as well:
+
+```bash
+AFTERMATH_ALLOW_LIVE_READS=1 python3 -m aftermath_runtime doctor --live
+```
+
+Python 3.12, standard library only. No dependencies to install.
+
+### What you get
+
+| | |
+|---|---|
+| One adapter | `aftermath_runtime/adapter.py` — the upstream MCP tool surface, served by Aftermath V2. Every strategy goes through it; no strategy file talks to the API. |
+| Mock twin | `aftermath_runtime/mock.py` — interface-identical, zero network, zero keys. Parity is enforced by a test. |
+| Gas, your choice | `sponsored` (default, needs no SUI) · `self` · `dynamic` (you pick the coin). One config value. |
+| Atomic primitives | `cancel-and-place-orders` for every requote, `place-scale-order` for ladders, a composed onboarding PTB. |
+| A gate you cannot skip | build → preview → **inspect** → (would-sign) → reconcile. `sign_inspected()` accepts only what `inspect()` produces. |
+| Safety in the adapter | circuit breakers, a heartbeat kill switch with **verified** cancellation, SIGINT/SIGTERM cancel-all, serialised deposits, refresh-after-mutation. |
+
+### Two things that will trip you up
+
+**No markets are live on Aftermath yet.** Zero markets is expected before the
+relaunch. `doctor` warns; it never fails. Strategies will simply find nothing to
+trade.
+
+**The vendored skills name a dead host.** `AFTERMATH_SKILLS_REF/` is pinned to
+`AftermathFinance/skills@5b614db` and is correct about V2 features — but names
+the retired API host in 22 places and the live one in zero. The live OpenAPI
+document carries the same trap in its own `servers` block. Take their patterns,
+never their URLs; see
+[`AFTERMATH_SKILLS_REF/README-DELTA.md`](AFTERMATH_SKILLS_REF/README-DELTA.md).
+The host is defined exactly once, in `aftermath_runtime/config.py`, and a test
+fails if it leaks anywhere else.
+
+### Environment
+
+Every variable is documented with a safe default in
+[`.env.example`](.env.example). Only `AF_WALLET_ADDRESS` is required.
+
+| variable | default | meaning |
+|---|---|---|
+| `AF_WALLET_ADDRESS` | — | **required.** Your Sui wallet address. Never a key. |
+| `AF_GAS_MODE` | `sponsored` | `sponsored` · `self` · `dynamic` |
+| `AF_GAS_COIN_TYPE` | — | required for `dynamic`: which coin pays gas |
+| `AF_GAS_BUDGET_MIST` | `50000000` | always explicit, never auto-estimated |
+| `AF_ARMED` | unset | the single flag that allows a transaction to be BUILT |
+| `AF_API_BASE_URL` | `https://v2-preview.aftermath.finance` | production mainnet, despite the hostname |
+| `AF_COLLATERAL_COIN_TYPE` | USDC on Sui | `doctor` verifies markets exist for it |
+| `AF_ACCOUNT_ID` | auto | discovered via `POST /api/perpetuals/accounts/owned` |
+
+### Pinning and provenance
+
+Upstream Senpi is pinned to `c3ef08a670581cd20a9d80df17d36f13266605ae` and its
+`strategies/` tree is byte-for-byte untouched (CI enforces it). The Aftermath
+integration contract is pinned independently to
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
-(`aftermath-perpetuals` v3.0.0) plus the V2-preview OpenAPI digest. CI validates
-the internal consistency of the immutable skills pin, the complete 15-blob
-`skills/api` manifest/classification, and the network-free extracted contract.
-Seven documents are applied; every other blob is explicitly out of scope.
-The source check also pins the repository's complete top-level and `skills/*`
-directory sets; `skills/gas` is explicitly outside this read-only Perpetuals
-overlay.
-Source-byte authenticity can be rechecked against a freshly fetched official
-skills checkout without moving the pin.
+(`aftermath-perpetuals` v3.0.0) plus the V2-preview OpenAPI digest, and the
+vendored bytes are verified against their SHA-256 digests on every run.
 
-An isolated Rooster shadow canary exercises the read-only venue adapter against
-offline fixtures. It is not deployable and does not change the zero-enabled
-catalog.
-
-See [`aftermath-overlay/README.md`](aftermath-overlay/README.md), the generated
-[`coverage summary`](aftermath-overlay/catalog/SUMMARY.md), and the generated
-[`field matrices`](aftermath-overlay/catalog/FIELD_COVERAGE.md).
+No strategy is enabled until the Aftermath field, market, sizing, and execution
+contracts pass. See [`aftermath-overlay/README.md`](aftermath-overlay/README.md),
+the generated [`coverage summary`](aftermath-overlay/catalog/SUMMARY.md), and the
+generated [`field matrices`](aftermath-overlay/catalog/FIELD_COVERAGE.md).
 
 ---
 
