@@ -23,25 +23,32 @@ change the pin. The pinned canonical SHA-256 is
 Integration semantics are independently pinned to the
 `AftermathFinance/skills` `feat/v2-skills` branch at immutable commit
 `5b614db62dcd2e58f442e93661f608fe7b073c32`, skill v3.0.0. The extracted,
-network-free contract is `aftermath-skills-v3-contract.json`; the six
-controlling source-file digests are duplicated in `provenance.json` and checked
-by:
+network-free contract is `aftermath-skills-v3-contract.json`. It enumerates all
+15 blobs under `skills/api`: seven applied documents (including `ccxt.md`) and
+eight explicitly out-of-scope blobs with reasons. Digests and classifications
+are duplicated in `provenance.json`. The repository top-level directory set and
+all `skills/*` directories are also pinned; `skills/gas` is explicitly out of
+scope. These records are checked by:
 
 ```bash
 python3 tools/validate_skills_contract.py
 ```
 
-That offline check proves internal manifest consistency. To authenticate the
-recorded hashes against git objects in an already-fetched source checkout:
+That offline check proves internal manifest consistency. Immediately fetch the
+official remote ref, then authenticate the recorded hashes and complete tree
+against git objects:
 
 ```bash
+git -C /path/to/aftermath-skills fetch origin feat/v2-skills
 python3 tools/validate_skills_contract.py \
   --source-dir /path/to/aftermath-skills
 ```
 
 The source check hashes raw file bytes stored at the pinned commit and requires
 that commit to be an ancestor of the fetched branch ref. It does not fetch and
-does not require the mutable branch head to remain equal to the pin.
+does not require the mutable branch head to remain equal to the pin. A stale
+local remote ref can conceal a force-push that orphaned the commit; freshness is
+the operator's responsibility and the verifier reports the exact observed tip.
 
 The preview OpenAPI remains authoritative for endpoint schemas. The pinned
 skills define integration semantics and safety behavior. Wire contradictions

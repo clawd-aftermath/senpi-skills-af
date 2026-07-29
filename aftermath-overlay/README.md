@@ -21,8 +21,12 @@ Integration semantics derive from the preview OpenAPI plus
 `aftermath-perpetuals` skill v3.0.0 at immutable commit
 `5b614db62dcd2e58f442e93661f608fe7b073c32`. `AFTERMATH_SKILLS_REF`,
 `provenance.json`, and `contracts/aftermath-skills-v3-contract.json` pin the
-commit, branch, version, six controlling source files/digests, and extracted
-contract. The V2-preview URLs remain the canonical post-relaunch environment.
+commit, branch, version, all 15 blobs under `skills/api`, each blob's digest and
+applied/out-of-scope classification, and the extracted contract. Seven
+documents are applied, including `ccxt.md` for the allowlisted pending-orders
+read. The complete top-level and `skills/*` directory sets are pinned as a
+scope boundary; `skills/gas` is explicitly out of scope. The V2-preview URLs
+remain the canonical post-relaunch environment.
 Offline CI checks manifest consistency. Source-byte authenticity is checked
 separately against an already-fetched skills checkout; neither path fetches.
 Generation and validation are standard-library-only:
@@ -34,15 +38,29 @@ python3 ci/run_offline_tests.py
 python3 tools/lint_overlay.py
 ```
 
-To recompute all six source digests from the pinned git object and prove that
-the commit belongs to the fetched branch history:
+Immediately before source verification, refresh the remote ref:
+
+```bash
+git -C /path/to/aftermath-skills fetch origin feat/v2-skills
+```
+
+Then recompute every `skills/api` digest from the pinned git object, prove the
+manifest has no unclassified blob or unreviewed sibling skill directory, and
+prove the commit belongs to the fetched branch history:
 
 ```bash
 python3 tools/validate_skills_contract.py --source-dir /path/to/aftermath-skills
 ```
 
 The branch may advance; the validator requires the immutable pin to remain an
-ancestor, not equal the mutable branch head.
+ancestor, not equal the mutable branch head. The validator never fetches.
+Without the immediately preceding fetch, a stale local origin ref can conceal a
+force-push that orphaned the pin.
+
+`tools/lint_overlay.py` covers Senpi license/source parity, forbidden runnable
+patterns, network-capable imports in tools/tests, and generated catalog
+partition integrity. It does not authenticate the external skills source or
+validate its manifest; `tools/validate_skills_contract.py` owns those checks.
 
 To review a new upstream release, update `UPSTREAM_REF` in a branch, rebase the
 repository onto that exact upstream commit, then run the offline sync:

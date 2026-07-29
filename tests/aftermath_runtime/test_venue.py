@@ -28,7 +28,10 @@ from aftermath_runtime import (
     market_candles_subscription,
 )
 from aftermath_runtime.stream import SnapshotStreamState
-from aftermath_runtime.venue import reject_error_union
+from aftermath_runtime.venue import (
+    POSITIONS_ACCOUNT_IDS_DRIFT_CODE,
+    reject_error_union,
+)
 from aftermath_runtime.models import (
     FIELD_DENOMINATIONS,
     PendingOrderRef,
@@ -316,6 +319,23 @@ class ReadNormalizationTests(unittest.TestCase):
             ("/api/perpetuals/accounts/positions", {"accountIds": ["7n"]}),
         )
 
+    def test_positions_bigint_wire_choice_links_to_blocking_drift(self):
+        drift = json.loads(
+            (ROOT / "contracts" / "known-drift.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        entry = next(
+            item
+            for item in drift["entries"]
+            if item.get("code") == POSITIONS_ACCOUNT_IDS_DRIFT_CODE
+        )
+        self.assertTrue(entry["blocking"])
+        self.assertEqual(entry["status"], "unresolved")
+        client, transport = venue()
+        client.get_positions(7)
+        self.assertEqual(transport.calls[-1][1]["accountIds"], ["7n"])
+
     def test_numeric_account_id_is_not_capability_id(self):
         client, _ = venue()
         with self.assertRaises(NormalizationError):
@@ -363,16 +383,28 @@ class ReadNormalizationTests(unittest.TestCase):
         )
 
     def test_open_orders_use_numeric_account_and_market_object_id(self):
+        contract = json.loads(
+            (
+                ROOT / "contracts" / "aftermath-skills-v3-contract.json"
+            ).read_text(encoding="utf-8")
+        )["expectations"]["ccxtPendingOrders"]
         client, transport = venue()
         orders = client.get_open_orders(7, "BTC")
         self.assertEqual(orders[0].order_id, "order-1")
+        endpoint, request = transport.calls[-1]
         self.assertEqual(
-            transport.calls[-1],
-            (
-                "/api/ccxt/myPendingOrders",
-                {"accountNumber": 7, "chId": "btc-market"},
-            ),
+            endpoint,
+            contract["path"],
         )
+        self.assertEqual(
+            request,
+            {
+                contract["accountField"]: 7,
+                contract["marketField"]: "btc-market",
+            },
+        )
+        self.assertNotIn(contract["writeAccountField"], request)
+        self.assertEqual(contract["writePolicy"], "deny")
 
     def test_http_200_error_union_is_rejected(self):
         with self.assertRaisesRegex(Exception, "success=false"):

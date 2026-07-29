@@ -64,6 +64,8 @@ _FIXED_CANDLE_RESOLUTION_MS = {
     "3d": 259_200_000,
     "1w": 604_800_000,
 }
+
+
 def _candle_bucket_end_ms(timestamp_ms: int, resolution: str) -> int:
     if resolution in _FIXED_CANDLE_RESOLUTION_MS:
         return timestamp_ms + _FIXED_CANDLE_RESOLUTION_MS[resolution]
@@ -88,6 +90,16 @@ def _candle_bucket_end_ms(timestamp_ms: int, resolution: str) -> int:
     else:
         end = start.replace(month=start.month + 1)
     return int(end.timestamp() * 1000)
+
+
+POSITIONS_ACCOUNT_IDS_DRIFT_CODE = "account_ids_bigint_wire"
+
+
+def _positions_account_ids(account_id: int) -> list[str]:
+    # Deliberate shadow-read wire selection. Keep this linked to the
+    # machine-readable `account_ids_bigint_wire` entry in known-drift.json:
+    # OpenAPI says integer while its field prose and pinned V3 skill say "...n".
+    return [native_account_id_wire(account_id, "account_id")]
 
 
 @dataclass
@@ -235,7 +247,7 @@ class AftermathVenue:
         payload = _object(
             self.transport.post(
                 endpoint,
-                {"accountIds": [native_account_id_wire(numeric_id, "account_id")]},
+                {"accountIds": _positions_account_ids(numeric_id)},
             ),
             endpoint,
         )
@@ -253,9 +265,7 @@ class AftermathVenue:
     ) -> tuple[PositionSnapshot, ...]:
         numeric_id = numeric_account_id(account_id)
         specs = [self.require_market(market, ("positions",)) for market in markets]
-        request: dict[str, Any] = {
-            "accountIds": [native_account_id_wire(numeric_id, "account_id")]
-        }
+        request: dict[str, Any] = {"accountIds": _positions_account_ids(numeric_id)}
         if specs:
             request["marketIds"] = [market.market_id for market in specs]
         endpoint = "/api/perpetuals/accounts/positions"

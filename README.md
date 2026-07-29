@@ -20,9 +20,14 @@ contracts pass.
 The Aftermath integration contract is pinned independently to
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
 (`aftermath-perpetuals` v3.0.0) plus the V2-preview OpenAPI digest. CI validates
-the internal consistency of the immutable skills pin, six controlling file
-digests, and network-free extracted contract. Source-byte authenticity can be
-rechecked against an already-fetched skills checkout without moving the pin.
+the internal consistency of the immutable skills pin, the complete 15-blob
+`skills/api` manifest/classification, and the network-free extracted contract.
+Seven documents are applied; every other blob is explicitly out of scope.
+The source check also pins the repository's complete top-level and `skills/*`
+directory sets; `skills/gas` is explicitly outside this read-only Perpetuals
+overlay.
+Source-byte authenticity can be rechecked against a freshly fetched official
+skills checkout without moving the pin.
 
 An isolated Rooster shadow canary exercises the read-only venue adapter against
 offline fixtures. It is not deployable and does not change the zero-enabled

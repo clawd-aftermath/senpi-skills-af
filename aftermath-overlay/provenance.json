@@ -15,20 +15,54 @@
     "branch": "feat/v2-skills",
     "commit": "5b614db62dcd2e58f442e93661f608fe7b073c32",
     "contract": "contracts/aftermath-skills-v3-contract.json",
-    "contract_sha256": "17af6f1c138b93c46a44ef426c350849c9bbd00bbe3065c759d18336bbebf35f",
+    "contract_sha256": "711a8a2e98c0b1778d6dc705139f89ff4d96f97ee882b66f0cb6d8187cf795f6",
+    "file_classifications": {
+      "skills/api/.api-spec-state.json": "out_of_scope",
+      "skills/api/SKILL.md": "applied",
+      "skills/api/auxiliary-endpoints.md": "out_of_scope",
+      "skills/api/ccxt.md": "applied",
+      "skills/api/dca-and-limit-orders.md": "out_of_scope",
+      "skills/api/error-handling.md": "applied",
+      "skills/api/gotchas.md": "applied",
+      "skills/api/monitoring-patterns.md": "applied",
+      "skills/api/native.md": "applied",
+      "skills/api/pools.md": "out_of_scope",
+      "skills/api/prices.md": "out_of_scope",
+      "skills/api/safety-and-risk.md": "applied",
+      "skills/api/scripts/check_api_changes.py": "out_of_scope",
+      "skills/api/sdk-reference.md": "out_of_scope",
+      "skills/api/staking.md": "out_of_scope"
+    },
     "files": {
+      "skills/api/.api-spec-state.json": "d59f5bee86ef70d003670a19f9dda88c8d1b8a99e7fd97862baed6f65232bd31",
       "skills/api/SKILL.md": "f2d0bcb48b53781a1f7204b38aa92c4cfcce071e67d0bccaf8bede7a5b9f3c38",
+      "skills/api/auxiliary-endpoints.md": "6fabb25bc7b0bc7979249015b1d0ea0760261ecc94c92dfde10deacbf61cdbf1",
+      "skills/api/ccxt.md": "e0ef2d50de53ca292a8642b320e2611c85c75c12f37e95dc9e6d553fcbdf3f4a",
+      "skills/api/dca-and-limit-orders.md": "93dcdb8b9069bdc0212c71ff92c2aaff7320adc9423b4c42e904bb212e97467c",
       "skills/api/error-handling.md": "5cfb48e5aff3d5d2026511413433dd95487ab798876f3e102f350559d93c4e57",
       "skills/api/gotchas.md": "096e4054919de5b893952f73a6d1f9f7bdb45191400cf93919ecfa235b9e8bc1",
       "skills/api/monitoring-patterns.md": "7fd2b8779b57c6edea53aeed3e869458c9efb2831c15385b2195748608cf4323",
       "skills/api/native.md": "732cfecbfbfbb447a5c8c5e8759e0190d7cac5ec258847bbafd68ad9683353ea",
-      "skills/api/safety-and-risk.md": "3b2317266eb84e33f965da09caabdd394b04d3a623ab034bc5f97b5c48759fa5"
+      "skills/api/pools.md": "82290f4272e1d2985630e02d1123b1e1894f2af9f5d2f5705411a73f5d882245",
+      "skills/api/prices.md": "8750f0aa48af9f44d68a4a52fcae36db8d389a48486b1be65c49fdae48824cfa",
+      "skills/api/safety-and-risk.md": "3b2317266eb84e33f965da09caabdd394b04d3a623ab034bc5f97b5c48759fa5",
+      "skills/api/scripts/check_api_changes.py": "f25684111f8374b1b105180b8f6a873f715abc96980c89c7414d6f0616c538ff",
+      "skills/api/sdk-reference.md": "0b10ff4df1e432d34a6e59bdaacdf48b501d985c1a5f1ed6d606cdc818e81a8b",
+      "skills/api/staking.md": "7ed0d64f310d039b07f92de799e3c898ad3854d49b022fe089516f610f4f67c1"
     },
     "file_digest_algorithm": "sha256 of raw file bytes stored at the pinned git commit",
     "license": "Apache-2.0",
     "repository": "https://github.com/AftermathFinance/skills",
+    "repository_top_level_directories": [
+      "assets",
+      "skills"
+    ],
     "skill": "aftermath-perpetuals",
-    "verification_scope": "Offline CI checks manifest consistency; source authenticity is checked separately against an already-fetched checkout whose origin is AftermathFinance/skills without requiring the mutable branch head to equal the pin.",
+    "skill_directories": {
+      "skills/api": "classified",
+      "skills/gas": "out_of_scope"
+    },
+    "verification_scope": "Offline CI checks full skills/api manifest and repository skill-directory scope consistency; source authenticity requires the operator to fetch origin feat/v2-skills immediately before running the no-fetch verifier against the official checkout.",
     "version": "3.0.0"
   },
   "derived_artifacts": {

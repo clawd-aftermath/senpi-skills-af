@@ -6,8 +6,12 @@ Contract source: V2-preview OpenAPI plus pinned
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
 (`aftermath-perpetuals` v3.0.0). The branch name alone is not trusted; offline
 validation checks internal pin/manifest consistency. A separate no-fetch source
-check recomputes the six digests from the pinned git object and verifies branch
-ancestry.
+check recomputes all 15 `skills/api` digests from the pinned git object,
+verifies complete applied/out-of-scope classification, and verifies branch
+ancestry. It also fails closed if the pinned repository contains an unreviewed
+top-level or `skills/*` directory; `skills/gas` is explicitly out of scope. The
+operator must fetch the official branch immediately before that check because
+the verifier cannot prove its local remote ref is fresh.
 
 Catalog status: **0 enabled strategies**. The Rooster shadow canary is an
 offline fixture-backed test harness, not a deployable package. Its source lives
