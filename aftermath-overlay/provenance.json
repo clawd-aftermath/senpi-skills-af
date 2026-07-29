@@ -1,0 +1,23 @@
+{
+  "aftermath_api": {
+    "api_prefix": "https://v2-preview.aftermath.finance/api/",
+    "docs": "https://v2-preview.aftermath.finance/docs",
+    "openapi_sha256": "c5bf0d097dd77e06726acfdc9ae706fccd0b0ce234b97a5db10b5f47c05cd5fd",
+    "openapi_url": "https://v2-preview.aftermath.finance/api/openapi/spec.json",
+    "site": "https://v2-preview.aftermath.finance",
+    "snapshot": {
+      "paths": 251,
+      "schemas": 342,
+      "verified_at_utc": "2026-07-28T23:59:19Z"
+    }
+  },
+  "license_policy": {
+    "modification_notice": "Aftermath overlay files are modifications/additions; upstream notices remain intact.",
+    "root": "MIT",
+    "source_file_headers": "preserve verbatim"
+  },
+  "upstream": {
+    "repository": "https://github.com/Senpi-ai/senpi-skills",
+    "sha": "c3ef08a670581cd20a9d80df17d36f13266605ae"
+  }
+}

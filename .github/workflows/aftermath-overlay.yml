@@ -1,0 +1,30 @@
+name: Aftermath overlay
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  offline-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.12"
+      - name: Standard-library tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Generated catalogs are current
+        run: python3 tools/generate_coverage.py --check
+      - name: Upstream pin and source tree are exact
+        run: python3 tools/sync_upstream.py --check
+      - name: Attribution, offline, and runnable-package policy
+        run: python3 tools/lint_overlay.py

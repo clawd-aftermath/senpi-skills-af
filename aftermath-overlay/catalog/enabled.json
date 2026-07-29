@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "classification_counts": {
+      "blocked-market": 34,
+      "blocked-runtime-semantics": 6,
+      "needs-derived-data": 54,
+      "needs-field-mapping": 5,
+      "supported": 0
+    },
+    "enabled_count": 0,
+    "instance_count": 125,
+    "invariant": {
+      "enabled_plus_blocked": 99,
+      "holds": true,
+      "source_packages": 99
+    },
+    "source_package_count": 99,
+    "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae"
+  },
+  "packages": []
+}

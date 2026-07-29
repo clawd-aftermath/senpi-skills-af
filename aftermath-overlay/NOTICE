@@ -1,0 +1,12 @@
+Aftermath downstream coverage overlay
+
+The generated inventory, coverage catalogs, and field-coverage documentation
+are derived from the Senpi strategy corpus at:
+
+  Senpi-ai/senpi-skills
+  c3ef08a670581cd20a9d80df17d36f13266605ae
+
+The root repository is MIT-licensed. Individual upstream source files that
+carry Apache-2.0 notices retain those notices verbatim. Aftermath overlay
+modifications and generated derivatives preserve that provenance and are
+identified by the pinned upstream SHA.

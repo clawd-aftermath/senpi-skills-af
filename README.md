@@ -8,6 +8,21 @@ This repository is the **open-source layer** of the Senpi Hyperliquid AI Harness
 
 ---
 
+## Aftermath downstream status
+
+This branch is pinned to upstream commit
+`c3ef08a670581cd20a9d80df17d36f13266605ae` and adds an offline,
+generated coverage layer for an Aftermath-native port. It does not claim that
+the open-source strategy corpus includes Senpi's proprietary runtime, and no
+strategy is enabled until the Aftermath field, market, sizing, and execution
+contracts pass.
+
+See [`aftermath-overlay/README.md`](aftermath-overlay/README.md), the generated
+[`coverage summary`](aftermath-overlay/catalog/SUMMARY.md), and the generated
+[`field matrices`](aftermath-overlay/catalog/FIELD_COVERAGE.md).
+
+---
+
 ## The Senpi Hyperliquid AI Harness
 
 Senpi 2.0 isn't a chatbot with a trading API bolted on. It's a **harness** — a disciplined stack that wraps a market-tuned AI model in deterministic execution and risk machinery, so an autonomous agent can trade real capital without hallucinating a position or forgetting a stop.
