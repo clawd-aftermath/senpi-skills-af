@@ -1,0 +1,44 @@
+{
+  "marketDatas": [
+    {
+      "market": {
+        "collateralCoinType": "0xusdc::usdc::USDC",
+        "marketParams": {
+          "baseAssetSymbol": "BTCUSD",
+          "fundingFrequencyMs": "3600000n",
+          "fundingPeriodMs": "28800000n",
+          "lotSize": "1000n",
+          "minOrderUsdValue": 1,
+          "scalingFactor": 0.000001,
+          "tickSize": "100000n"
+        },
+        "objectId": "btc-market",
+        "packageId": "0xafter"
+      },
+      "metadata": {
+        "collateralSymbol": "USDC",
+        "symbol": "BTC"
+      }
+    },
+    {
+      "market": {
+        "collateralCoinType": "0xusdc::usdc::USDC",
+        "marketParams": {
+          "baseAssetSymbol": "PENNYUSD",
+          "fundingFrequencyMs": "14400000n",
+          "fundingPeriodMs": "28800000n",
+          "lotSize": "1000000n",
+          "minOrderUsdValue": 1,
+          "scalingFactor": 0.000001,
+          "tickSize": "10n"
+        },
+        "objectId": "penny-market",
+        "packageId": "0xafter"
+      },
+      "metadata": {
+        "collateralSymbol": "USDC",
+        "symbol": "PENNY"
+      }
+    }
+  ]
+}

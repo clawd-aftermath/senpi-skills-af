@@ -4,7 +4,7 @@
 schema_version: 1
 
 id: rooster
-version: "1.0.2"
+version: "1.0.2-af.1"
 catalog:
   name: "Rooster — The Opener"
   emoji: "🐓"
@@ -24,16 +24,17 @@ catalog:
   max_slots: 1
   min_budget: 100
   assets: ["BTC"]
-  tags: [session, market-open, time-of-day, opener, pre-open, clock, intraday, btc, single-asset, long-short, beginner]
+  status: blocked
+  tags: [session, market-open, time-of-day, opener, pre-open, clock, intraday, btc, single-asset, long-short, beginner, aftermath-shadow, blocked]
 
 requires:
-  runtime: ">=3.0.0"
+  runtime: "aftermath/v1-shadow"
 
 defaults:
-  auth_token_env: SENPI_AUTH_TOKEN
+  account_id_env: AFTERMATH_ACCOUNT_ID
 
 instances:
   - name: main
     runtime: main/runtime.yaml
-    wallet_env: ROOSTER_WALLET
+    wallet_env: AFTERMATH_ACCOUNT_CAPABILITY_ID
     funding_share: 1.0

@@ -1,0 +1,37 @@
+{
+  "accounts": [
+    {
+      "accountId": "7n",
+      "availableCollateral": 900,
+      "availableCollateralUsd": 899.5,
+      "positions": [
+        {
+          "baseAssetAmount": 0.01,
+          "collateral": 100,
+          "collateralUsd": 99.95,
+          "entryPrice": 63000,
+          "freeMarginUsd": 80,
+          "leverage": 3,
+          "liquidationPrice": 45000,
+          "marginRatio": 0.15,
+          "marketId": "btc-market",
+          "pendingOrders": [
+            {
+              "clientOrderId": "44n",
+              "currentSize": "1000000n",
+              "initialSize": "2000000n",
+              "orderId": "99n",
+              "side": 0
+            }
+          ],
+          "quoteAssetNotionalAmount": 638,
+          "unrealizedFundingsUsd": -0.05,
+          "unrealizedPnlUsd": 8
+        }
+      ],
+      "totalEquityUsd": 1007.5,
+      "totalUnrealizedFundingsUsd": -0.05,
+      "totalUnrealizedPnlUsd": 8
+    }
+  ]
+}
