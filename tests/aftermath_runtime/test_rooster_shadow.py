@@ -17,7 +17,7 @@ SCANNERS = (
     ROOT
     / "aftermath-overlay"
     / "shadow"
-    / "strategies"
+    / "harness"
     / "rooster"
     / "main"
     / "scanners"

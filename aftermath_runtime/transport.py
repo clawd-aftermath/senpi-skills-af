@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Protocol
 from urllib.request import Request, urlopen
@@ -48,10 +49,25 @@ class FixtureTransport:
 
 @dataclass(frozen=True)
 class UrllibReadTransport:
-    """Minimal production read transport; writes are structurally impossible."""
+    """Opt-in live read transport; writes are structurally impossible.
+
+    Construction requires two independent acknowledgements so importing this
+    module or selecting a default transport can never open the network.
+    """
 
     base_url: str = "https://v2-preview.aftermath.finance"
     timeout_seconds: float = 15.0
+    allow_network: bool = False
+
+    def __post_init__(self) -> None:
+        if self.allow_network is not True:
+            raise WriteDenied("live reads require allow_network=True")
+        if os.environ.get("AFTERMATH_ALLOW_LIVE_READS") != "1":
+            raise WriteDenied(
+                "live reads require AFTERMATH_ALLOW_LIVE_READS=1"
+            )
+        if self.timeout_seconds <= 0:
+            raise ContractError("timeout_seconds must be positive")
 
     def post(self, path: str, payload: Mapping[str, Any]) -> Any:
         if path not in READ_PATHS:

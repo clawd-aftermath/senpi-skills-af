@@ -18,7 +18,8 @@ Implemented:
 - Snapshot-before-delta stream reconciliation state.
 - Rooster scanner data mapping and shadow signal emission.
 - Exact preservation of the pinned upstream strategy tree; downstream canary
-  code is isolated under `aftermath-overlay/shadow/`.
+  code is isolated under `aftermath-overlay/shadow/harness/`, outside every
+  upstream strategy-discovery glob.
 
 Price/size denominations are pinned per endpoint field in
 `aftermath_runtime.models.FIELD_DENOMINATIONS`; value magnitude is never used to

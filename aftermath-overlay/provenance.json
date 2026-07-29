@@ -11,6 +11,14 @@
       "verified_at_utc": "2026-07-28T23:59:19Z"
     }
   },
+  "derived_artifacts": {
+    "rooster_shadow_scoring": {
+      "copy": "aftermath-overlay/shadow/harness/rooster/main/scanners/scoring.py",
+      "sha256": "02da647dc733795e853115c1fbfa5c5595c09d0f824386734824c1e3672e5c55",
+      "source": "strategies/rooster/main/scanners/scoring.py",
+      "source_upstream_sha": "c3ef08a670581cd20a9d80df17d36f13266605ae"
+    }
+  },
   "license_policy": {
     "modification_notice": "Aftermath overlay files are modifications/additions; upstream notices remain intact.",
     "root": "MIT",

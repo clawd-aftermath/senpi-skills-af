@@ -5,7 +5,9 @@ It ports strategy content onto a separate, Aftermath-native venue boundary
 instead of emulating Hyperliquid/Senpi MCP response shapes.
 
 The first canary is a separate Rooster shadow port under
-`aftermath-overlay/shadow/`. Upstream strategy sources remain byte-for-byte
+`aftermath-overlay/shadow/harness/`. It deliberately avoids a nested
+`strategies/` path so upstream discovery cannot mistake it for a deployable
+package. Upstream strategy sources remain byte-for-byte
 pinned. The port keeps Rooster's pure scoring and session behavior unchanged
 while consuming:
 

@@ -2,9 +2,13 @@
 from __future__ import annotations
 
 import json
+import os
+import re
+import tempfile
 import unittest
 from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 
 from aftermath_runtime import (
     AftermathVenue,
@@ -15,6 +19,7 @@ from aftermath_runtime import (
     MarketUnavailable,
     NativeCodec,
     NormalizationError,
+    UrllibReadTransport,
     WriteDenied,
     assert_runtime_enablement,
 )
@@ -22,6 +27,7 @@ from aftermath_runtime.stream import SnapshotStreamState
 from aftermath_runtime.venue import reject_error_union
 from aftermath_runtime.models import FIELD_DENOMINATIONS, require_denomination
 
+ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
@@ -256,6 +262,94 @@ class WriteBoundaryAndStreamTests(unittest.TestCase):
                 FixtureTransport({}),
                 runtime_config={"mode": "live", "write_policy": "allow"},
             )
+
+    def test_resolved_drift_still_cannot_promote_to_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            drift_path = Path(directory) / "resolved-drift.json"
+            drift_path.write_text(
+                json.dumps(
+                    {
+                        "entries": [
+                            {
+                                "blocking": True,
+                                "status": "resolved",
+                                "endpoint": "POST /api/perpetuals/markets",
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(WriteDenied, "shadow mode"):
+                assert_runtime_enablement(
+                    {"mode": "live", "write_policy": "allow"},
+                    drift_path=drift_path,
+                )
+
+    def test_live_read_transport_requires_two_explicit_opt_ins(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(WriteDenied, "allow_network"):
+                UrllibReadTransport()
+            with self.assertRaisesRegex(
+                WriteDenied, "AFTERMATH_ALLOW_LIVE_READS"
+            ):
+                UrllibReadTransport(allow_network=True)
+        with patch.dict(
+            os.environ, {"AFTERMATH_ALLOW_LIVE_READS": "1"}, clear=True
+        ):
+            with self.assertRaisesRegex(WriteDenied, "allow_network"):
+                UrllibReadTransport()
+            transport = UrllibReadTransport(allow_network=True)
+            with self.assertRaisesRegex(WriteDenied, "read-only transport"):
+                transport.post(
+                    "/api/perpetuals/account/transactions/place-limit-order",
+                    {},
+                )
+
+    def test_live_read_transport_is_post_only_timeout_bounded_and_unauthenticated(self):
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return None
+
+            def read(self):
+                return b'{"marketDatas":[]}'
+
+        with patch.dict(
+            os.environ, {"AFTERMATH_ALLOW_LIVE_READS": "1"}, clear=True
+        ):
+            transport = UrllibReadTransport(
+                allow_network=True, timeout_seconds=3.25
+            )
+            with patch(
+                "aftermath_runtime.transport.urlopen",
+                return_value=Response(),
+            ) as request_mock:
+                self.assertEqual(
+                    transport.post("/api/perpetuals/markets", {}),
+                    {"marketDatas": []},
+                )
+        request, = request_mock.call_args.args
+        self.assertEqual(request.get_method(), "POST")
+        self.assertEqual(request_mock.call_args.kwargs["timeout"], 3.25)
+        headers = {key.lower(): value for key, value in request.header_items()}
+        self.assertEqual(headers, {"content-type": "application/json"})
+
+    def test_no_module_selects_live_transport_as_a_default_or_fallback(self):
+        roots = (
+            ROOT / "aftermath_runtime",
+            ROOT / "aftermath-overlay" / "shadow",
+            ROOT / "tools",
+        )
+        callers = []
+        pattern = re.compile(r"\bUrllibReadTransport\s*\(")
+        for root in roots:
+            for source in root.rglob("*.py"):
+                if pattern.search(source.read_text(encoding="utf-8")):
+                    callers.append(str(source.relative_to(ROOT)))
+        self.assertEqual(callers, [])
 
     def test_stream_requires_new_snapshot_after_disconnect_or_gap(self):
         state = SnapshotStreamState()

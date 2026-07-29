@@ -53,7 +53,7 @@ class ContractTests(unittest.TestCase):
                 ROOT
                 / "aftermath-overlay"
                 / "shadow"
-                / "strategies"
+                / "harness"
                 / "rooster"
                 / "main"
                 / "aftermath-runtime.json"
