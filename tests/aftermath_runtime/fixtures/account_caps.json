@@ -1,0 +1,13 @@
+{
+  "accountCaps": [
+    {
+      "accountId": "7n",
+      "accountObjectId": "0xaccount",
+      "collateral": "1000000000n",
+      "collateralCoinType": "0xusdc::usdc::USDC",
+      "isAgent": true,
+      "objectId": "0xcap",
+      "walletAddress": "0xwallet"
+    }
+  ]
+}

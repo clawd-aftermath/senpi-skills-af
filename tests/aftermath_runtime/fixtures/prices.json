@@ -1,0 +1,18 @@
+{
+  "marketsPrices": [
+    {
+      "basePrice": 0.2501,
+      "collateralPrice": 1,
+      "markPrice": 0.2499,
+      "marketId": "penny-market",
+      "midPrice": 0.25
+    },
+    {
+      "basePrice": 63845.99,
+      "collateralPrice": 1,
+      "markPrice": 63820.25,
+      "marketId": "btc-market",
+      "midPrice": 63824.37
+    }
+  ]
+}

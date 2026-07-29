@@ -1,0 +1,14 @@
+{
+  "history": [
+    {
+      "cumulativeLongFundingRate": 0.0001,
+      "cumulativeShortFundingRate": -0.0001,
+      "eventTimestamp": 1100,
+      "longFundingRate": 0.00001,
+      "marketId": "btc-market",
+      "shortFundingRate": -0.00001,
+      "timestamp": 1000,
+      "txDigest": "digest"
+    }
+  ]
+}

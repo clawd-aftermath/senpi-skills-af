@@ -1,0 +1,102 @@
+{
+  "$id": "https://github.com/clawd-aftermath/senpi-skills-af/schemas/aftermath-runtime-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Read-only/shadow runtime contract for an Aftermath strategy instance. Execution capabilities are deliberately absent.",
+  "properties": {
+    "account": {
+      "additionalProperties": false,
+      "properties": {
+        "account_capability_id_env": {
+          "description": "Optional Sui capability object identifier. It is never accepted where a numeric account ID is required.",
+          "type": "string"
+        },
+        "account_id_env": {
+          "description": "Environment variable containing the numeric Aftermath account ID.",
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "account_id_env"
+      ],
+      "type": "object"
+    },
+    "market": {
+      "additionalProperties": false,
+      "properties": {
+        "required_capabilities": {
+          "items": {
+            "enum": [
+              "prices",
+              "candles",
+              "funding",
+              "account",
+              "positions",
+              "open_orders"
+            ]
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "symbol": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol",
+        "required_capabilities"
+      ],
+      "type": "object"
+    },
+    "mode": {
+      "const": "shadow"
+    },
+    "schema_version": {
+      "const": "aftermath/v1"
+    },
+    "sizing_semantics": {
+      "additionalProperties": false,
+      "properties": {
+        "collateral_mode": {
+          "const": "isolated"
+        },
+        "leverage_basis": {
+          "const": "signal_bounded_by_market"
+        },
+        "margin_pct_basis": {
+          "const": "available_collateral_usd_percent"
+        },
+        "native_price_unit": {
+          "const": "1e-9"
+        },
+        "native_size_unit": {
+          "const": "1e-9"
+        }
+      },
+      "required": [
+        "margin_pct_basis",
+        "collateral_mode",
+        "leverage_basis",
+        "native_price_unit",
+        "native_size_unit"
+      ],
+      "type": "object"
+    },
+    "write_policy": {
+      "const": "deny"
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "write_policy",
+    "account",
+    "market",
+    "sizing_semantics"
+  ],
+  "title": "Aftermath Runtime v1",
+  "type": "object"
+}

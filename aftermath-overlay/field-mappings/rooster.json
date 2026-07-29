@@ -1,0 +1,93 @@
+{
+  "strategy": "rooster",
+  "source_scanners": [
+    "strategies/rooster/main/scanners/scan.py"
+  ],
+  "ignored_literals": {
+    "runtime-state": {
+      "keys": [
+        "fired"
+      ],
+      "reason": "Local session dedup state; not read from a venue tool response."
+    },
+    "scanner-input": {
+      "keys": [
+        "assets",
+        "leverageDefault",
+        "leverageMax",
+        "leverageMin",
+        "marginPctBase",
+        "maxSlots",
+        "minScore",
+        "preOpenMinutes",
+        "sessionOpensUtc"
+      ],
+      "reason": "Operator runtime inputs; not venue response fields."
+    },
+    "scoring-output": {
+      "keys": [
+        "direction",
+        "drift_pct",
+        "minutes_to_open",
+        "range_pos",
+        "reasons",
+        "score",
+        "trend_4h",
+        "vol_ratio"
+      ],
+      "reason": "Pure scoring result fields; not read from a venue tool response."
+    }
+  },
+  "fields": [
+    {
+      "consumed": "ctx.wallet",
+      "aftermath": "gap: resolve a Sui wallet to one explicit numeric accountId before scanning",
+      "status": "gap"
+    },
+    {
+      "consumed": "ctx.state.last / ctx.state.append / len(ctx.state)",
+      "aftermath": "runtime-local durable scanner state; no HTTP route",
+      "status": "runtime-local"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.accountValue",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].totalEquityUsd",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalMarginUsed",
+      "aftermath": "gap: no exact aggregate; positions[].collateralUsd is isolated per-position collateral and must not be relabeled",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.marginSummary.totalNtlPos",
+      "aftermath": "gap: derive only after an explicit absolute-vs-net notional policy from positions[].quoteAssetNotionalAmount",
+      "status": "gap"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.szi",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].baseAssetAmount",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.coin",
+      "aftermath": "accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.marginUsed",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].collateralUsd",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.data.candles.{15m,4h}[].{o,h,l,c,v}",
+      "aftermath": "POST /api/perpetuals/market/candle-history -> candles[].{open,high,low,close,volume}; adapter converts to o/h/l/c/v strings per requested resolution",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.success",
+      "aftermath": "POST /api/perpetuals/market/candle-history HTTP status/error union is converted to a fail-closed adapter result; the V2 response has no success envelope",
+      "status": "mapped-transform"
+    }
+  ]
+}

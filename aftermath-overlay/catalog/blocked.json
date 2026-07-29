@@ -1,0 +1,2874 @@
+{
+  "meta": {
+    "classification_counts": {
+      "blocked-market": 34,
+      "blocked-runtime-semantics": 6,
+      "needs-derived-data": 54,
+      "needs-field-mapping": 5,
+      "supported": 0
+    },
+    "enabled_count": 0,
+    "instance_count": 125,
+    "invariant": {
+      "enabled_plus_blocked": 99,
+      "holds": true,
+      "source_packages": 99
+    },
+    "source_package_count": 99,
+    "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae"
+  },
+  "packages": [
+    {
+      "assets": [],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "albatross",
+      "instance_count": 1,
+      "instances": [
+        "strategies/albatross/main/runtime.yaml"
+      ],
+      "manifest": "strategies/albatross/strategy.yaml",
+      "matched_marker": "albatross",
+      "reasons": [
+        "Upstream marks the Arena-dependent package paused."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "f9cf02e1ff6424d8b984ad2762f5b7cc465c51f1429b42381cc8f916d0d54c73",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "ant",
+      "instance_count": 1,
+      "instances": [
+        "strategies/ant/main/runtime.yaml"
+      ],
+      "manifest": "strategies/ant/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "ad2a52e986b118669204590002828298a2ff1c0990d09651a19681a3e5cd4062",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "armadillo",
+      "instance_count": 1,
+      "instances": [
+        "strategies/armadillo/main/runtime.yaml"
+      ],
+      "manifest": "strategies/armadillo/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "a9b4e5657edaaa11158888069f921244983991d2ec006d4c4208c417ec4e6568",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:TSM",
+        "xyz:SMSN",
+        "xyz:SKHX",
+        "xyz:ARM",
+        "xyz:ASML",
+        "xyz:XYZ100",
+        "xyz:SP500"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "asia-ai",
+      "instance_count": 2,
+      "instances": [
+        "strategies/asia-ai/hedge/runtime.yaml",
+        "strategies/asia-ai/main/runtime.yaml"
+      ],
+      "manifest": "strategies/asia-ai/strategy.yaml",
+      "matched_marker": [
+        "ARM",
+        "ASML",
+        "SKHX",
+        "SMSN",
+        "SP500",
+        "TSM",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: ARM",
+        "Unavailable declared market: ASML",
+        "Unavailable declared market: SKHX",
+        "Unavailable declared market: SMSN",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: TSM",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "1923f509b8035c8ca020d8176701493421170ea1ff2dabb30bbbaf87a463e7c0",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "badger",
+      "instance_count": 1,
+      "instances": [
+        "strategies/badger/main/runtime.yaml"
+      ],
+      "manifest": "strategies/badger/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "2391379209699d13a484fcd8ef39480448c56c734baa28e5a1a4de22ab6908dd",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:CL",
+        "xyz:BRENTOIL",
+        "xyz:GOLD",
+        "xyz:SILVER",
+        "xyz:SP500",
+        "xyz:XYZ100"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "bald-eagle",
+      "instance_count": 1,
+      "instances": [
+        "strategies/bald-eagle/main/runtime.yaml"
+      ],
+      "manifest": "strategies/bald-eagle/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "1314bf0c7aa6295b2190e5a9c4947919bed0252dc04767e9652df9ba911618e7",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "barnacle",
+      "instance_count": 1,
+      "instances": [
+        "strategies/barnacle/main/runtime.yaml"
+      ],
+      "manifest": "strategies/barnacle/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "f95f3072bab0c5c785a18f3de47ce3f3fdfbdd27dc64e6ba5f72070ef6d5a845",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "beaver",
+      "instance_count": 1,
+      "instances": [
+        "strategies/beaver/main/runtime.yaml"
+      ],
+      "manifest": "strategies/beaver/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "7033cc19a9ef83cdc73aa59df906a534874737b2360d716cba9d8f84a7c0109b",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "bison",
+      "instance_count": 1,
+      "instances": [
+        "strategies/bison/main/runtime.yaml"
+      ],
+      "manifest": "strategies/bison/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "1a8d64eeccbe598aa46a060d32c48f3412d977fd3a42eb5f15d65a9ee7c6267f",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "bloodhound",
+      "instance_count": 1,
+      "instances": [
+        "strategies/bloodhound/main/runtime.yaml"
+      ],
+      "manifest": "strategies/bloodhound/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "9a6a71a30ba11f5489dc0c65272caf01336b624b66777583183bea8d4337cd16",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:GOLD",
+        "BTC",
+        "xyz:SILVER",
+        "xyz:PLATINUM",
+        "xyz:PALLADIUM",
+        "xyz:SP500",
+        "xyz:RIVN",
+        "xyz:DKNG",
+        "xyz:HIMS"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "boar",
+      "instance_count": 2,
+      "instances": [
+        "strategies/boar/long/runtime.yaml",
+        "strategies/boar/short/runtime.yaml"
+      ],
+      "manifest": "strategies/boar/strategy.yaml",
+      "matched_marker": [
+        "DKNG",
+        "GOLD",
+        "HIMS",
+        "PALLADIUM",
+        "PLATINUM",
+        "RIVN",
+        "SILVER",
+        "SP500"
+      ],
+      "reasons": [
+        "Unavailable declared market: DKNG",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: HIMS",
+        "Unavailable declared market: PALLADIUM",
+        "Unavailable declared market: PLATINUM",
+        "Unavailable declared market: RIVN",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SP500"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "6c8f97ec2ab1b19302029c9b7a7b4d8a6a33fe99869d707eedea46342c41a2c6",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:NVDA",
+        "xyz:TSLA",
+        "xyz:AAPL",
+        "xyz:META",
+        "xyz:MSFT",
+        "xyz:GOOGL",
+        "xyz:AMZN",
+        "xyz:AMD",
+        "xyz:MU",
+        "xyz:INTC",
+        "xyz:TSM",
+        "xyz:ORCL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "bobcat",
+      "instance_count": 1,
+      "instances": [
+        "strategies/bobcat/main/runtime.yaml"
+      ],
+      "manifest": "strategies/bobcat/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "4eafeb5d0d03e1b5c0aaf3dc95de0ea58fc25ba1fafb0e30366990cc4d68003e",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "camel",
+      "instance_count": 2,
+      "instances": [
+        "strategies/camel/harvest/runtime.yaml",
+        "strategies/camel/payout/runtime.yaml"
+      ],
+      "manifest": "strategies/camel/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "ab4fdc9d4cd8cf5d5cba490e2f4076ca2dd9804e901db8fe12715487b68f513f",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "caracal",
+      "instance_count": 2,
+      "instances": [
+        "strategies/caracal/breakout/runtime.yaml",
+        "strategies/caracal/catalyst/runtime.yaml"
+      ],
+      "manifest": "strategies/caracal/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "2c217c87d1b8490e70c3ae409783e12cc9543aec0673e8fb3c2eb0e47d0e263b",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "caribou",
+      "instance_count": 2,
+      "instances": [
+        "strategies/caribou/long/runtime.yaml",
+        "strategies/caribou/short/runtime.yaml"
+      ],
+      "manifest": "strategies/caribou/strategy.yaml",
+      "matched_marker": "caribou",
+      "reasons": [
+        "Fraction-valued minMarginPct/maxMarginPct are unsafe under percent-valued runtime semantics."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "e970b4b4ae22cd8d22ffe8c7169942a166284146c2327294efa97c68972c965f",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "ETH",
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "chameleon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/chameleon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/chameleon/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "ea804bf9c9713dbca29f49bfa680c932767f62524444a960917361871e9ea6ea",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "cheetah",
+      "instance_count": 1,
+      "instances": [
+        "strategies/cheetah/main/runtime.yaml"
+      ],
+      "manifest": "strategies/cheetah/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "6d11a8dc7f30f21f9924343aaeb283086128a35f9c73a6590e924f49803d0d89",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "chimp",
+      "instance_count": 1,
+      "instances": [
+        "strategies/chimp/main/runtime.yaml"
+      ],
+      "manifest": "strategies/chimp/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "2f1d469930745226b814f75de77bb25ae7f5905acf59f632878ab96b8b8075cd",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "condor",
+      "instance_count": 1,
+      "instances": [
+        "strategies/condor/main/runtime.yaml"
+      ],
+      "manifest": "strategies/condor/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "6f6161c340aaf79620d4bdd16462ae48ae72c2d501edfbe9f50d32126aa05985",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:NVDA",
+        "xyz:TSLA",
+        "xyz:AAPL",
+        "xyz:META",
+        "xyz:MSFT",
+        "xyz:GOOGL",
+        "xyz:AMZN",
+        "xyz:AMD",
+        "xyz:MU",
+        "xyz:INTC",
+        "xyz:TSM",
+        "xyz:ORCL",
+        "xyz:NFLX",
+        "xyz:AVGO",
+        "xyz:COIN",
+        "xyz:MSTR",
+        "xyz:PLTR",
+        "xyz:SPCX"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "cougar",
+      "instance_count": 2,
+      "instances": [
+        "strategies/cougar/long/runtime.yaml",
+        "strategies/cougar/short/runtime.yaml"
+      ],
+      "manifest": "strategies/cougar/strategy.yaml",
+      "matched_marker": [
+        "AAPL",
+        "AMD",
+        "AMZN",
+        "AVGO",
+        "COIN",
+        "GOOGL",
+        "INTC",
+        "META",
+        "MSFT",
+        "MSTR",
+        "MU",
+        "NFLX",
+        "NVDA",
+        "ORCL",
+        "PLTR",
+        "SPCX",
+        "TSLA",
+        "TSM"
+      ],
+      "reasons": [
+        "Unavailable declared market: AAPL",
+        "Unavailable declared market: AMD",
+        "Unavailable declared market: AMZN",
+        "Unavailable declared market: AVGO",
+        "Unavailable declared market: COIN",
+        "Unavailable declared market: GOOGL",
+        "Unavailable declared market: INTC",
+        "Unavailable declared market: META",
+        "Unavailable declared market: MSFT",
+        "Unavailable declared market: MSTR",
+        "Unavailable declared market: MU",
+        "Unavailable declared market: NFLX",
+        "Unavailable declared market: NVDA",
+        "Unavailable declared market: ORCL",
+        "Unavailable declared market: PLTR",
+        "Unavailable declared market: SPCX",
+        "Unavailable declared market: TSLA",
+        "Unavailable declared market: TSM"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "25cc92a83d91955377f8dd6e240230c8fbde4da13aed89df5803cf2db1ad3bdd",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-field-mapping",
+      "enabled": false,
+      "id": "coyote",
+      "instance_count": 1,
+      "instances": [
+        "strategies/coyote/main/runtime.yaml"
+      ],
+      "manifest": "strategies/coyote/strategy.yaml",
+      "matched_marker": "coyote",
+      "reasons": [
+        "Market is available, but scanner fields and runtime semantics must be ported to the typed Aftermath interface."
+      ],
+      "rule_id": "explicit-field-mapping-candidate",
+      "source_sha256": "9b7556e1bae756aee1cba8ec10f88150f486fda12f665e1b63c3987f81d0f0d7",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "crane",
+      "instance_count": 1,
+      "instances": [
+        "strategies/crane/main/runtime.yaml"
+      ],
+      "manifest": "strategies/crane/strategy.yaml",
+      "matched_marker": "crane",
+      "reasons": [
+        "Coordinated multi-leg close is not implemented; keep blocked until an atomic Aftermath PTB path is proven."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "6f4e2b3d81225749964f27f3187ed2878617a342522b1921465ad7c12047b003",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:NVDA",
+        "xyz:AMD",
+        "xyz:MRVL",
+        "xyz:ARM",
+        "xyz:AVGO",
+        "xyz:TSM",
+        "xyz:ASML",
+        "xyz:MU",
+        "xyz:CRWV",
+        "xyz:GOOGL",
+        "xyz:MSFT",
+        "xyz:META",
+        "xyz:AMZN",
+        "xyz:ORCL",
+        "xyz:PLTR",
+        "xyz:SPCX",
+        "HYPE",
+        "SOL",
+        "xyz:SP500",
+        "ETH",
+        "XRP",
+        "DOGE",
+        "AVAX",
+        "LINK"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "cub",
+      "instance_count": 3,
+      "instances": [
+        "strategies/cub/long/runtime.yaml",
+        "strategies/cub/preipo/runtime.yaml",
+        "strategies/cub/short/runtime.yaml"
+      ],
+      "manifest": "strategies/cub/strategy.yaml",
+      "matched_marker": [
+        "AMD",
+        "AMZN",
+        "ARM",
+        "ASML",
+        "AVAX",
+        "AVGO",
+        "CRWV",
+        "DOGE",
+        "ETH",
+        "GOOGL",
+        "HYPE",
+        "LINK",
+        "META",
+        "MRVL",
+        "MSFT",
+        "MU",
+        "NVDA",
+        "ORCL",
+        "PLTR",
+        "SOL",
+        "SP500",
+        "SPCX",
+        "TSM",
+        "XRP"
+      ],
+      "reasons": [
+        "Unavailable declared market: AMD",
+        "Unavailable declared market: AMZN",
+        "Unavailable declared market: ARM",
+        "Unavailable declared market: ASML",
+        "Unavailable declared market: AVAX",
+        "Unavailable declared market: AVGO",
+        "Unavailable declared market: CRWV",
+        "Unavailable declared market: DOGE",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOOGL",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: LINK",
+        "Unavailable declared market: META",
+        "Unavailable declared market: MRVL",
+        "Unavailable declared market: MSFT",
+        "Unavailable declared market: MU",
+        "Unavailable declared market: NVDA",
+        "Unavailable declared market: ORCL",
+        "Unavailable declared market: PLTR",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: SPCX",
+        "Unavailable declared market: TSM",
+        "Unavailable declared market: XRP"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "d03e7ef045c04d3358081934ec2b2156a081eebf0b51e75ffb626b70fd5eab6b",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "cuckoo",
+      "instance_count": 1,
+      "instances": [
+        "strategies/cuckoo/main/runtime.yaml"
+      ],
+      "manifest": "strategies/cuckoo/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "4a3af21987c5abaea07762ff385391ccb81ce11ea7a1cfe937ae59fc510888a2",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:BRENTOIL"
+      ],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "dire",
+      "instance_count": 1,
+      "instances": [
+        "strategies/dire/main/runtime.yaml"
+      ],
+      "manifest": "strategies/dire/strategy.yaml",
+      "matched_marker": "dire",
+      "reasons": [
+        "Fraction-valued sizing-tier marginPct is unsafe under percent-valued runtime semantics."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "6ab2a84771c383cc4eb93ef91622113ccdb107ba55a6fa6d11781f178e5b0510",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "dog",
+      "instance_count": 1,
+      "instances": [
+        "strategies/dog/main/runtime.yaml"
+      ],
+      "manifest": "strategies/dog/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "29d5f8231465bbba0f22d461ac2ed1578e44f96680fd92008a82a967cd81e8e6",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "dragonfly",
+      "instance_count": 2,
+      "instances": [
+        "strategies/dragonfly/btc/runtime.yaml",
+        "strategies/dragonfly/hype/runtime.yaml"
+      ],
+      "manifest": "strategies/dragonfly/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_",
+        "market_get_cross_asset_flow"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_",
+        "Requires Senpi-derived data marker: market_get_cross_asset_flow"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "b49e66fcce65318d8ad6e59b5737117d9d9b7158ca96b0ff2671493c387ebfb0",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:URNM",
+        "xyz:NATGAS",
+        "xyz:COPPER",
+        "xyz:BE",
+        "xyz:USAR",
+        "xyz:BRENTOIL",
+        "xyz:CL"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "eel",
+      "instance_count": 2,
+      "instances": [
+        "strategies/eel/long/runtime.yaml",
+        "strategies/eel/short/runtime.yaml"
+      ],
+      "manifest": "strategies/eel/strategy.yaml",
+      "matched_marker": [
+        "BE",
+        "BRENTOIL",
+        "CL",
+        "COPPER",
+        "NATGAS",
+        "URNM",
+        "USAR"
+      ],
+      "reasons": [
+        "Unavailable declared market: BE",
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: CL",
+        "Unavailable declared market: COPPER",
+        "Unavailable declared market: NATGAS",
+        "Unavailable declared market: URNM",
+        "Unavailable declared market: USAR"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "faea9c60d0b37607089d1c13d67ad3ebb1a6583698e1523c672b661416148755",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "egret",
+      "instance_count": 1,
+      "instances": [
+        "strategies/egret/main/runtime.yaml"
+      ],
+      "manifest": "strategies/egret/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "d8e94c4820139c97f09f1123f9743696ed6ca0a4198c37759c17c27644398898",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "xyz:SP500",
+        "xyz:XYZ100",
+        "xyz:JP225",
+        "xyz:KR200",
+        "xyz:GOLD",
+        "xyz:SILVER",
+        "xyz:PLATINUM",
+        "xyz:COPPER",
+        "xyz:BRENTOIL",
+        "xyz:CL",
+        "xyz:NATGAS",
+        "xyz:EUR",
+        "xyz:JPY",
+        "xyz:GBP"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "elephant",
+      "instance_count": 2,
+      "instances": [
+        "strategies/elephant/fade/runtime.yaml",
+        "strategies/elephant/trend/runtime.yaml"
+      ],
+      "manifest": "strategies/elephant/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "CL",
+        "COPPER",
+        "EUR",
+        "GBP",
+        "GOLD",
+        "JP225",
+        "JPY",
+        "KR200",
+        "NATGAS",
+        "PLATINUM",
+        "SILVER",
+        "SP500",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: CL",
+        "Unavailable declared market: COPPER",
+        "Unavailable declared market: EUR",
+        "Unavailable declared market: GBP",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: JP225",
+        "Unavailable declared market: JPY",
+        "Unavailable declared market: KR200",
+        "Unavailable declared market: NATGAS",
+        "Unavailable declared market: PLATINUM",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "d88006d6c1d64b2b094db0aed55f234202290b44d480f6e047f2db31ffc29b7c",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "falcon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/falcon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/falcon/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "8565f0cec9dbbf594c64cac9b07d12b6246dc867f0e7c9863ae47d4c6421a0c4",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-field-mapping",
+      "enabled": false,
+      "id": "gecko",
+      "instance_count": 1,
+      "instances": [
+        "strategies/gecko/main/runtime.yaml"
+      ],
+      "manifest": "strategies/gecko/strategy.yaml",
+      "matched_marker": "gecko",
+      "reasons": [
+        "Market is available, but scanner fields and runtime semantics must be ported to the typed Aftermath interface."
+      ],
+      "rule_id": "explicit-field-mapping-candidate",
+      "source_sha256": "e58e9df1e42f6e53af96ddacae0386aa5203ccfa5adbca93214e8d35cb6b40e7",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "gibbon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/gibbon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/gibbon/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "5f3e635c69555e3446cc9ec2c3fb7538ef3ce2f9426b66cbecf8cc848b7c4f12",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "gorilla",
+      "instance_count": 1,
+      "instances": [
+        "strategies/gorilla/main/runtime.yaml"
+      ],
+      "manifest": "strategies/gorilla/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "8892586b6387768831a053d1a11f74c227ad152345016a1ec31bb7a4797ebff3",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "grizzly",
+      "instance_count": 1,
+      "instances": [
+        "strategies/grizzly/main/runtime.yaml"
+      ],
+      "manifest": "strategies/grizzly/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "3a9d4051afa920345acb68182ac74765699becd47df07389699bdb84201d11af",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "hawk",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hawk/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hawk/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "8719aea9654b58271e7098d11b9b92a5dec1d7d6cfe1690d858f702afe08bc3f",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "hedgehog",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hedgehog/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hedgehog/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "f4b4f541da80cc0c01dbe703b56b522b791fa6d933a6643950f312f036567085",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:NVDA",
+        "xyz:TSLA",
+        "xyz:AAPL",
+        "xyz:META",
+        "xyz:MSFT",
+        "xyz:GOOGL",
+        "xyz:AMZN",
+        "xyz:AMD",
+        "xyz:MU",
+        "xyz:INTC",
+        "xyz:TSM",
+        "xyz:ORCL"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "hen",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hen/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hen/strategy.yaml",
+      "matched_marker": [
+        "AAPL",
+        "AMD",
+        "AMZN",
+        "GOOGL",
+        "INTC",
+        "META",
+        "MSFT",
+        "MU",
+        "NVDA",
+        "ORCL",
+        "TSLA",
+        "TSM"
+      ],
+      "reasons": [
+        "Unavailable declared market: AAPL",
+        "Unavailable declared market: AMD",
+        "Unavailable declared market: AMZN",
+        "Unavailable declared market: GOOGL",
+        "Unavailable declared market: INTC",
+        "Unavailable declared market: META",
+        "Unavailable declared market: MSFT",
+        "Unavailable declared market: MU",
+        "Unavailable declared market: NVDA",
+        "Unavailable declared market: ORCL",
+        "Unavailable declared market: TSLA",
+        "Unavailable declared market: TSM"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "186ec21adfa3dfb6ccc552bfd57b6866de8812c0e3709a496da82a47dbcf3cce",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "ETH"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "heron",
+      "instance_count": 1,
+      "instances": [
+        "strategies/heron/main/runtime.yaml"
+      ],
+      "manifest": "strategies/heron/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "12f749efc240baa72cd812e22ffd261d479245de8d94d0f9a63a5d1a1f6b8078",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:ASML",
+        "xyz:AMAT",
+        "xyz:MRVL",
+        "xyz:NVDA",
+        "xyz:AMD",
+        "xyz:AVGO",
+        "xyz:TSM",
+        "xyz:QCOM",
+        "xyz:ARM",
+        "xyz:INTC",
+        "xyz:SMH",
+        "xyz:MU",
+        "xyz:SNDK",
+        "xyz:SMSN",
+        "xyz:SKHX",
+        "xyz:WDC"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "hornet",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hornet/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hornet/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "235158393a729246b561e319d9f05b62680717d6dd7e4ae6cae40adc96184d6d",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "hummingbird",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hummingbird/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hummingbird/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "dfd79dec2cfc6a7b1c6c8c903ac97ef7d9325c5701ecf5f552b0be945266057e",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "ETH",
+        "SOL",
+        "HYPE",
+        "BTC",
+        "BNB",
+        "XRP",
+        "DOGE",
+        "AVAX",
+        "xyz:SP500",
+        "xyz:XYZ100"
+      ],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "hydra",
+      "instance_count": 3,
+      "instances": [
+        "strategies/hydra/core/runtime.yaml",
+        "strategies/hydra/dip/runtime.yaml",
+        "strategies/hydra/hedge/runtime.yaml"
+      ],
+      "manifest": "strategies/hydra/strategy.yaml",
+      "matched_marker": "hydra",
+      "reasons": [
+        "Fraction-valued hedge minMarginPct/maxMarginPct are unsafe under percent-valued runtime semantics."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "f7887668568cc4a0dd3ab239e2ff21926eb817beeb7954c9c98562fcb7f64d48",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "xyz:MSTR",
+        "xyz:COIN",
+        "xyz:CRCL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "hyena",
+      "instance_count": 1,
+      "instances": [
+        "strategies/hyena/main/runtime.yaml"
+      ],
+      "manifest": "strategies/hyena/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "d6c011aa7a54e405c6f42eb51fb9bafcbd70a33f1afcc0017fa407d61202821e",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "ibis",
+      "instance_count": 1,
+      "instances": [
+        "strategies/ibis/main/runtime.yaml"
+      ],
+      "manifest": "strategies/ibis/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "fe8b49302a982ed247ca8b2e3f62a24daaa82b243d1843799eb6ccb4f012de35",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:SP500",
+        "xyz:XYZ100"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "iguana",
+      "instance_count": 1,
+      "instances": [
+        "strategies/iguana/main/runtime.yaml"
+      ],
+      "manifest": "strategies/iguana/strategy.yaml",
+      "matched_marker": [
+        "SP500",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "1a38cde84dbaf8c4db685b01c8a703fff1ada30cf2b7ea292178eb6c645ee8f5",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "jackal",
+      "instance_count": 1,
+      "instances": [
+        "strategies/jackal/main/runtime.yaml"
+      ],
+      "manifest": "strategies/jackal/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "0464611d679eea3a536331a034a241316a4d78ca67dce5bcd721f3e71945df6b",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "jaguar",
+      "instance_count": 1,
+      "instances": [
+        "strategies/jaguar/main/runtime.yaml"
+      ],
+      "manifest": "strategies/jaguar/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "b92c0ee6428e52bc9d9647ad46507eaf15af67810d659078da516ed33409fe00",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:CL",
+        "xyz:BRENTOIL",
+        "xyz:GOLD",
+        "xyz:SP500",
+        "xyz:XYZ100",
+        "xyz:AAPL",
+        "xyz:NVDA",
+        "xyz:GOOGL",
+        "xyz:TSLA",
+        "xyz:AMZN",
+        "xyz:META",
+        "xyz:MSFT"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "kestrel",
+      "instance_count": 1,
+      "instances": [
+        "strategies/kestrel/main/runtime.yaml"
+      ],
+      "manifest": "strategies/kestrel/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "88e285ad2f001b3687172a7de1024a0ef4b75ec765e58dc603f0454050f1a51a",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "BNB",
+        "XRP",
+        "AVAX",
+        "LINK",
+        "DOGE"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "kingfisher",
+      "instance_count": 1,
+      "instances": [
+        "strategies/kingfisher/main/runtime.yaml"
+      ],
+      "manifest": "strategies/kingfisher/strategy.yaml",
+      "matched_marker": [
+        "AVAX",
+        "BNB",
+        "DOGE",
+        "ETH",
+        "LINK",
+        "SOL",
+        "XRP"
+      ],
+      "reasons": [
+        "Unavailable declared market: AVAX",
+        "Unavailable declared market: BNB",
+        "Unavailable declared market: DOGE",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: LINK",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: XRP"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "d4f4f5402473f5d868794bd4cdcb02416d9e3535a14e2b1f9f3031391cf78f0f",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-field-mapping",
+      "enabled": false,
+      "id": "koala",
+      "instance_count": 1,
+      "instances": [
+        "strategies/koala/main/runtime.yaml"
+      ],
+      "manifest": "strategies/koala/strategy.yaml",
+      "matched_marker": "koala",
+      "reasons": [
+        "Market is available, but scanner fields and runtime semantics must be ported to the typed Aftermath interface."
+      ],
+      "rule_id": "explicit-field-mapping-candidate",
+      "source_sha256": "f3f75612bd87c045aae467f7abe2bd4c80594c185068196fde0ef9e9d7d078c2",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "kodiak",
+      "instance_count": 1,
+      "instances": [
+        "strategies/kodiak/main/runtime.yaml"
+      ],
+      "manifest": "strategies/kodiak/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "ada16321a5d3df02a19ebfd182464a2534aaa57287e54ab35fa1de171859f8bc",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "AVAX",
+        "DOGE",
+        "LINK",
+        "XRP",
+        "ADA",
+        "NEAR",
+        "UNI",
+        "AAVE",
+        "xyz:BRENTOIL",
+        "xyz:CL",
+        "xyz:GOLD",
+        "xyz:SP500"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "lemon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/lemon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/lemon/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "7e2f7a2853e2996e30f072711bd8a84badcead99911e78d32fce2bd11e584b21",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:SPCX"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "lemur",
+      "instance_count": 1,
+      "instances": [
+        "strategies/lemur/main/runtime.yaml"
+      ],
+      "manifest": "strategies/lemur/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "a082a41326e06d2623beae8b64b702f2189d98620ccdc362d8281165af08a7c7",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:NVDA",
+        "xyz:AMD",
+        "xyz:MRVL",
+        "xyz:ARM",
+        "xyz:AVGO",
+        "xyz:INTC",
+        "xyz:TSM",
+        "xyz:ASML",
+        "xyz:CBRS",
+        "xyz:MU",
+        "xyz:SMSN",
+        "xyz:SKHX",
+        "xyz:SNDK",
+        "xyz:CRWV",
+        "xyz:NBIS",
+        "xyz:DELL",
+        "xyz:LITE",
+        "xyz:GOOGL",
+        "xyz:MSFT",
+        "xyz:META",
+        "xyz:AMZN",
+        "xyz:ORCL",
+        "xyz:PLTR",
+        "xyz:NOW",
+        "xyz:IBM",
+        "xyz:SPCX",
+        "xyz:QNT",
+        "HYPE",
+        "SOL",
+        "xyz:SP500",
+        "ETH",
+        "XRP",
+        "DOGE",
+        "AVAX",
+        "LINK",
+        "ADA",
+        "LTC",
+        "NEAR",
+        "APT"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "lion",
+      "instance_count": 2,
+      "instances": [
+        "strategies/lion/long/runtime.yaml",
+        "strategies/lion/short/runtime.yaml"
+      ],
+      "manifest": "strategies/lion/strategy.yaml",
+      "matched_marker": [
+        "ADA",
+        "AMD",
+        "AMZN",
+        "APT",
+        "ARM",
+        "ASML",
+        "AVAX",
+        "AVGO",
+        "CBRS",
+        "CRWV",
+        "DELL",
+        "DOGE",
+        "ETH",
+        "GOOGL",
+        "HYPE",
+        "IBM",
+        "INTC",
+        "LINK",
+        "LITE",
+        "LTC",
+        "META",
+        "MRVL",
+        "MSFT",
+        "MU",
+        "NBIS",
+        "NEAR",
+        "NOW",
+        "NVDA",
+        "ORCL",
+        "PLTR",
+        "QNT",
+        "SKHX",
+        "SMSN",
+        "SNDK",
+        "SOL",
+        "SP500",
+        "SPCX",
+        "TSM",
+        "XRP"
+      ],
+      "reasons": [
+        "Unavailable declared market: ADA",
+        "Unavailable declared market: AMD",
+        "Unavailable declared market: AMZN",
+        "Unavailable declared market: APT",
+        "Unavailable declared market: ARM",
+        "Unavailable declared market: ASML",
+        "Unavailable declared market: AVAX",
+        "Unavailable declared market: AVGO",
+        "Unavailable declared market: CBRS",
+        "Unavailable declared market: CRWV",
+        "Unavailable declared market: DELL",
+        "Unavailable declared market: DOGE",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOOGL",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: IBM",
+        "Unavailable declared market: INTC",
+        "Unavailable declared market: LINK",
+        "Unavailable declared market: LITE",
+        "Unavailable declared market: LTC",
+        "Unavailable declared market: META",
+        "Unavailable declared market: MRVL",
+        "Unavailable declared market: MSFT",
+        "Unavailable declared market: MU",
+        "Unavailable declared market: NBIS",
+        "Unavailable declared market: NEAR",
+        "Unavailable declared market: NOW",
+        "Unavailable declared market: NVDA",
+        "Unavailable declared market: ORCL",
+        "Unavailable declared market: PLTR",
+        "Unavailable declared market: QNT",
+        "Unavailable declared market: SKHX",
+        "Unavailable declared market: SMSN",
+        "Unavailable declared market: SNDK",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: SPCX",
+        "Unavailable declared market: TSM",
+        "Unavailable declared market: XRP"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "6609de5a4aea86e24c62290c2deb7973c13c3fb576a4bde96de7a30a58d79313",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "lynx",
+      "instance_count": 1,
+      "instances": [
+        "strategies/lynx/main/runtime.yaml"
+      ],
+      "manifest": "strategies/lynx/strategy.yaml",
+      "matched_marker": [
+        "audit_query",
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: audit_query",
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "2834eace85899e4e09ca86151b1a1f378b15afb2482ac8cb5556478c73591418",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "magpie",
+      "instance_count": 2,
+      "instances": [
+        "strategies/magpie/graduation/runtime.yaml",
+        "strategies/magpie/pre_listing/runtime.yaml"
+      ],
+      "manifest": "strategies/magpie/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "6c7d51716fdae2cd79caf2e2589402b72616b0592e6d1ab3e49a0066e1b36fcf",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:EUR",
+        "xyz:GBP",
+        "xyz:JPY"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "manta",
+      "instance_count": 1,
+      "instances": [
+        "strategies/manta/main/runtime.yaml"
+      ],
+      "manifest": "strategies/manta/strategy.yaml",
+      "matched_marker": [
+        "EUR",
+        "GBP",
+        "JPY"
+      ],
+      "reasons": [
+        "Unavailable declared market: EUR",
+        "Unavailable declared market: GBP",
+        "Unavailable declared market: JPY"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "64f97548586253bc9b1f14b8d50c140adb3147548bfda31eb5184ca4680ccf05",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "mantis",
+      "instance_count": 1,
+      "instances": [
+        "strategies/mantis/main/runtime.yaml"
+      ],
+      "manifest": "strategies/mantis/strategy.yaml",
+      "matched_marker": [
+        "market_get_cross_asset_flow"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: market_get_cross_asset_flow"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "01d87c01372afc0557afd51ec13326b700ecfd69aa378c282aa3be0fb3041e3c",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "marlin",
+      "instance_count": 1,
+      "instances": [
+        "strategies/marlin/main/runtime.yaml"
+      ],
+      "manifest": "strategies/marlin/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "de9f6aec5e4661c6e06664ab07ac96922018ba60b74c2eaf253fba8845357567",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "meerkat",
+      "instance_count": 1,
+      "instances": [
+        "strategies/meerkat/main/runtime.yaml"
+      ],
+      "manifest": "strategies/meerkat/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "8b96acb6c2c4979e385522b9ba13f3f0f675ecc14658b69592d3002547399b85",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "HYPE",
+        "xyz:CRCL",
+        "xyz:COIN",
+        "xyz:HOOD",
+        "xyz:MSTR",
+        "xyz:PURRDAT",
+        "xyz:BX",
+        "xyz:SP500"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "mongoose",
+      "instance_count": 2,
+      "instances": [
+        "strategies/mongoose/long/runtime.yaml",
+        "strategies/mongoose/short/runtime.yaml"
+      ],
+      "manifest": "strategies/mongoose/strategy.yaml",
+      "matched_marker": [
+        "BX",
+        "COIN",
+        "CRCL",
+        "HOOD",
+        "HYPE",
+        "MSTR",
+        "PURRDAT",
+        "SP500"
+      ],
+      "reasons": [
+        "Unavailable declared market: BX",
+        "Unavailable declared market: COIN",
+        "Unavailable declared market: CRCL",
+        "Unavailable declared market: HOOD",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: MSTR",
+        "Unavailable declared market: PURRDAT",
+        "Unavailable declared market: SP500"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "185a52c24abb5e1edda6da25413194bda0605657848cd46e1a660beec88b1310",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "octopus",
+      "instance_count": 2,
+      "instances": [
+        "strategies/octopus/long/runtime.yaml",
+        "strategies/octopus/short/runtime.yaml"
+      ],
+      "manifest": "strategies/octopus/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "da6036749dece54330757bda4ff9d0bba693155afcd0a08412762197d7070bcd",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "orangutan",
+      "instance_count": 1,
+      "instances": [
+        "strategies/orangutan/main/runtime.yaml"
+      ],
+      "manifest": "strategies/orangutan/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "84d5b49a99ec4b0e1ee92efa6a45988ad9938f4052c08b698321a78fc9dfe1f5",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "orca",
+      "instance_count": 1,
+      "instances": [
+        "strategies/orca/main/runtime.yaml"
+      ],
+      "manifest": "strategies/orca/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "bb6bdfb7bfed93e2c266b0a3e1eb1bac72e5b48a530f6850e6fc646a3894b465",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:COIN",
+        "xyz:MSTR"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "osprey",
+      "instance_count": 1,
+      "instances": [
+        "strategies/osprey/main/runtime.yaml"
+      ],
+      "manifest": "strategies/osprey/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_",
+        "market_get_cross_asset_flow"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_",
+        "Requires Senpi-derived data marker: market_get_cross_asset_flow"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "0b7df94aa42420f2b8e6697f5487e96f5f2e9b39326de984c2d18c82aaefc898",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "otter",
+      "instance_count": 1,
+      "instances": [
+        "strategies/otter/main/runtime.yaml"
+      ],
+      "manifest": "strategies/otter/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "68150e67c59e79ef11fcb88c72d039ce25330b545add46da320161b8c0cab43a",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "owl",
+      "instance_count": 1,
+      "instances": [
+        "strategies/owl/main/runtime.yaml"
+      ],
+      "manifest": "strategies/owl/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "aeac8c5fa3a7a30a91b1a0b8167f2ba8d3d8cf2ab00a8567c341ecf6f4b09158",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "xyz:SP500",
+        "xyz:XYZ100",
+        "xyz:GOLD",
+        "xyz:COPPER",
+        "xyz:BRENTOIL",
+        "xyz:JPY",
+        "xyz:SILVER"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "ox",
+      "instance_count": 2,
+      "instances": [
+        "strategies/ox/ballast/runtime.yaml",
+        "strategies/ox/core/runtime.yaml"
+      ],
+      "manifest": "strategies/ox/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "COPPER",
+        "ETH",
+        "GOLD",
+        "JPY",
+        "SILVER",
+        "SOL",
+        "SP500",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: COPPER",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: JPY",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "18c0cfba9016147ff130d92902153c9b0438a78fc3b55a3d942790fceebaea8e",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "oxpecker",
+      "instance_count": 1,
+      "instances": [
+        "strategies/oxpecker/main/runtime.yaml"
+      ],
+      "manifest": "strategies/oxpecker/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "47b601c27b004c9cc0fb9aefd3e84006c7b7d3e6901f8c4ec9770f5b264bd87b",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "pangolin",
+      "instance_count": 1,
+      "instances": [
+        "strategies/pangolin/main/runtime.yaml"
+      ],
+      "manifest": "strategies/pangolin/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "f06a767e405808401bf806a7c33b2bdecf981764d86ad8fba82290f5ad4ac007",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "piranha",
+      "instance_count": 1,
+      "instances": [
+        "strategies/piranha/main/runtime.yaml"
+      ],
+      "manifest": "strategies/piranha/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "6cbcc3eab5802ed034c0311c884ebc0d045acf41e8ca32e31b3275c50e84b30c",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "ETH"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "polar",
+      "instance_count": 1,
+      "instances": [
+        "strategies/polar/main/runtime.yaml"
+      ],
+      "manifest": "strategies/polar/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "6faf72fc400afb133bdc7340ffdd00f4af189706498b7ed9b9f0829763be94a8",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.2"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "python",
+      "instance_count": 1,
+      "instances": [
+        "strategies/python/main/runtime.yaml"
+      ],
+      "manifest": "strategies/python/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "011cc06678d2bf15aba6e5f8f7b9e96ecb5d0d27c42387391efaf9616b25c467",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "raccoon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/raccoon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/raccoon/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "d2087836c2d416d28ce00d8d253f002ac7bf224446558a9462134f921c824a33",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "xyz:GOLD"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "ram",
+      "instance_count": 1,
+      "instances": [
+        "strategies/ram/main/runtime.yaml"
+      ],
+      "manifest": "strategies/ram/strategy.yaml",
+      "matched_marker": [
+        "GOLD"
+      ],
+      "reasons": [
+        "Unavailable declared market: GOLD"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "4c5cb24f1bc475a68d02a9a0a2dadcaef9e4a78ac4f5661afd8551869e418a5d",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "raptor",
+      "instance_count": 1,
+      "instances": [
+        "strategies/raptor/main/runtime.yaml"
+      ],
+      "manifest": "strategies/raptor/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "bb50243ed523fc33df3f451e26065325a59be69cd4342bf8003485833ec4b29c",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "raven",
+      "instance_count": 1,
+      "instances": [
+        "strategies/raven/main/runtime.yaml"
+      ],
+      "manifest": "strategies/raven/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "7f759f5f6b59ce911f3ac8a2340b46251ba524715314bc1002ae13c518779a80",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "remora",
+      "instance_count": 1,
+      "instances": [
+        "strategies/remora/main/runtime.yaml"
+      ],
+      "manifest": "strategies/remora/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "dca34eab68d2f5b7e09a115df2957475a5ed1a4718b5b6da3305e4703fd1dae5",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.1.0"
+    },
+    {
+      "assets": [
+        "xyz:GOLD",
+        "xyz:SILVER",
+        "xyz:BRENTOIL",
+        "xyz:CL",
+        "xyz:NATGAS",
+        "xyz:JPY",
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "SUI",
+        "xyz:XYZ100",
+        "xyz:SP500"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "rhino",
+      "instance_count": 2,
+      "instances": [
+        "strategies/rhino/escalation/runtime.yaml",
+        "strategies/rhino/hedge/runtime.yaml"
+      ],
+      "manifest": "strategies/rhino/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "CL",
+        "ETH",
+        "GOLD",
+        "HYPE",
+        "JPY",
+        "NATGAS",
+        "SILVER",
+        "SOL",
+        "SP500",
+        "SUI",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: CL",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: JPY",
+        "Unavailable declared market: NATGAS",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: SUI",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "8dbe6bd61ae838be030de5ce6b6c135a3e8eff917512547dd2229249b9393777",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "roach",
+      "instance_count": 1,
+      "instances": [
+        "strategies/roach/main/runtime.yaml"
+      ],
+      "manifest": "strategies/roach/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "1e5632cb6abdc531aae152b53e2e387aa5117103875ff06f6be4ed2b7ecab5f7",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-field-mapping",
+      "enabled": false,
+      "id": "rooster",
+      "instance_count": 1,
+      "instances": [
+        "strategies/rooster/main/runtime.yaml"
+      ],
+      "manifest": "strategies/rooster/strategy.yaml",
+      "matched_marker": "rooster",
+      "reasons": [
+        "Market is available, but scanner fields and runtime semantics must be ported to the typed Aftermath interface."
+      ],
+      "rule_id": "explicit-field-mapping-candidate",
+      "source_sha256": "7fde2a1758c896bb5acfadf3d622bd04ca6037a08dc8aa023df8a7a9ee389d74",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.2"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "sailfish",
+      "instance_count": 1,
+      "instances": [
+        "strategies/sailfish/main/runtime.yaml"
+      ],
+      "manifest": "strategies/sailfish/strategy.yaml",
+      "matched_marker": [
+        "ETH",
+        "HYPE",
+        "SOL"
+      ],
+      "reasons": [
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: SOL"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "b9b43c455ddda31952c4df47895eccd29ea75e33925aca0b8eed4b9d53f8f223",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "salamander",
+      "instance_count": 1,
+      "instances": [
+        "strategies/salamander/main/runtime.yaml"
+      ],
+      "manifest": "strategies/salamander/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "028a8c552048a013c0c6dba1eb746c827aa746c9847a495fd5a99c058ee8c1fd",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "salmon",
+      "instance_count": 1,
+      "instances": [
+        "strategies/salmon/main/runtime.yaml"
+      ],
+      "manifest": "strategies/salmon/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "647c3d8526dbbfa58e24ec64b8e330c2fb87c4d93e4a7d90d3e06d12a9966eb2",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "ZEC",
+        "LIT",
+        "GRASS",
+        "FARTCOIN",
+        "TAO",
+        "ONDO",
+        "SUI",
+        "ARB",
+        "WLD",
+        "DOGE",
+        "AVAX",
+        "xyz:CL",
+        "xyz:BRENTOIL",
+        "xyz:GOLD",
+        "xyz:SP500"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "scorpion",
+      "instance_count": 1,
+      "instances": [
+        "strategies/scorpion/main/runtime.yaml"
+      ],
+      "manifest": "strategies/scorpion/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "1a98bef2f3eae19c99d299743e400a21596f324ca4505f7a2faedb2ffc160100",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "sheep",
+      "instance_count": 1,
+      "instances": [
+        "strategies/sheep/main/runtime.yaml"
+      ],
+      "manifest": "strategies/sheep/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "058a9997134c34994f92445f73dc18dc35b05fbb1d7f7778576df2c89fb264d5",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-runtime-semantics",
+      "enabled": false,
+      "id": "spider",
+      "instance_count": 2,
+      "instances": [
+        "strategies/spider/scalp/runtime.yaml",
+        "strategies/spider/swing/runtime.yaml"
+      ],
+      "manifest": "strategies/spider/strategy.yaml",
+      "matched_marker": "spider",
+      "reasons": [
+        "Fraction-valued instance marginPct is unsafe under percent-valued runtime semantics."
+      ],
+      "rule_id": "explicit-runtime-block",
+      "source_sha256": "958460178326f7032a9967ee06923abe810676ecf90bec6e9905fbdd28a57cb8",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "6.0.1"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "stag",
+      "instance_count": 1,
+      "instances": [
+        "strategies/stag/main/runtime.yaml"
+      ],
+      "manifest": "strategies/stag/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "c72da0b45d17204a1385db8708d338417fc7ca7c30984e52f87c54c375c7b3b5",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "starling",
+      "instance_count": 1,
+      "instances": [
+        "strategies/starling/main/runtime.yaml"
+      ],
+      "manifest": "strategies/starling/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "474fafcae3d097124d7ce6c4c8ebcf11c30ed3df890490a6391cb3405ce35ed2",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "stingray",
+      "instance_count": 1,
+      "instances": [
+        "strategies/stingray/main/runtime.yaml"
+      ],
+      "manifest": "strategies/stingray/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "d891708a705ac29918fa319e52f70b3a107527787cab65c038e1a576236061eb",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC"
+      ],
+      "classification": "needs-field-mapping",
+      "enabled": false,
+      "id": "terrapin",
+      "instance_count": 4,
+      "instances": [
+        "strategies/terrapin/u1/runtime.yaml",
+        "strategies/terrapin/u2/runtime.yaml",
+        "strategies/terrapin/u3/runtime.yaml",
+        "strategies/terrapin/u4/runtime.yaml"
+      ],
+      "manifest": "strategies/terrapin/strategy.yaml",
+      "matched_marker": "terrapin",
+      "reasons": [
+        "Market is available, but scanner fields and runtime semantics must be ported to the typed Aftermath interface."
+      ],
+      "rule_id": "explicit-field-mapping-candidate",
+      "source_sha256": "501c9e4800772e51dda8b515b426919124257cf4be482f1c7a504b325f26956d",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [
+        "xyz:GOLD",
+        "xyz:SILVER",
+        "xyz:SP500",
+        "xyz:XYZ100",
+        "BTC",
+        "xyz:BRENTOIL",
+        "xyz:CL",
+        "HYPE",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "thesis-fund",
+      "instance_count": 1,
+      "instances": [
+        "strategies/thesis-fund/main/runtime.yaml"
+      ],
+      "manifest": "strategies/thesis-fund/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "CL",
+        "ETH",
+        "GOLD",
+        "HYPE",
+        "SILVER",
+        "SOL",
+        "SP500",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: CL",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "fbc4d39386954c42d091fe39e7e0a30343cf0248299e02b98651291631433556",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "tortoise",
+      "instance_count": 1,
+      "instances": [
+        "strategies/tortoise/main/runtime.yaml"
+      ],
+      "manifest": "strategies/tortoise/strategy.yaml",
+      "matched_marker": [
+        "ETH",
+        "SOL"
+      ],
+      "reasons": [
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: SOL"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "ea1783cad7240c261afa4c48cbdd478f0943b24e6db5fa5a0b5fdde747b7ad15",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "xyz:BRENTOIL",
+        "xyz:GOLD",
+        "xyz:SP500"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "turbine",
+      "instance_count": 2,
+      "instances": [
+        "strategies/turbine/runners/runtime.yaml",
+        "strategies/turbine/volume/runtime.yaml"
+      ],
+      "manifest": "strategies/turbine/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "ETH",
+        "GOLD",
+        "HYPE",
+        "SOL",
+        "SP500"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "0cf1b13c2b5c6c0ea7ac631e58b54816cd769a58e24d6ac1a8adc36dd229da4e",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "3.2.2"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "viper",
+      "instance_count": 1,
+      "instances": [
+        "strategies/viper/main/runtime.yaml"
+      ],
+      "manifest": "strategies/viper/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "3fff2571c5ba9eea33006a71ec63d22bbc62647492488c99d72aee233d7ef717",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    },
+    {
+      "assets": [],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "vulture",
+      "instance_count": 1,
+      "instances": [
+        "strategies/vulture/main/runtime.yaml"
+      ],
+      "manifest": "strategies/vulture/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "2525dd9794ec7109b44f6101b6f5f3c0f5bd5844da309b0f41563ae4bf18d3f2",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "whalehunter",
+      "instance_count": 2,
+      "instances": [
+        "strategies/whalehunter/long/runtime.yaml",
+        "strategies/whalehunter/short/runtime.yaml"
+      ],
+      "manifest": "strategies/whalehunter/strategy.yaml",
+      "matched_marker": "dynamic-universe",
+      "reasons": [
+        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+      ],
+      "rule_id": "market-dynamic-fail-closed",
+      "source_sha256": "30134f1de55ddb21ba2622b8d8d4d45a832999e295c9c6159d3ef339bf741f37",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "HYPE",
+        "SUI",
+        "xyz:XYZ100",
+        "xyz:SP500",
+        "xyz:GOLD",
+        "xyz:SILVER",
+        "xyz:BRENTOIL",
+        "xyz:JPY"
+      ],
+      "classification": "blocked-market",
+      "enabled": false,
+      "id": "wolf",
+      "instance_count": 2,
+      "instances": [
+        "strategies/wolf/risk_off/runtime.yaml",
+        "strategies/wolf/risk_on/runtime.yaml"
+      ],
+      "manifest": "strategies/wolf/strategy.yaml",
+      "matched_marker": [
+        "BRENTOIL",
+        "ETH",
+        "GOLD",
+        "HYPE",
+        "JPY",
+        "SILVER",
+        "SOL",
+        "SP500",
+        "SUI",
+        "XYZ100"
+      ],
+      "reasons": [
+        "Unavailable declared market: BRENTOIL",
+        "Unavailable declared market: ETH",
+        "Unavailable declared market: GOLD",
+        "Unavailable declared market: HYPE",
+        "Unavailable declared market: JPY",
+        "Unavailable declared market: SILVER",
+        "Unavailable declared market: SOL",
+        "Unavailable declared market: SP500",
+        "Unavailable declared market: SUI",
+        "Unavailable declared market: XYZ100"
+      ],
+      "rule_id": "market-unavailable",
+      "source_sha256": "07feb371b6e9438edbf7b9570e8b912343fb6cbb6f055776a0439c5909dba97a",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.0"
+    },
+    {
+      "assets": [
+        "HYPE"
+      ],
+      "classification": "needs-derived-data",
+      "enabled": false,
+      "id": "wolverine",
+      "instance_count": 1,
+      "instances": [
+        "strategies/wolverine/main/runtime.yaml"
+      ],
+      "manifest": "strategies/wolverine/strategy.yaml",
+      "matched_marker": [
+        "leaderboard_get_"
+      ],
+      "reasons": [
+        "Requires Senpi-derived data marker: leaderboard_get_"
+      ],
+      "rule_id": "derived-data-literal",
+      "source_sha256": "8171bbbe3cc9e22237b150fe3f724d7d77ef832b1574aea0c330c932367f122d",
+      "upstream_ref": "c3ef08a670581cd20a9d80df17d36f13266605ae",
+      "version": "1.0.1"
+    }
+  ]
+}

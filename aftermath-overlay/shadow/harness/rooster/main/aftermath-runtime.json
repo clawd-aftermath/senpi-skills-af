@@ -1,0 +1,24 @@
+{
+  "account": {
+    "account_capability_id_env": "AFTERMATH_ACCOUNT_CAPABILITY_ID",
+    "account_id_env": "AFTERMATH_ACCOUNT_ID"
+  },
+  "market": {
+    "required_capabilities": [
+      "candles",
+      "account",
+      "positions"
+    ],
+    "symbol": "BTC"
+  },
+  "mode": "shadow",
+  "schema_version": "aftermath/v1",
+  "sizing_semantics": {
+    "collateral_mode": "isolated",
+    "leverage_basis": "signal_bounded_by_market",
+    "margin_pct_basis": "available_collateral_usd_percent",
+    "native_price_unit": "1e-9",
+    "native_size_unit": "1e-9"
+  },
+  "write_policy": "deny"
+}

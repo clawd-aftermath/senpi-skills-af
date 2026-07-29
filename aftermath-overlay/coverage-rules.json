@@ -1,0 +1,34 @@
+{
+  "active_market_symbols": [
+    "BTC"
+  ],
+  "active_market_snapshot": {
+    "observed_at_utc": "2026-07-28T23:59:19Z",
+    "source": "GET https://v2-preview.aftermath.finance/api/ccxt/markets",
+    "verification": "Observation-dated manual snapshot used by offline generation; it does not self-invalidate when the live venue changes."
+  },
+  "blocked_runtime_semantics": {
+    "albatross": "Upstream marks the Arena-dependent package paused.",
+    "caribou": "Fraction-valued minMarginPct/maxMarginPct are unsafe under percent-valued runtime semantics.",
+    "crane": "Coordinated multi-leg close is not implemented; keep blocked until an atomic Aftermath PTB path is proven.",
+    "dire": "Fraction-valued sizing-tier marginPct is unsafe under percent-valued runtime semantics.",
+    "hydra": "Fraction-valued hedge minMarginPct/maxMarginPct are unsafe under percent-valued runtime semantics.",
+    "spider": "Fraction-valued instance marginPct is unsafe under percent-valued runtime semantics."
+  },
+  "derived_data_markers": [
+    "audit_query",
+    "leaderboard_get_",
+    "market_get_cross_asset_flow",
+    "strategy_get_trade_audit",
+    "trader_get_",
+    "wallet_analyze"
+  ],
+  "field_mapping_candidates": [
+    "rooster",
+    "coyote",
+    "gecko",
+    "koala",
+    "terrapin"
+  ],
+  "supported": []
+}

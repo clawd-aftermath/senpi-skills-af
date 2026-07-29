@@ -1,0 +1,76 @@
+{
+  "strategy": "gecko",
+  "source_scanners": [
+    "strategies/gecko/main/scanners/scan.py"
+  ],
+  "dynamic_tool_dispatch": {
+    "argument_index": 1,
+    "dispatcher_parameter": "tool",
+    "function": "_read"
+  },
+  "ignored_literals": {
+    "runtime-state": {
+      "keys": [
+        "recent"
+      ],
+      "reason": "Local durable dedup state; not read from a venue tool response."
+    },
+    "scanner-input": {
+      "keys": [
+        "minScore",
+        "recentSignalTtlSeconds"
+      ],
+      "reason": "Operator runtime inputs; not venue response fields."
+    },
+    "scoring-output": {
+      "keys": [
+        "direction",
+        "reasons",
+        "score"
+      ],
+      "reason": "Pure scoring result fields; not read from a venue tool response."
+    }
+  },
+  "fields": [
+    {
+      "consumed": "ctx.wallet",
+      "aftermath": "gap: resolve a Sui wallet to one explicit numeric accountId before scanning",
+      "status": "gap"
+    },
+    {
+      "consumed": "ctx.state.last / ctx.state.append",
+      "aftermath": "runtime-local durable scanner state; no HTTP route",
+      "status": "runtime-local"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.{assetPositions,asset_positions}[].position.szi",
+      "aftermath": "POST /api/perpetuals/accounts/positions -> accounts[].positions[].baseAssetAmount",
+      "status": "mapped"
+    },
+    {
+      "consumed": "strategy_get_clearinghouse_state.data.{main,xyz}.{assetPositions,asset_positions}[].position.coin",
+      "aftermath": "accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.data.candles.{15m,1h,4h}[].{o,h,l,c,v}",
+      "aftermath": "POST /api/perpetuals/market/candle-history -> candles[].{open,high,low,close,volume}; adapter converts to o/h/l/c/v strings for each resolution",
+      "status": "mapped-transform"
+    },
+    {
+      "consumed": "market_get_asset_data.data.{funding,funding_rate,fundingRate,current_funding}",
+      "aftermath": "gap: POST /api/perpetuals/market/funding-history exposes history[].longFundingRate and history[].shortFundingRate; one directionless scalar is not semantically exact",
+      "status": "gap"
+    },
+    {
+      "consumed": "market_get_asset_data.data.funding.{rate,current}",
+      "aftermath": "gap: choose long/short rate and settlement-interval normalization explicitly from funding-history before mapping",
+      "status": "gap"
+    },
+    {
+      "consumed": "market_get_asset_data.data.{asset_context,context}.{max_leverage,maxLeverage}",
+      "aftermath": "gap: the pinned V2 response has no field with identical venue-max-leverage semantics",
+      "status": "gap"
+    }
+  ]
+}

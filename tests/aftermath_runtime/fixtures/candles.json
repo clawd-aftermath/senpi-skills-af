@@ -1,0 +1,20 @@
+{
+  "candles": [
+    {
+      "close": 100.5,
+      "high": 101,
+      "low": 99,
+      "open": 100,
+      "timestamp": 0,
+      "volume": 12.5
+    },
+    {
+      "close": 101,
+      "high": 102,
+      "low": 100,
+      "open": 100.5,
+      "timestamp": 900000,
+      "volume": 13
+    }
+  ]
+}
