@@ -20,19 +20,18 @@ jobs:
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.12"
-      - name: Standard-library tests
-        run: python3 -m unittest discover -s tests -p 'test_*.py'
-      - name: Read-only runtime and shadow tests
-        run: >-
-          python3 -m unittest discover
-          -s tests/aftermath_runtime
-          -p 'test_*.py'
+      - name: Standard-library tests with network denied
+        run: python3 ci/run_offline_tests.py
       - name: Generated catalogs are current
         run: python3 tools/generate_coverage.py --check
       - name: Upstream pin and source tree are exact
         run: python3 tools/sync_upstream.py --check
       - name: Pinned upstream strategy sources are untouched
-        run: test -z "$(git diff --name-only "$(cat UPSTREAM_REF)" -- strategies)"
+        shell: bash
+        run: |
+          pin="$(cat UPSTREAM_REF)"
+          git cat-file -e "${pin}^{commit}"
+          git diff --exit-code "${pin}" -- strategies
       - name: Attribution, offline, and runnable-package policy
         run: python3 tools/lint_overlay.py
       - name: Upstream Rooster tests

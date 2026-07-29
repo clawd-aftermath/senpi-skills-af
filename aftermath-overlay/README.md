@@ -22,7 +22,7 @@ The exact upstream SHA and OpenAPI digest are pinned in `UPSTREAM_REF` and
 
 ```bash
 python3 tools/generate_coverage.py
-python3 -m unittest discover -s tests -p 'test_*.py'
+python3 ci/run_offline_tests.py
 python3 tools/lint_overlay.py
 ```
 

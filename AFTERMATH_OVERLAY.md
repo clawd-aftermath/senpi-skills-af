@@ -26,9 +26,10 @@ execution supervisor do not exist. `AftermathVenue` has no write method;
 See [runtime gates](docs/aftermath-overlay/RUNTIME_GATES.md) before interpreting
 this as an executable trading system.
 
-Run the overlay and upstream Rooster tests:
+Run all downstream tests with process-wide network denial, then the upstream
+Rooster tests:
 
 ```bash
-python3 -m unittest discover -s tests/aftermath_runtime -p 'test_*.py' -v
+python3 ci/run_offline_tests.py
 python3 strategies/rooster/tests/test_engine.py
 ```
