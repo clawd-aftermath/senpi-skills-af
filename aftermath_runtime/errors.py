@@ -13,6 +13,30 @@ class NormalizationError(ContractError):
     """A response value cannot be normalized without guessing."""
 
 
+class ContractDriftError(NormalizationError):
+    """Machine-readable response-shape divergence from the pinned contract."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        code: str,
+        field: str,
+        observed_shape: str,
+    ) -> None:
+        super().__init__(message)
+        self.code = code
+        self.field = field
+        self.observed_shape = observed_shape
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "code": self.code,
+            "field": self.field,
+            "observedShape": self.observed_shape,
+        }
+
+
 class MarketUnavailable(AftermathRuntimeError):
     """A market or required market capability is unavailable."""
 

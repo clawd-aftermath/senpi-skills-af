@@ -9,9 +9,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
+import re
 from typing import Any, Mapping
 
-from .errors import NormalizationError
+from .errors import ContractDriftError, NormalizationError
 
 # Denominations are derived from the pinned OpenAPI field descriptions.  This
 # table is authoritative; magnitude is never used to guess a field's units.
@@ -72,6 +73,49 @@ def protocol_int(value: Any, field_name: str, *, minimum: int = 0) -> int:
     if result < minimum:
         raise NormalizationError(f"{field_name} must be >= {minimum}")
     return result
+
+
+def unsigned_protocol_bigint(
+    value: Any, field_name: str, *, minimum: int = 0
+) -> int:
+    """Parse an exact native BigInt response encoded as ``"...n"``."""
+    if not isinstance(value, str) or re.fullmatch(r"[0-9]+n", value) is None:
+        if value is None:
+            shape = "missing"
+        elif isinstance(value, str):
+            shape = "string_without_trailing_n"
+        else:
+            shape = type(value).__name__
+        raise ContractDriftError(
+            f"{field_name} must be an exact unsigned native BigInt string "
+            "ending in 'n'",
+            code="native_bigint_response_wire",
+            field=field_name,
+            observed_shape=shape,
+        )
+    result = int(value[:-1])
+    if result < minimum:
+        raise NormalizationError(f"{field_name} must be >= {minimum}")
+    return result
+
+
+def numeric_account_id(value: Any, field_name: str = "account_id") -> int:
+    """Reject capability object IDs and wire-form strings at the typed boundary."""
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise NormalizationError(f"{field_name} must be a non-negative numeric ID")
+    return value
+
+
+def unsigned_bigint_wire(value: Any, field_name: str) -> str:
+    """Serialize an unsigned integer to the native API's exact wire form."""
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise NormalizationError(f"{field_name} must be a non-negative integer")
+    return f"{value}n"
+
+
+def native_account_id_wire(value: Any, field_name: str) -> str:
+    """Serialize a numeric native account ID without accepting capability IDs."""
+    return unsigned_bigint_wire(numeric_account_id(value, field_name), field_name)
 
 
 def text_value(value: Any, field_name: str) -> str:
@@ -278,14 +322,16 @@ class AccountCap:
         if not isinstance(is_agent, bool):
             raise NormalizationError("isAgent must be boolean")
         return cls(
-            account_id=protocol_int(row.get("accountId"), "accountId"),
+            account_id=unsigned_protocol_bigint(row.get("accountId"), "accountId"),
             capability_id=text_value(row.get("objectId"), "objectId"),
             account_object_id=text_value(row.get("accountObjectId"), "accountObjectId"),
             wallet_address=text_value(row.get("walletAddress"), "walletAddress"),
             collateral_coin_type=text_value(
                 row.get("collateralCoinType"), "collateralCoinType"
             ),
-            collateral_native=protocol_int(row.get("collateral"), "collateral"),
+            collateral_native=unsigned_protocol_bigint(
+                row.get("collateral"), "collateral"
+            ),
             is_agent=is_agent,
         )
 
@@ -307,15 +353,21 @@ class PendingOrderRef:
         if side_raw not in (0, 1):
             raise NormalizationError(f"unknown pending-order side: {side_raw}")
         return cls(
-            order_id=protocol_int(row.get("orderId"), "orderId"),
+            order_id=unsigned_protocol_bigint(row.get("orderId"), "orderId"),
             client_order_id=(
                 None
                 if row.get("clientOrderId") is None
-                else protocol_int(row.get("clientOrderId"), "clientOrderId")
+                else unsigned_protocol_bigint(
+                    row.get("clientOrderId"), "clientOrderId"
+                )
             ),
             side="buy" if side_raw == 0 else "sell",
-            current_size_native=protocol_int(row.get("currentSize"), "currentSize"),
-            initial_size_native=protocol_int(row.get("initialSize"), "initialSize"),
+            current_size_native=unsigned_protocol_bigint(
+                row.get("currentSize"), "currentSize"
+            ),
+            initial_size_native=unsigned_protocol_bigint(
+                row.get("initialSize"), "initialSize"
+            ),
         )
 
 
@@ -385,7 +437,9 @@ class AccountSnapshot:
         if not isinstance(raw_positions, list):
             raise NormalizationError("account.positions must be an array")
         return cls(
-            account_id=protocol_int(row.get("accountId"), "accountId"),
+            account_id=unsigned_protocol_bigint(
+                row.get("accountId"), "accountId"
+            ),
             total_equity_usd=decimal_value(row.get("totalEquityUsd"), "totalEquityUsd"),
             available_collateral=decimal_value(
                 row.get("availableCollateral"), "availableCollateral"

@@ -8,6 +8,7 @@ from .codec import B9, NativeCodec
 from .errors import (
     AmbiguousMarket,
     ContractError,
+    ContractDriftError,
     MarketUnavailable,
     NormalizationError,
     WriteDenied,
@@ -24,6 +25,7 @@ from .models import (
     PriceSnapshot,
 )
 from .registry import MarketRegistry
+from .stream import CANDLE_STREAM_PATH, SnapshotStreamState, market_candles_subscription
 from .transport import FixtureTransport, JsonTransport, UrllibReadTransport
 from .venue import AftermathVenue
 
@@ -34,7 +36,9 @@ __all__ = [
     "AmbiguousMarket",
     "B9",
     "Candle",
+    "CANDLE_STREAM_PATH",
     "ContractError",
+    "ContractDriftError",
     "FixtureTransport",
     "FundingPoint",
     "JsonTransport",
@@ -46,7 +50,9 @@ __all__ = [
     "OpenOrder",
     "PositionSnapshot",
     "PriceSnapshot",
+    "SnapshotStreamState",
     "UrllibReadTransport",
     "WriteDenied",
     "assert_runtime_enablement",
+    "market_candles_subscription",
 ]

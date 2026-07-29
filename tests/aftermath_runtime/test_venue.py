@@ -1,6 +1,7 @@
 # Copyright 2026 Aftermath Finance. MIT License.
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import json
 import os
 import re
@@ -14,18 +15,26 @@ from aftermath_runtime import (
     AftermathVenue,
     AmbiguousMarket,
     ContractError,
+    ContractDriftError,
     FixtureTransport,
     MarketRegistry,
     MarketUnavailable,
     NativeCodec,
     NormalizationError,
+    CANDLE_STREAM_PATH,
     UrllibReadTransport,
     WriteDenied,
     assert_runtime_enablement,
+    market_candles_subscription,
 )
 from aftermath_runtime.stream import SnapshotStreamState
 from aftermath_runtime.venue import reject_error_union
-from aftermath_runtime.models import FIELD_DENOMINATIONS, require_denomination
+from aftermath_runtime.models import (
+    FIELD_DENOMINATIONS,
+    PendingOrderRef,
+    require_denomination,
+    unsigned_bigint_wire,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -127,6 +136,129 @@ class ReadNormalizationTests(unittest.TestCase):
             },
         )
 
+    def test_every_v3_candle_resolution_is_accepted(self):
+        empty = {"candles": []}
+        client, transport = venue(
+            **{"/api/perpetuals/market/candle-history": empty}
+        )
+        resolutions = (
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "4h",
+            "12h",
+            "1d",
+            "3d",
+            "1w",
+            "1mo",
+        )
+        for resolution in resolutions:
+            with self.subTest(resolution=resolution):
+                client.get_candles("BTC", resolution, 0, 10_000_000_000)
+                self.assertEqual(
+                    transport.calls[-1][1]["resolution"], resolution
+                )
+
+    def test_non_v3_candle_resolution_is_rejected_without_transport(self):
+        client, transport = venue()
+        before = list(transport.calls)
+        for resolution in ("60m", "2h", "30d", "1y", 60_000):
+            with self.subTest(resolution=resolution), self.assertRaises(
+                NormalizationError
+            ):
+                client.get_candles(  # type: ignore[arg-type]
+                    "BTC", resolution, 0, 10_000_000_000
+                )
+        self.assertEqual(transport.calls, before)
+
+    def test_monthly_candle_uses_calendar_month_for_close_filtering(self):
+        january_start = 1_735_689_600_000  # 2025-01-01T00:00:00Z
+        february_start = 1_738_368_000_000  # 2025-02-01T00:00:00Z
+        payload = {
+            "candles": [
+                {
+                    "timestamp": january_start,
+                    "open": 100,
+                    "high": 101,
+                    "low": 99,
+                    "close": 100.5,
+                    "volume": 12.5,
+                }
+            ]
+        }
+        client, _ = venue(
+            **{"/api/perpetuals/market/candle-history": payload}
+        )
+        self.assertEqual(
+            len(
+                client.get_candles(
+                    "BTC", "1mo", january_start, february_start - 1
+                )
+            ),
+            0,
+        )
+        self.assertEqual(
+            len(client.get_candles("BTC", "1mo", january_start, february_start)),
+            1,
+        )
+
+    def test_monthly_candle_handles_december_and_leap_february(self):
+        def milliseconds(year: int, month: int, day: int = 1) -> int:
+            return int(
+                datetime(
+                    year, month, day, tzinfo=timezone.utc
+                ).timestamp()
+                * 1000
+            )
+
+        for start, end in (
+            (milliseconds(2025, 12), milliseconds(2026, 1)),
+            (milliseconds(2024, 2), milliseconds(2024, 3)),
+        ):
+            with self.subTest(start=start, end=end):
+                payload = {
+                    "candles": [
+                        {
+                            "timestamp": start,
+                            "open": 100,
+                            "high": 101,
+                            "low": 99,
+                            "close": 100.5,
+                            "volume": 12.5,
+                        }
+                    ]
+                }
+                client, _ = venue(
+                    **{"/api/perpetuals/market/candle-history": payload}
+                )
+                self.assertEqual(
+                    len(client.get_candles("BTC", "1mo", start, end)), 1
+                )
+
+    def test_monthly_candle_rejects_unaligned_timestamp_fail_closed(self):
+        january_31 = int(
+            datetime(2025, 1, 31, tzinfo=timezone.utc).timestamp() * 1000
+        )
+        payload = {
+            "candles": [
+                {
+                    "timestamp": january_31,
+                    "open": 100,
+                    "high": 101,
+                    "low": 99,
+                    "close": 100.5,
+                    "volume": 12.5,
+                }
+            ]
+        }
+        client, _ = venue(
+            **{"/api/perpetuals/market/candle-history": payload}
+        )
+        with self.assertRaisesRegex(NormalizationError, "UTC month start"):
+            client.get_candles("BTC", "1mo", january_31, january_31 + 40 * 86_400_000)
+
     def test_in_progress_candle_is_excluded(self):
         payload = fixture("candles.json")
         payload["candles"].append(
@@ -181,7 +313,7 @@ class ReadNormalizationTests(unittest.TestCase):
         self.assertEqual(account.positions[0].market_id, "btc-market")
         self.assertEqual(
             transport.calls[-1],
-            ("/api/perpetuals/accounts/positions", {"accountIds": [7]}),
+            ("/api/perpetuals/accounts/positions", {"accountIds": ["7n"]}),
         )
 
     def test_numeric_account_id_is_not_capability_id(self):
@@ -190,6 +322,45 @@ class ReadNormalizationTests(unittest.TestCase):
             client.get_account("0xcap")  # type: ignore[arg-type]
         caps = client.get_account_caps([7])
         self.assertEqual(caps[7].capability_id, "0xcap")
+
+    def test_account_caps_schema_keeps_plain_numeric_ids(self):
+        client, transport = venue()
+        client.get_account_caps([7])
+        self.assertEqual(
+            transport.calls[-1],
+            ("/api/perpetuals/accounts", {"accountIds": [7]}),
+        )
+
+    def test_native_bigint_responses_reject_unsuffixed_values(self):
+        positions = fixture("accounts_positions.json")
+        positions["accounts"][0]["accountId"] = "7"
+        client, _ = venue(
+            **{"/api/perpetuals/accounts/positions": positions}
+        )
+        with self.assertRaisesRegex(ContractDriftError, "BigInt") as raised:
+            client.get_account(7)
+        self.assertEqual(
+            raised.exception.as_dict(),
+            {
+                "code": "native_bigint_response_wire",
+                "field": "accountId",
+                "observedShape": "string_without_trailing_n",
+            },
+        )
+
+    def test_u128_order_id_round_trips_without_numeric_coercion(self):
+        maximum = 2**128 - 1
+        row = fixture("accounts_positions.json")["accounts"][0]["positions"][0][
+            "pendingOrders"
+        ][0]
+        row["orderId"] = f"{maximum}n"
+        parsed = PendingOrderRef.from_api(row)
+        self.assertEqual(parsed.order_id, maximum)
+        self.assertIsInstance(parsed.order_id, int)
+        self.assertEqual(
+            unsigned_bigint_wire(parsed.order_id, "orderId"),
+            f"{maximum}n",
+        )
 
     def test_open_orders_use_numeric_account_and_market_object_id(self):
         client, transport = venue()
@@ -365,6 +536,23 @@ class WriteBoundaryAndStreamTests(unittest.TestCase):
         with self.assertRaisesRegex(Exception, "sequence gap"):
             state.apply_delta(sequence=12, updates={})
         self.assertFalse(state.synced)
+
+    def test_v3_candles_use_general_updates_websocket_subscription(self):
+        self.assertEqual(CANDLE_STREAM_PATH, "/api/perpetuals/ws/updates")
+        self.assertEqual(
+            market_candles_subscription("btc-market", "1w"),
+            {
+                "action": "subscribe",
+                "subscriptionType": {
+                    "marketCandles": {
+                        "marketId": "btc-market",
+                        "interval": "1w",
+                    }
+                },
+            },
+        )
+        with self.assertRaisesRegex(ContractError, "resolution"):
+            market_candles_subscription("btc-market", "604800000")
 
 
 if __name__ == "__main__":

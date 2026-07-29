@@ -26,7 +26,7 @@ class ContractTests(unittest.TestCase):
         ):
             self.assertIn(path, contract["paths"])
 
-    def test_positions_contract_uses_plural_numeric_account_ids(self):
+    def test_positions_contract_documents_bigint_wire_despite_integer_schema(self):
         contract = json.loads(
             (ROOT / "contracts" / "selected-openapi-contract.json").read_text()
         )
@@ -38,6 +38,15 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(
             schema["properties"]["accountIds"]["items"]["type"], "integer"
         )
+        self.assertIn(
+            'trailing `"n"`',
+            schema["properties"]["accountIds"]["description"],
+        )
+        accounts_operation = contract["paths"]["/api/perpetuals/accounts"]["post"]
+        accounts_ref = accounts_operation["requestBody"]["content"][
+            "application/json"
+        ]["schema"]["$ref"]
+        self.assertNotEqual(accounts_ref, ref)
 
     def test_runtime_schema_forces_shadow_deny_and_explicit_sizing(self):
         schema = json.loads(
@@ -73,19 +82,45 @@ class ContractTests(unittest.TestCase):
             drift["sourceContractCanonicalSha256"],
             "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2",
         )
-        self.assertEqual(len(drift["entries"]), 2)
-        endpoints = {entry["endpoint"] for entry in drift["entries"]}
+        self.assertEqual(len(drift["entries"]), 5)
+        unresolved = [
+            entry
+            for entry in drift["entries"]
+            if entry["blocking"] and entry["status"] == "unresolved"
+        ]
+        endpoints = {entry["endpoint"] for entry in unresolved}
         self.assertEqual(
             endpoints,
             {
                 "POST /api/perpetuals/markets",
                 "POST /api/perpetuals/market/candle-history",
+                "POST /api/perpetuals/accounts/positions",
+                "POST /api/perpetuals/accounts and POST /api/perpetuals/accounts/positions",
             },
         )
-        self.assertTrue(all(entry["blocking"] for entry in drift["entries"]))
-        self.assertTrue(
-            all(entry["status"] == "unresolved" for entry in drift["entries"])
+        resolved = [
+            entry
+            for entry in drift["entries"]
+            if not entry["blocking"] and entry["status"] == "resolved"
+        ]
+        self.assertEqual(
+            {entry["code"] for entry in resolved},
+            {"candle_resolution_description"},
         )
+        account_ids = next(
+            entry
+            for entry in unresolved
+            if entry.get("code") == "account_ids_bigint_wire"
+        )
+        self.assertTrue(account_ids["blocking"])
+        self.assertIn("authenticated non-production", account_ids["reason"])
+        response_wire = next(
+            entry
+            for entry in unresolved
+            if entry.get("code") == "native_bigint_response_wire"
+        )
+        self.assertTrue(response_wire["blocking"])
+        self.assertIn("ContractDriftError", response_wire["reason"])
 
 
 if __name__ == "__main__":

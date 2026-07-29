@@ -22,10 +22,15 @@ class PositionContractTests(unittest.TestCase):
     def test_positions_requires_account_ids_array(self) -> None:
         with self.assertRaisesRegex(ContractError, r"accountIds\[\]"):
             validate_positions_request({"accountId": 123})
-        validate_positions_request({"accountIds": [123]})
+        validate_positions_request({"accountIds": ["123n"]})
 
-    def test_positions_rejects_empty_or_non_numeric_ids(self) -> None:
-        for payload in ({"accountIds": []}, {"accountIds": ["123n"]}):
+    def test_positions_rejects_empty_or_non_bigint_wire_ids(self) -> None:
+        for payload in (
+            {"accountIds": []},
+            {"accountIds": [123]},
+            {"accountIds": ["123"]},
+            {"accountIds": ["0xcap"]},
+        ):
             with self.subTest(payload=payload), self.assertRaises(ContractError):
                 validate_positions_request(payload)
 

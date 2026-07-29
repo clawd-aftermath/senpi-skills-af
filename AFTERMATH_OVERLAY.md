@@ -4,6 +4,12 @@ This branch is pinned to Senpi upstream `c3ef08a670581cd20a9d80df17d36f13266605a
 It ports strategy content onto a separate, Aftermath-native venue boundary
 instead of emulating Hyperliquid/Senpi MCP response shapes.
 
+Aftermath API semantics are pinned separately to
+`AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
+(`aftermath-perpetuals` v3.0.0) and the V2-preview OpenAPI digest. See
+`contracts/aftermath-skills-v3-contract.json` and
+`aftermath-overlay/provenance.json`. Mutable branch heads are not a build input.
+
 The first canary is a separate Rooster shadow port under
 `aftermath-overlay/shadow/harness/`. It deliberately avoids a nested
 `strategies/` path so upstream discovery cannot mistake it for a deployable
@@ -31,5 +37,6 @@ Rooster tests:
 
 ```bash
 python3 ci/run_offline_tests.py
+python3 tools/validate_skills_contract.py
 python3 strategies/rooster/tests/test_engine.py
 ```

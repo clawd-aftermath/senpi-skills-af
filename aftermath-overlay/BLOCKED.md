@@ -25,6 +25,13 @@ fraction-valued margin settings conflict with percent-valued Runtime 3 signals.
 Changing those values in the upstream tree would alter strategy semantics, so a
 future port must make the sizing basis explicit in `aftermath/v1`.
 
+The pinned Aftermath v3 skills also leave every write path blocked until an
+Aftermath-native supervisor implements and validates PTB inspection,
+`signingDigest` signing, ambiguous-submit reconciliation, explicit isolated
+collateral allocation, serialized coin/gas-object operations, state
+reconciliation, and heartbeat-driven cancellation. The public API has no
+built-in dead-man switch.
+
 Regenerate and verify:
 
 ```bash

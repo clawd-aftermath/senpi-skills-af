@@ -104,5 +104,7 @@ blocked_runtime_gates:
   - PTB build and semantic inspection
   - agent/admin and sponsored signing
   - order submission and reconciliation
+  - explicit isolated-collateral allocation
+  - serialized coin and gas object operations
   - native SL/TP and DSL state
-  - dead-man cancellation
+  - heartbeat-driven dead-man cancellation

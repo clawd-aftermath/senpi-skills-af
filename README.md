@@ -17,6 +17,13 @@ the open-source strategy corpus includes Senpi's proprietary runtime, and no
 strategy is enabled until the Aftermath field, market, sizing, and execution
 contracts pass.
 
+The Aftermath integration contract is pinned independently to
+`AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
+(`aftermath-perpetuals` v3.0.0) plus the V2-preview OpenAPI digest. CI validates
+the internal consistency of the immutable skills pin, six controlling file
+digests, and network-free extracted contract. Source-byte authenticity can be
+rechecked against an already-fetched skills checkout without moving the pin.
+
 An isolated Rooster shadow canary exercises the read-only venue adapter against
 offline fixtures. It is not deployable and does not change the zero-enabled
 catalog.

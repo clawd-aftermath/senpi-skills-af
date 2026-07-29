@@ -15,8 +15,40 @@
       "endpoint": "POST /api/perpetuals/market/candle-history",
       "observedPreviewShape": "timestamp is the candle bucket start",
       "pinnedOpenApiResponseSchema": "PerpetualsMarketCandleDataPoint.timestamp only says candle timestamp",
-      "reason": "Closed-candle filtering requires explicit bucket-start versus bucket-close semantics. Falsification test: determine whether a returned timestamp with timestamp + resolution greater than wall-clock now can nevertheless represent a closed candle; if yes, the current conservative filter drops valid data.",
+      "reason": "Closed-candle filtering requires explicit bucket-start versus bucket-close semantics. Weekly anchor and monthly alignment semantics are also unspecified; the overlay uses duration only for weekly closure and fails closed unless monthly timestamps align to UTC month start. Falsification test: determine whether a returned timestamp with timestamp + resolution greater than wall-clock now can nevertheless represent a closed candle; if yes, the current conservative filter drops valid data.",
       "status": "unresolved"
+    },
+    {
+      "blocking": true,
+      "code": "account_ids_bigint_wire",
+      "codeRequires": "accountIds[] entries encoded as exact \"...n\" strings",
+      "endpoint": "POST /api/perpetuals/accounts/positions",
+      "pinnedOpenApiResponseSchema": "PerpetualsAccountPositionsBody.accountIds.items.type is integer while its description requires deserialization from trailing-n strings",
+      "pinnedSkillsRule": "native BigInt request fields use exact \"...n\" strings where required",
+      "reason": "The schema type and wire-format description conflict. The explicit field description and pinned aftermath-perpetuals v3.0.0 BigInt rule govern shadow-read serialization; the typed overlay accepts numeric IDs and emits trailing-n wire strings. Live promotion remains blocked until the published schema type is corrected or authenticated non-production validation confirms the wire contract.",
+      "shadowReadSelection": "AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32 plus the endpoint field description",
+      "status": "unresolved"
+    },
+    {
+      "blocking": true,
+      "code": "native_bigint_response_wire",
+      "codeRequires": "documented native BigInt response fields encoded as exact unsigned \"...n\" strings",
+      "endpoint": "POST /api/perpetuals/accounts and POST /api/perpetuals/accounts/positions",
+      "pinnedOpenApiResponseSchema": "integer types with minimum 0 whose field descriptions specify trailing-n serialization",
+      "pinnedSkillsRule": "native BigInt responses use exact trailing-n strings where specified",
+      "reason": "The JSON schema types conflict with the documented response wire form. Shadow reads reject unexpected values with ContractDriftError carrying code, field, and observedShape instead of coercing. Live promotion requires authenticated non-production response validation.",
+      "status": "unresolved"
+    },
+    {
+      "blocking": false,
+      "code": "candle_resolution_description",
+      "codeRequires": "resolution enum values and no intervalMs request field",
+      "endpoint": "POST /api/perpetuals/market/candle-history",
+      "pinnedOpenApiResponseSchema": "HistoricalMarketDataRequest.description still says intervalMs while properties and required fields use resolution",
+      "pinnedSkillsRule": "resolution is one of 1m/5m/15m/30m/1h/4h/12h/1d/3d/1w/1mo",
+      "reason": "The containing schema description is stale pre-v3 prose. The actual required property and pinned aftermath-perpetuals v3.0.0 contract both require resolution.",
+      "resolution": "resolved by the selected schema property plus AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32",
+      "status": "resolved"
     }
   ],
   "sourceContractCanonicalSha256": "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2"

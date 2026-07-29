@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 
@@ -21,8 +22,13 @@ def validate_positions_request(payload: dict[str, Any]) -> None:
     account_ids = payload.get("accountIds")
     if not isinstance(account_ids, list) or not account_ids:
         raise ContractError("positions requires a non-empty accountIds array")
-    if not all(isinstance(value, int) and value >= 0 for value in account_ids):
-        raise ContractError("accountIds must contain non-negative integers")
+    if not all(
+        isinstance(value, str) and re.fullmatch(r"[0-9]+n", value)
+        for value in account_ids
+    ):
+        raise ContractError(
+            "accountIds must contain exact native BigInt strings ending in 'n'"
+        )
     allowed = {"accountIds", "marketIds"}
     extras = set(payload) - allowed
     if extras:

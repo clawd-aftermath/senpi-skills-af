@@ -11,6 +11,26 @@
       "verified_at_utc": "2026-07-28T23:59:19Z"
     }
   },
+  "aftermath_skills": {
+    "branch": "feat/v2-skills",
+    "commit": "5b614db62dcd2e58f442e93661f608fe7b073c32",
+    "contract": "contracts/aftermath-skills-v3-contract.json",
+    "contract_sha256": "17af6f1c138b93c46a44ef426c350849c9bbd00bbe3065c759d18336bbebf35f",
+    "files": {
+      "skills/api/SKILL.md": "f2d0bcb48b53781a1f7204b38aa92c4cfcce071e67d0bccaf8bede7a5b9f3c38",
+      "skills/api/error-handling.md": "5cfb48e5aff3d5d2026511413433dd95487ab798876f3e102f350559d93c4e57",
+      "skills/api/gotchas.md": "096e4054919de5b893952f73a6d1f9f7bdb45191400cf93919ecfa235b9e8bc1",
+      "skills/api/monitoring-patterns.md": "7fd2b8779b57c6edea53aeed3e869458c9efb2831c15385b2195748608cf4323",
+      "skills/api/native.md": "732cfecbfbfbb447a5c8c5e8759e0190d7cac5ec258847bbafd68ad9683353ea",
+      "skills/api/safety-and-risk.md": "3b2317266eb84e33f965da09caabdd394b04d3a623ab034bc5f97b5c48759fa5"
+    },
+    "file_digest_algorithm": "sha256 of raw file bytes stored at the pinned git commit",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/AftermathFinance/skills",
+    "skill": "aftermath-perpetuals",
+    "verification_scope": "Offline CI checks manifest consistency; source authenticity is checked separately against an already-fetched checkout whose origin is AftermathFinance/skills without requiring the mutable branch head to equal the pin.",
+    "version": "3.0.0"
+  },
   "derived_artifacts": {
     "rooster_shadow_scoring": {
       "copy": "aftermath-overlay/shadow/harness/rooster/main/scanners/scoring.py",
@@ -20,6 +40,7 @@
     }
   },
   "license_policy": {
+    "aftermath_skills_contract": "Extracted semantic contract attributed to AftermathFinance/skills under Apache-2.0; no source prose is vendored.",
     "modification_notice": "Aftermath overlay files are modifications/additions; upstream notices remain intact.",
     "root": "MIT",
     "source_file_headers": "preserve verbatim"

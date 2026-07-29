@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import re
+from datetime import datetime, timezone
 import time
 from collections.abc import Callable
 from typing import Any, Mapping, Sequence
@@ -19,9 +19,12 @@ from .models import (
     OpenOrder,
     PositionSnapshot,
     PriceSnapshot,
+    native_account_id_wire,
+    numeric_account_id,
     protocol_int,
 )
 from .registry import MarketRegistry
+from .stream import CANDLE_RESOLUTIONS
 from .transport import JsonTransport
 
 
@@ -49,12 +52,42 @@ def _array(value: Any, field_name: str) -> list[Any]:
     return value
 
 
-def _resolution_ms(resolution: str) -> int:
-    match = re.fullmatch(r"([1-9][0-9]*)([mhd])", resolution)
-    if not match:
+_FIXED_CANDLE_RESOLUTION_MS = {
+    "1m": 60_000,
+    "5m": 300_000,
+    "15m": 900_000,
+    "30m": 1_800_000,
+    "1h": 3_600_000,
+    "4h": 14_400_000,
+    "12h": 43_200_000,
+    "1d": 86_400_000,
+    "3d": 259_200_000,
+    "1w": 604_800_000,
+}
+def _candle_bucket_end_ms(timestamp_ms: int, resolution: str) -> int:
+    if resolution in _FIXED_CANDLE_RESOLUTION_MS:
+        return timestamp_ms + _FIXED_CANDLE_RESOLUTION_MS[resolution]
+    if resolution != "1mo":
         raise NormalizationError(f"unsupported candle resolution: {resolution!r}")
-    multiplier = {"m": 60_000, "h": 3_600_000, "d": 86_400_000}[match.group(2)]
-    return int(match.group(1)) * multiplier
+    try:
+        start = datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
+    except (OSError, OverflowError, ValueError) as exc:
+        raise NormalizationError("1mo candle timestamp is out of range") from exc
+    if (
+        start.day != 1
+        or start.hour != 0
+        or start.minute != 0
+        or start.second != 0
+        or start.microsecond != 0
+    ):
+        raise NormalizationError(
+            "1mo candle timestamp must be aligned to UTC month start"
+        )
+    if start.month == 12:
+        end = start.replace(year=start.year + 1, month=1)
+    else:
+        end = start.replace(month=start.month + 1)
+    return int(end.timestamp() * 1000)
 
 
 @dataclass
@@ -114,10 +147,9 @@ class AftermathVenue:
         from_timestamp_ms: int,
         to_timestamp_ms: int,
     ) -> tuple[Candle, ...]:
+        if resolution not in CANDLE_RESOLUTIONS:
+            raise NormalizationError(f"unsupported candle resolution: {resolution!r}")
         spec = self.require_market(market, ("candles",))
-        if not isinstance(resolution, str) or not resolution:
-            raise NormalizationError("resolution must be a non-empty string")
-        interval_ms = _resolution_ms(resolution)
         start = protocol_int(from_timestamp_ms, "from_timestamp_ms")
         requested_end = protocol_int(to_timestamp_ms, "to_timestamp_ms")
         end = min(requested_end, protocol_int(self.now_ms(), "now_ms"))
@@ -143,7 +175,7 @@ class AftermathVenue:
         candles = tuple(
             candle
             for candle in normalized
-            if candle.timestamp_ms + interval_ms <= end
+            if _candle_bucket_end_ms(candle.timestamp_ms, resolution) <= end
         )
         if any(
             candles[index].timestamp_ms >= candles[index + 1].timestamp_ms
@@ -184,7 +216,7 @@ class AftermathVenue:
         return points
 
     def get_account_caps(self, account_ids: Sequence[int]) -> dict[int, AccountCap]:
-        ids = [protocol_int(value, "account_id") for value in account_ids]
+        ids = [numeric_account_id(value) for value in account_ids]
         endpoint = "/api/perpetuals/accounts"
         payload = _object(self.transport.post(endpoint, {"accountIds": ids}), endpoint)
         rows = _array(payload.get("accountCaps"), "accountCaps")
@@ -198,10 +230,14 @@ class AftermathVenue:
         return keyed
 
     def get_account(self, account_id: int) -> AccountSnapshot:
-        numeric_id = protocol_int(account_id, "account_id")
+        numeric_id = numeric_account_id(account_id)
         endpoint = "/api/perpetuals/accounts/positions"
         payload = _object(
-            self.transport.post(endpoint, {"accountIds": [numeric_id]}), endpoint
+            self.transport.post(
+                endpoint,
+                {"accountIds": [native_account_id_wire(numeric_id, "account_id")]},
+            ),
+            endpoint,
         )
         rows = _array(payload.get("accounts"), "accounts")
         accounts = [AccountSnapshot.from_api(row) for row in rows]
@@ -215,9 +251,11 @@ class AftermathVenue:
     def get_positions(
         self, account_id: int, markets: Sequence[str] = ()
     ) -> tuple[PositionSnapshot, ...]:
-        numeric_id = protocol_int(account_id, "account_id")
+        numeric_id = numeric_account_id(account_id)
         specs = [self.require_market(market, ("positions",)) for market in markets]
-        request: dict[str, Any] = {"accountIds": [numeric_id]}
+        request: dict[str, Any] = {
+            "accountIds": [native_account_id_wire(numeric_id, "account_id")]
+        }
         if specs:
             request["marketIds"] = [market.market_id for market in specs]
         endpoint = "/api/perpetuals/accounts/positions"
@@ -237,7 +275,7 @@ class AftermathVenue:
         return positions
 
     def get_open_orders(self, account_id: int, market: str) -> tuple[OpenOrder, ...]:
-        numeric_id = protocol_int(account_id, "account_id")
+        numeric_id = numeric_account_id(account_id)
         spec = self.require_market(market, ("open_orders",))
         endpoint = "/api/ccxt/myPendingOrders"
         payload = reject_error_union(

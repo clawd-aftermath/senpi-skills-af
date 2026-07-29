@@ -12,6 +12,27 @@ from typing import Any, Mapping
 
 from .errors import ContractError
 
+CANDLE_STREAM_PATH = "/api/perpetuals/ws/updates"
+CANDLE_RESOLUTIONS = frozenset(
+    {"1m", "5m", "15m", "30m", "1h", "4h", "12h", "1d", "3d", "1w", "1mo"}
+)
+
+
+def market_candles_subscription(
+    market_id: str, resolution: str
+) -> dict[str, object]:
+    """Build the v3 general-updates WebSocket candle subscription."""
+    if not isinstance(market_id, str) or not market_id:
+        raise ContractError("marketId must be a non-empty string")
+    if resolution not in CANDLE_RESOLUTIONS:
+        raise ContractError(f"unsupported candle resolution: {resolution!r}")
+    return {
+        "action": "subscribe",
+        "subscriptionType": {
+            "marketCandles": {"marketId": market_id, "interval": resolution}
+        },
+    }
+
 
 @dataclass
 class SnapshotStreamState:
