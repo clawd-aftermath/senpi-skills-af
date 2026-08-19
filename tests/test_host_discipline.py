@@ -1,20 +1,15 @@
-"""The retired v1 host must not appear anywhere outside the vendored skills.
+"""The retired preview host must not appear in active repository content.
 
 Copyright 2026 Aftermath Finance.
 SPDX-License-Identifier: MIT
 
-The vendored skills at ``AFTERMATH_SKILLS_REF/`` name the retired v1 API host in
-22 places and the live host in zero, while documenting V2-only features.  The
-live OpenAPI document carries the same trap in its ``servers`` block, where the
-dead host is still labelled "Production server" — any standard generator bakes
-it in as the default base URL.
-
-So: vendor the skills unedited, and let a test guarantee that nothing else in
-the tree ever picks up their URLs.
+The launched production host is the bare Aftermath domain.  The old preview
+deployment still answers but exposes a stale market set, so allowing it as a
+runtime or documentation default is dangerous.
 
 The host token is assembled from pieces at runtime so this file does not itself
-contain a usable retired URL (which would make the check flag its own guard) and
-so the repository's overlay lint stays clean.
+contain a usable retired URL, which would make the check flag its own guard.
+Locked historical provenance is exempted explicitly and tested separately.
 """
 
 from __future__ import annotations
@@ -26,12 +21,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VENDORED = ROOT / "AFTERMATH_SKILLS_REF"
 
-_BARE_HOST = "aftermath" + "." + "finance"
-_LIVE_PREFIX = "v2-preview."
-_DOCS_PREFIX = "docs."
+_PRODUCTION_HOST = "aftermath" + "." + "finance"
+_RETIRED_PREVIEW_PREFIX = "v2-" + "preview."
 
 # Any scheme, any subdomain, followed by the bare host.
-_HOST_RE = re.compile(r"(?:https?|wss?)://([A-Za-z0-9.-]*)" + re.escape(_BARE_HOST))
+_HOST_RE = re.compile(
+    r"(?:https?|wss?)://([A-Za-z0-9.-]*)" + re.escape(_PRODUCTION_HOST)
+)
 
 SEARCHED_SUFFIXES = {
     ".py",
@@ -52,9 +48,12 @@ SKIPPED_DIRECTORIES = {
     ".git",
     "__pycache__",
     "AFTERMATH_SKILLS_REF",
-    # A byte-for-byte snapshot of the upstream OpenAPI document, including its
-    # `servers` block. Vendored evidence, never a call site.
-    "contracts",
+}
+
+SKIPPED_FILES = {
+    # Observation-dated, hash-locked evidence with no repository regeneration
+    # path. It is not runtime configuration or current endpoint documentation.
+    Path("aftermath-overlay/provenance.json"),
 }
 
 
@@ -63,8 +62,11 @@ def searched_files() -> list[Path]:
     for path in ROOT.rglob("*"):
         if not path.is_file():
             continue
-        parts = set(path.relative_to(ROOT).parts)
+        relative = path.relative_to(ROOT)
+        parts = set(relative.parts)
         if parts & SKIPPED_DIRECTORIES:
+            continue
+        if relative in SKIPPED_FILES:
             continue
         if path.suffix not in SEARCHED_SUFFIXES and path.name != ".env.example":
             continue
@@ -80,15 +82,13 @@ def offending_lines(path: Path) -> list[tuple[int, str]]:
     hits: list[tuple[int, str]] = []
     for number, line in enumerate(text.splitlines(), start=1):
         for match in _HOST_RE.finditer(line):
-            subdomain = match.group(1)
-            if subdomain in (_LIVE_PREFIX, _DOCS_PREFIX):
-                continue
-            hits.append((number, line.strip()))
+            if match.group(1) == _RETIRED_PREVIEW_PREFIX:
+                hits.append((number, line.strip()))
     return hits
 
 
 class HostDisciplineTests(unittest.TestCase):
-    def test_no_non_vendored_file_references_the_retired_host(self):
+    def test_no_active_file_references_the_retired_preview_host(self):
         offenders: list[str] = []
         for path in searched_files():
             for number, line in offending_lines(path):
@@ -96,33 +96,28 @@ class HostDisciplineTests(unittest.TestCase):
         self.assertEqual(
             offenders,
             [],
-            "the retired v1 API host must not appear outside "
-            "AFTERMATH_SKILLS_REF/; the live host is "
-            "https://v2-preview." + _BARE_HOST,
+            "the retired preview API host must not appear in active content; "
+            "the production host is https://" + _PRODUCTION_HOST,
         )
 
-    def test_the_vendored_carve_out_is_still_needed(self):
-        """If upstream fixes its URLs, this test says the exemption can go."""
-        count = 0
-        for path in (VENDORED / "skills").rglob("*"):
-            if path.is_file():
-                count += len(offending_lines(path))
-        self.assertGreater(
-            count,
-            0,
-            "AFTERMATH_SKILLS_REF/skills no longer names the retired host — "
-            "drop the carve-out in SKIPPED_DIRECTORIES and delete this test.",
-        )
-        # Recorded so a change in the upstream count is visible in a diff.
-        self.assertEqual(count, 22)
+    def test_locked_historical_carve_outs_are_explicit(self):
+        retired_host = _RETIRED_PREVIEW_PREFIX + _PRODUCTION_HOST
+        delta = (VENDORED / "README-DELTA.md").read_text(encoding="utf-8")
+        self.assertIn("retired host", delta)
+        self.assertIn(retired_host, delta)
+        provenance = (
+            ROOT / "aftermath-overlay" / "provenance.json"
+        ).read_text(encoding="utf-8")
+        self.assertIn(retired_host, provenance)
 
-    def test_the_vendored_skills_still_name_the_live_host_nowhere(self):
-        live = 0
+    def test_vendored_skills_name_the_launched_production_host(self):
+        production_urls = 0
         for path in (VENDORED / "skills").rglob("*"):
             if path.is_file():
                 text = path.read_text(encoding="utf-8", errors="replace")
-                live += text.count(_LIVE_PREFIX + _BARE_HOST)
-        self.assertEqual(live, 0)
+                production_urls += text.count("https://" + _PRODUCTION_HOST)
+                production_urls += text.count("wss://" + _PRODUCTION_HOST)
+        self.assertGreater(production_urls, 0)
 
     def test_the_host_is_defined_exactly_once_in_the_runtime(self):
         """One assignment, everywhere else reads it.
@@ -132,7 +127,7 @@ class HostDisciplineTests(unittest.TestCase):
         """
         assignment = re.compile(
             r"^\s*[A-Za-z_][A-Za-z0-9_]*\s*[:=].*['\"](?:https?|wss?)://"
-            + re.escape(_LIVE_PREFIX + _BARE_HOST)
+            + re.escape(_PRODUCTION_HOST)
         )
         definitions: list[str] = []
         for path in sorted((ROOT / "aftermath_runtime").rglob("*.py")):

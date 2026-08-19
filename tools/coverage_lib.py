@@ -174,8 +174,8 @@ def classify_detail(package: Package, rules: dict[str, Any]) -> dict[str, Any]:
             "classification": "blocked-market",
             "matched_marker": "dynamic-universe",
             "reasons": [
-                "Dynamic/universe-ranked package cannot fail open when the preview "
-                "has only one active market."
+                "Dynamic/universe-ranked package cannot fail open when the retired "
+                "preview fixture has only one active market."
             ],
             "rule_id": "market-dynamic-fail-closed",
         }

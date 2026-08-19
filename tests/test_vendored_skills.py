@@ -71,11 +71,11 @@ class VendoredSkillsTests(unittest.TestCase):
                 self.assertTrue(path.is_file(), f"{name} is missing")
         self.assertIn(EXPECTED_COMMIT, (VENDORED / "PINNED.md").read_text())
 
-    def test_the_delta_document_records_the_retired_host_discrepancy(self):
+    def test_the_delta_document_records_the_historical_host_discrepancy(self):
         text = (VENDORED / "README-DELTA.md").read_text(encoding="utf-8")
         for phrase in (
             "22 places",
-            "v2-preview",
+            "v2-" "preview",
             "servers",
             "production mainnet",
         ):

@@ -8,14 +8,9 @@ the API host is defined EXACTLY ONCE (``DEFAULT_API_BASE_URL``) and every call
 site reads it from this module.  The relaunch domain is expected to change; a
 tree with the hostname smeared across forty files breaks on that day.
 
-Two traps this module exists to neutralise:
-
-* The vendored skills at ``AFTERMATH_SKILLS_REF/`` name the RETIRED v1 host in
-  22 places, and the live OpenAPI document's own ``servers`` block still lists
-  it as the "Production server".  Both are wrong.  Take their patterns, never
-  their URLs.
-* ``https://v2-preview.aftermath.finance`` is production mainnet despite the
-  hostname.  It is not a testbed.
+The preview deployment remains reachable but is stale.  Runtime traffic must
+default to the launched production host, and an explicit preview override must
+fail closed rather than silently return its two-market snapshot.
 """
 
 from __future__ import annotations
@@ -23,19 +18,20 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from typing import Any, Mapping
+from urllib.parse import urlsplit
 
 from .errors import ConfigError
 
 # ── The one host constant ────────────────────────────────────────
 # Overridable by AF_API_BASE_URL without touching source.  Nothing else in the
 # tree may contain a hostname.
-DEFAULT_API_BASE_URL = "https://v2-preview.aftermath.finance"
+DEFAULT_API_BASE_URL = "https://aftermath.finance"
 API_BASE_URL_ENV = "AF_API_BASE_URL"
 
-# The retired host, expressed in pieces so this file itself never contains a
-# usable v1 URL and so the CI host-grep does not flag its own guard rail.
-_RETIRED_HOST_SUFFIX = "aftermath" ".finance"
-_LIVE_HOST_PREFIX = "v2-preview."
+# The retired preview host is expressed in pieces so the CI host-grep does not
+# flag its own guard rail as a usable stale URL.
+_PRODUCTION_HOST = "aftermath" ".finance"
+_RETIRED_PREVIEW_PREFIX = "v2-" "preview."
 
 
 def api_base_url(env: Mapping[str, str] | None = None) -> str:
@@ -46,15 +42,16 @@ def api_base_url(env: Mapping[str, str] | None = None) -> str:
 
 
 def assert_not_retired_host(url: str) -> None:
-    """Fail closed on the dead v1 API host.
+    """Fail closed on the retired preview API host.
 
     A wrong host that silently returns stale data is the single most expensive
     bug class this integration has produced.
     """
-    host = url.split("://", 1)[-1].split("/", 1)[0].lower()
-    if host.endswith(_RETIRED_HOST_SUFFIX) and not host.startswith(_LIVE_HOST_PREFIX):
+    parsed = urlsplit(url if "://" in url else "//" + url)
+    host = (parsed.hostname or "").lower()
+    if host == _RETIRED_PREVIEW_PREFIX + _PRODUCTION_HOST:
         raise ConfigError(
-            f"{url!r} points at the retired v1 API host. "
+            f"{url!r} points at the retired preview API host. "
             f"The live host is {DEFAULT_API_BASE_URL}."
         )
 

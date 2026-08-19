@@ -11,13 +11,13 @@ gate are implemented and independently validated.
 
 Canonical relaunch references:
 
-- Site: <https://v2-preview.aftermath.finance>
-- Swagger: <https://v2-preview.aftermath.finance/docs>
-- OpenAPI: <https://v2-preview.aftermath.finance/api/openapi/spec.json>
-- REST prefix: <https://v2-preview.aftermath.finance/api/>
+- Site: <https://aftermath.finance>
+- Swagger: <https://aftermath.finance/docs>
+- OpenAPI: <https://aftermath.finance/api/openapi/spec.json>
+- REST prefix: <https://aftermath.finance/api/>
 - Skills branch: <https://github.com/AftermathFinance/skills/tree/feat/v2-skills>
 
-Integration semantics derive from the preview OpenAPI plus
+Integration semantics derive from the production OpenAPI plus
 `aftermath-perpetuals` skill v3.0.0 at immutable commit
 `5b614db62dcd2e58f442e93661f608fe7b073c32`. `AFTERMATH_SKILLS_REF/COMMIT`,
 `provenance.json`, and `contracts/aftermath-skills-v3-contract.json` pin the
@@ -25,8 +25,8 @@ commit, branch, version, all 15 blobs under `skills/api`, each blob's digest and
 applied/out-of-scope classification, and the extracted contract. Seven
 documents are applied, including `ccxt.md` for the allowlisted pending-orders
 read. The complete top-level and `skills/*` directory sets are pinned as a
-scope boundary; `skills/gas` is explicitly out of scope. The V2-preview URLs
-remain the canonical post-relaunch environment.
+scope boundary; `skills/gas` is explicitly out of scope. The bare production
+host is the canonical launched environment.
 Offline CI checks manifest consistency. Source-byte authenticity is checked
 separately against an already-fetched skills checkout; neither path fetches.
 Generation and validation are standard-library-only:

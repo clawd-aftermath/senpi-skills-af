@@ -58,18 +58,17 @@ Python 3.12, standard library only. No dependencies to install.
 
 ### Two things that will trip you up
 
-**No markets are live on Aftermath yet.** Zero markets is expected before the
-relaunch. `doctor` warns; it never fails. Strategies will simply find nothing to
-trade.
+**Production has 15 markets.** The launched venue serves BTCUSD through XAUTUSD
+with native Sui USDC collateral. `doctor` discovers market object IDs from the
+API; it never builds or pins those deployment-specific IDs.
 
-**The vendored skills name a dead host.** `AFTERMATH_SKILLS_REF/` is pinned to
-`AftermathFinance/skills@5b614db` and is correct about V2 features — but names
-the retired API host in 22 places and the live one in zero. The live OpenAPI
-document carries the same trap in its own `servers` block. Take their patterns,
-never their URLs; see
-[`AFTERMATH_SKILLS_REF/README-DELTA.md`](AFTERMATH_SKILLS_REF/README-DELTA.md).
-The host is defined exactly once, in `aftermath_runtime/config.py`, and a test
-fails if it leaks anywhere else.
+**The vendored host note is historical.** `AFTERMATH_SKILLS_REF/` is pinned to
+`AftermathFinance/skills@5b614db` and cannot be edited in place. Its bare-host
+API URLs now resolve to launched production. The pinned
+[`AFTERMATH_SKILLS_REF/README-DELTA.md`](AFTERMATH_SKILLS_REF/README-DELTA.md)
+records the retired preview-era discrepancy for provenance. The production host
+is defined exactly once, in `aftermath_runtime/config.py`, and a test rejects
+the stale preview host everywhere outside locked historical evidence.
 
 ### Environment
 
@@ -83,7 +82,7 @@ Every variable is documented with a safe default in
 | `AF_GAS_COIN_TYPE` | — | required for `dynamic`: which coin pays gas |
 | `AF_GAS_BUDGET_MIST` | `50000000` | always explicit, never auto-estimated |
 | `AF_ARMED` | unset | the single flag that allows a transaction to be BUILT |
-| `AF_API_BASE_URL` | `https://v2-preview.aftermath.finance` | production mainnet, despite the hostname |
+| `AF_API_BASE_URL` | `https://aftermath.finance` | production mainnet |
 | `AF_COLLATERAL_COIN_TYPE` | USDC on Sui | `doctor` verifies markets exist for it |
 | `AF_ACCOUNT_ID` | auto | discovered via `POST /api/perpetuals/accounts/owned` |
 
@@ -93,7 +92,7 @@ Upstream Senpi is pinned to `c3ef08a670581cd20a9d80df17d36f13266605ae` and its
 `strategies/` tree is byte-for-byte untouched (CI enforces it). The Aftermath
 integration contract is pinned independently to
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
-(`aftermath-perpetuals` v3.0.0) plus the V2-preview OpenAPI digest, and the
+(`aftermath-perpetuals` v3.0.0) plus the production OpenAPI digest, and the
 vendored bytes are verified against their SHA-256 digests on every run.
 
 No strategy is enabled until the Aftermath field, market, sizing, and execution

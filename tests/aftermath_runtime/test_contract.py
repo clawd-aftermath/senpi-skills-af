@@ -15,7 +15,11 @@ class ContractTests(unittest.TestCase):
         )
         self.assertEqual(
             contract["source"]["canonicalSha256"],
-            "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2",
+            "fbc76c20bb3581a638d59ff5afc2c1dfd2f47d7453f14327aab8a8e5d34ca9f4",
+        )
+        self.assertEqual(
+            contract["source"]["url"],
+            "https://aftermath.finance/api/openapi/spec.json",
         )
         self.assertEqual(len(contract["paths"]), 8)
         for path in (
@@ -80,7 +84,7 @@ class ContractTests(unittest.TestCase):
         )
         self.assertEqual(
             drift["sourceContractCanonicalSha256"],
-            "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2",
+            "fbc76c20bb3581a638d59ff5afc2c1dfd2f47d7453f14327aab8a8e5d34ca9f4",
         )
         self.assertEqual(len(drift["entries"]), 5)
         unresolved = [

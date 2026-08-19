@@ -17,7 +17,7 @@ Sources: `strategies/coyote/main/scanners/scan.py`
 | `strategy_get_clearinghouse_state.data.{main,xyz}.assetPositions[].position.coin` | accounts[].positions[].marketId joined to POST /api/perpetuals/markets -> markets[].metadata.symbol or markets[].marketParams.baseAssetSymbol | `mapped-transform` |
 | `market_get_asset_data.data.candles.4h[].c` | POST /api/perpetuals/market/candle-history -> candles[].close using resolution=4h and explicit fromTimestamp/toTimestamp | `mapped-transform` |
 | `market_get_asset_data.success` | POST /api/perpetuals/market/candle-history HTTP status/error union is converted to a fail-closed adapter result; the V2 response has no success envelope | `mapped-transform` |
-| `inputs.dispersionUniverse ranked across BTC/ETH/SOL/HYPE` | gap: only BTC was active at the pinned preview snapshot; dispersion must fail closed and may not collapse to one market | `gap` |
+| `inputs.dispersionUniverse ranked across BTC/ETH/SOL/HYPE` | gap: only BTC was active in the retired preview fixture snapshot; dispersion must fail closed and may not collapse to one market | `gap` |
 
 ## gecko
 

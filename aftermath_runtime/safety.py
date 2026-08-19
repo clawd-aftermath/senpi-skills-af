@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 
 Structure follows the vendored skill ``AFTERMATH_SKILLS_REF/skills/api/
 safety-and-risk.md`` (v3.0.0).  Only its *patterns* are reused; its example
-URLs name the retired v1 host and are never copied.
+Historical URLs are never copied into runtime configuration.
 
 These live in the adapter layer on purpose.  Putting them here is what makes
 them apply to every strategy at once and impossible for a strategy to forget.

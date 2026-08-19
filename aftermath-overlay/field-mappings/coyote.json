@@ -78,7 +78,7 @@
     },
     {
       "consumed": "inputs.dispersionUniverse ranked across BTC/ETH/SOL/HYPE",
-      "aftermath": "gap: only BTC was active at the pinned preview snapshot; dispersion must fail closed and may not collapse to one market",
+      "aftermath": "gap: only BTC was active in the retired preview fixture snapshot; dispersion must fail closed and may not collapse to one market",
       "status": "gap"
     }
   ]

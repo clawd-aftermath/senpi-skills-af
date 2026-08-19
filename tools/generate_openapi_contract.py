@@ -13,8 +13,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-CANONICAL_SPEC_SHA256 = "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2"
-SOURCE_URL = "https://v2-preview.aftermath.finance/api/openapi/spec.json"
+CANONICAL_SPEC_SHA256 = "fbc76c20bb3581a638d59ff5afc2c1dfd2f47d7453f14327aab8a8e5d34ca9f4"
+SOURCE_URL = "https://aftermath.finance/api/openapi/spec.json"
 SELECTED_PATHS = (
     "/api/perpetuals/markets",
     "/api/perpetuals/markets/prices",

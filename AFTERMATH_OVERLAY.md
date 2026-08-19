@@ -7,7 +7,7 @@ execution path — not proxied underneath it.
 
 Aftermath API semantics are pinned separately to
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
-(`aftermath-perpetuals` v3.0.0) and the V2-preview OpenAPI digest. See
+(`aftermath-perpetuals` v3.0.0) and the production OpenAPI digest. See
 `contracts/aftermath-skills-v3-contract.json`, `aftermath-overlay/provenance.json`
 and `AFTERMATH_SKILLS_REF/PINNED.md`. Mutable branch heads are not a build input.
 

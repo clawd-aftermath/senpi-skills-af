@@ -4,8 +4,8 @@
   ],
   "active_market_snapshot": {
     "observed_at_utc": "2026-07-28T23:59:19Z",
-    "source": "GET https://v2-preview.aftermath.finance/api/ccxt/markets",
-    "verification": "Observation-dated manual snapshot used by offline generation; it does not self-invalidate when the live venue changes."
+    "source": "Historical GET /api/ccxt/markets observation from the retired preview deployment",
+    "verification": "Observation-dated fixture used by offline generation; it is not current production market truth and does not self-invalidate when the live venue changes."
   },
   "blocked_runtime_semantics": {
     "albatross": "Upstream marks the Arena-dependent package paused.",

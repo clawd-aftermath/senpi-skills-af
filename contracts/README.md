@@ -18,7 +18,7 @@ offline contract tests.
 
 The generator hashes canonical JSON, so whitespace and object-key order do not
 change the pin. The pinned canonical SHA-256 is
-`5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2`.
+`fbc76c20bb3581a638d59ff5afc2c1dfd2f47d7453f14327aab8a8e5d34ca9f4`.
 
 Integration semantics are independently pinned to the
 `AftermathFinance/skills` `feat/v2-skills` branch at immutable commit
@@ -50,7 +50,7 @@ does not require the mutable branch head to remain equal to the pin. A stale
 local remote ref can conceal a force-push that orphaned the commit; freshness is
 the operator's responsibility and the verifier reports the exact observed tip.
 
-The preview OpenAPI remains authoritative for endpoint schemas. The pinned
+The production OpenAPI is authoritative for endpoint schemas. The pinned
 skills define integration semantics and safety behavior. Wire contradictions
 are recorded in `known-drift.json`: positions request items and documented
 native BigInt response fields use integer schemas while their descriptions
@@ -64,7 +64,7 @@ non-production validation; the stale candle prose is resolved by the actual
 required property and pinned skill.
 
 Known contract drift: the pinned schema describes
-`POST /api/perpetuals/markets` as returning `orderbooks`, while the live preview
+`POST /api/perpetuals/markets` as returning `orderbooks`, while production
 returns `marketDatas` containing the market metadata needed for safe tick, lot,
 funding-interval, and symbol normalization. `MarketRegistry` deliberately
 requires `marketDatas`; it will not guess units from the orderbook-only schema.

@@ -48,7 +48,10 @@ class OfflineDoctorTests(unittest.TestCase):
         self.assertIn("…", detail)
 
     def test_a_retired_host_fails(self):
-        env = {"AF_WALLET_ADDRESS": WALLET, "AF_API_BASE_URL": "https://aftermath" + ".finance"}
+        env = {
+            "AF_WALLET_ADDRESS": WALLET,
+            "AF_API_BASE_URL": "https://v2-" + "preview.aftermath.finance",
+        }
         lines: list[str] = []
         self.assertEqual(doctor.main(env=env, write=lines.append), 1)
 

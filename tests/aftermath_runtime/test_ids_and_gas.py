@@ -119,14 +119,17 @@ class InstrumentNormalisationTests(unittest.TestCase):
 
 
 class HostDisciplineTests(unittest.TestCase):
-    def test_default_is_the_live_v2_preview_host(self):
+    def test_default_is_the_launched_production_host(self):
         self.assertEqual(api_base_url({}), DEFAULT_API_BASE_URL)
-        self.assertIn("v2-preview", DEFAULT_API_BASE_URL)
+        self.assertEqual("https://aftermath.finance", DEFAULT_API_BASE_URL)
 
     def test_the_retired_host_fails_closed(self):
-        retired = "https://" + "aftermath" + ".finance"
-        with self.assertRaisesRegex(ConfigError, "retired"):
-            assert_not_retired_host(retired)
+        retired = "https://v2-" + "preview.aftermath.finance"
+        for url in (retired, retired + "/api/", retired + ":443"):
+            with self.subTest(url=url), self.assertRaisesRegex(
+                ConfigError, "retired"
+            ):
+                assert_not_retired_host(url)
         with self.assertRaises(ConfigError):
             RuntimeConfig(base_url=retired)
 

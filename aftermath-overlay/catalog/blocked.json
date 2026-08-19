@@ -49,7 +49,7 @@
       "manifest": "strategies/ant/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "ad2a52e986b118669204590002828298a2ff1c0990d09651a19681a3e5cd4062",
@@ -68,7 +68,7 @@
       "manifest": "strategies/armadillo/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "a9b4e5657edaaa11158888069f921244983991d2ec006d4c4208c417ec4e6568",
@@ -252,7 +252,7 @@
       "manifest": "strategies/bloodhound/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "9a6a71a30ba11f5489dc0c65272caf01336b624b66777583183bea8d4337cd16",
@@ -352,7 +352,7 @@
       "manifest": "strategies/camel/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "ab4fdc9d4cd8cf5d5cba490e2f4076ca2dd9804e901db8fe12715487b68f513f",
@@ -372,7 +372,7 @@
       "manifest": "strategies/caracal/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "2c217c87d1b8490e70c3ae409783e12cc9543aec0673e8fb3c2eb0e47d0e263b",
@@ -1289,7 +1289,7 @@
       "manifest": "strategies/ibis/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "fe8b49302a982ed247ca8b2e3f62a24daaa82b243d1843799eb6ccb4f012de35",
@@ -1334,7 +1334,7 @@
       "manifest": "strategies/jackal/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "0464611d679eea3a536331a034a241316a4d78ca67dce5bcd721f3e71945df6b",
@@ -1888,7 +1888,7 @@
       "manifest": "strategies/octopus/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "da6036749dece54330757bda4ff9d0bba693155afcd0a08412762197d7070bcd",
@@ -2066,7 +2066,7 @@
       "manifest": "strategies/oxpecker/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "47b601c27b004c9cc0fb9aefd3e84006c7b7d3e6901f8c4ec9770f5b264bd87b",
@@ -2241,7 +2241,7 @@
       "manifest": "strategies/raven/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "7f759f5f6b59ce911f3ac8a2340b46251ba524715314bc1002ae13c518779a80",
@@ -2436,7 +2436,7 @@
       "manifest": "strategies/salmon/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "647c3d8526dbbfa58e24ec64b8e330c2fb87c4d93e4a7d90d3e06d12a9966eb2",
@@ -2568,7 +2568,7 @@
       "manifest": "strategies/starling/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "474fafcae3d097124d7ce6c4c8ebcf11c30ed3df890490a6391cb3405ce35ed2",
@@ -2747,7 +2747,7 @@
       "manifest": "strategies/viper/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "3fff2571c5ba9eea33006a71ec63d22bbc62647492488c99d72aee233d7ef717",
@@ -2788,7 +2788,7 @@
       "manifest": "strategies/whalehunter/strategy.yaml",
       "matched_marker": "dynamic-universe",
       "reasons": [
-        "Dynamic/universe-ranked package cannot fail open when the preview has only one active market."
+        "Dynamic/universe-ranked package cannot fail open when the retired preview fixture has only one active market."
       ],
       "rule_id": "market-dynamic-fail-closed",
       "source_sha256": "30134f1de55ddb21ba2622b8d8d4d45a832999e295c9c6159d3ef339bf741f37",

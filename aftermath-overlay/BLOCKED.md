@@ -14,8 +14,8 @@ only fixture-backed read normalization and signal parity:
 - `needs-derived-data`: the package consumes Senpi leaderboard, discovery,
   audit, or cross-asset-flow data with no Aftermath source.
 - `blocked-market`: the declared or ranked universe is not available. At the
-  pinned preview snapshot, only BTC was active. Universe-ranking strategies
-  never reduce themselves silently to one market.
+  retired preview fixture snapshot, only BTC was active. Universe-ranking
+  strategies never reduce themselves silently to one market.
 - `blocked-runtime-semantics`: sizing, multi-leg lifecycle, or other supervisor
   behavior cannot safely retain its Hyperliquid meaning on Aftermath.
 

@@ -2,7 +2,7 @@
 
 Current status: **read-only shadow pilot**.
 
-Contract source: V2-preview OpenAPI plus pinned
+Contract source: production OpenAPI plus pinned
 `AftermathFinance/skills@5b614db62dcd2e58f442e93661f608fe7b073c32`
 (`aftermath-perpetuals` v3.0.0). The branch name alone is not trusted; offline
 validation checks internal pin/manifest consistency. A separate no-fetch source
@@ -42,7 +42,7 @@ guess units. Funding rates are preserved as raw API values with each market's
 `fundingFrequencyMs`. They are not annualized or treated as cross-market
 comparable by this overlay.
 
-`get_candles` assumes the preview's observed bucket-start timestamp semantics
+`get_candles` assumes production's observed bucket-start timestamp semantics
 and clamps requested ranges to its injected current clock before excluding an
 open bucket. Because the pinned schema does not explicitly say bucket start
 versus close, that ambiguity is a machine-readable blocking drift entry.

@@ -4,7 +4,7 @@
       "blocking": true,
       "codeRequires": "marketDatas[]",
       "endpoint": "POST /api/perpetuals/markets",
-      "observedPreviewShape": "marketDatas[]",
+      "observedProductionShape": "marketDatas[]",
       "pinnedOpenApiResponseSchema": "PerpetualsMarketsResponse.orderbooks[]",
       "reason": "The OpenAPI response lacks symbol, tick, lot, and funding interval metadata required for fail-closed normalization.",
       "status": "unresolved"
@@ -13,7 +13,7 @@
       "blocking": true,
       "codeRequires": "bucket_start",
       "endpoint": "POST /api/perpetuals/market/candle-history",
-      "observedPreviewShape": "timestamp is the candle bucket start",
+      "observedProductionShape": "timestamp is the candle bucket start",
       "pinnedOpenApiResponseSchema": "PerpetualsMarketCandleDataPoint.timestamp only says candle timestamp",
       "reason": "Closed-candle filtering requires explicit bucket-start versus bucket-close semantics. Weekly anchor and monthly alignment semantics are also unspecified; the overlay uses duration only for weekly closure and fails closed unless monthly timestamps align to UTC month start. Falsification test: determine whether a returned timestamp with timestamp + resolution greater than wall-clock now can nevertheless represent a closed candle; if yes, the current conservative filter drops valid data.",
       "status": "unresolved"
@@ -51,5 +51,5 @@
       "status": "resolved"
     }
   ],
-  "sourceContractCanonicalSha256": "5bf4f1322ae79561c42bff9329950b757558aea79cce63e89145382024d072f2"
+  "sourceContractCanonicalSha256": "fbc76c20bb3581a638d59ff5afc2c1dfd2f47d7453f14327aab8a8e5d34ca9f4"
 }
